@@ -131,17 +131,17 @@
     <None Include="Service References\ResourceBaseService\ControllerFarmService.ResourceBaseService.ResourceNode.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ResourceBaseService\ResourceBaseService.wsdl" />
-    <None Include="Service References\ResourceBaseService\ResourceBaseService.xsd">
+    <None Include="Service References\ResourceBaseService\ResourceBaseService1.wsdl" />
+    <None Include="Service References\ResourceBaseService\ResourceBaseService4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ResourceBaseService\ResourceBaseService1.xsd">
+    <None Include="Service References\ResourceBaseService\ResourceBaseService41.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ResourceBaseService\ResourceBaseService2.xsd">
+    <None Include="Service References\ResourceBaseService\ResourceBaseService42.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ResourceBaseService\ResourceBaseService3.xsd">
+    <None Include="Service References\ResourceBaseService\ResourceBaseService43.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\RExService\service.wsdl" />
@@ -184,9 +184,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ResourceBaseService\ResourceBaseService.disco" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\ResourceBaseService\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +194,9 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ResourceBaseService\ResourceBaseService1.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

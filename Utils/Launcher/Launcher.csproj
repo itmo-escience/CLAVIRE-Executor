@@ -59,27 +59,40 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <None Include="Service References\ResourceBase\ResourceBaseService1.wsdl" />
+    <None Include="Service References\ResourceBase\ResourceBaseService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ResourceBase\ResourceBaseService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ResourceBase\ResourceBaseService42.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ResourceBase\ResourceBaseService43.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Service References\Executor\ExecutionBrokerService.wsdl" />
-    <None Include="Service References\Executor\ExecutionBrokerService.xsd">
+    <None Include="Service References\Executor\ExecutionBrokerService2.wsdl" />
+    <None Include="Service References\Executor\ExecutionBrokerService21.wsdl" />
+    <None Include="Service References\Executor\ExecutionBrokerService5.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Executor\ExecutionBrokerService1.wsdl" />
-    <None Include="Service References\Executor\ExecutionBrokerService1.xsd">
+    <None Include="Service References\Executor\ExecutionBrokerService51.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Executor\ExecutionBrokerService2.xsd">
+    <None Include="Service References\Executor\ExecutionBrokerService52.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Executor\ExecutionBrokerService3.xsd">
+    <None Include="Service References\Executor\ExecutionBrokerService53.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Executor\ExecutionBrokerService4.xsd">
+    <None Include="Service References\Executor\ExecutionBrokerService54.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Executor\Launcher.Executor.BriefTaskInfo.datasource">
@@ -94,26 +107,10 @@
     <None Include="Service References\ResourceBase\Launcher.ResourceBase.ResourceNode.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ResourceBase\ResourceBaseService.wsdl" />
-    <None Include="Service References\ResourceBase\ResourceBaseService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ResourceBase\ResourceBaseService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ResourceBase\ResourceBaseService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ResourceBase\ResourceBaseService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Executor\" />
     <WCFMetadataStorage Include="Service References\ResourceBase\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\Executor\ExecutionBrokerService.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Executor\configuration91.svcinfo" />
@@ -128,9 +125,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ResourceBase\ResourceBaseService.disco" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\ResourceBase\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +135,12 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Executor\ExecutionBrokerService1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ResourceBase\ResourceBaseService1.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

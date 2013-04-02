@@ -143,21 +143,21 @@
     <None Include="Service References\ExecutionBrokerService\ControllerFarmHost.ExecutionBrokerService.Task.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService2.wsdl" />
-    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService21.wsdl" />
+    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService.wsdl" />
+    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService1.wsdl" />
+    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService41.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService42.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService43.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService44.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="wcf_host_add.cmd">
@@ -227,7 +227,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService1.disco" />
+    <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -251,6 +251,9 @@ namespace ControllerFarmHost.ExecutionBrokerService {
         private ControllerFarmHost.ExecutionBrokerService.TaskSchedule CurrentScheduleField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.Dictionary<string, double> EstimationsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.Dictionary<string, string> OutputParamsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -294,6 +297,19 @@ namespace ControllerFarmHost.ExecutionBrokerService {
                 if ((object.ReferenceEquals(this.CurrentScheduleField, value) != true)) {
                     this.CurrentScheduleField = value;
                     this.RaisePropertyChanged("CurrentSchedule");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.Dictionary<string, double> Estimations {
+            get {
+                return this.EstimationsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EstimationsField, value) != true)) {
+                    this.EstimationsField = value;
+                    this.RaisePropertyChanged("Estimations");
                 }
             }
         }
@@ -1537,9 +1553,6 @@ namespace ControllerFarmHost.ExecutionBrokerService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IExecutionBrokerService/MagicHappens", ReplyAction="http://tempuri.org/IExecutionBrokerService/MagicHappensResponse")]
         bool MagicHappens();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IExecutionBrokerService/Define", ReplyAction="http://tempuri.org/IExecutionBrokerService/DefineResponse")]
-        void Define(ControllerFarmHost.ExecutionBrokerService.TaskDescription[] tasks, ControllerFarmHost.ExecutionBrokerService.TaskDependency[] dependencies);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IExecutionBrokerService/DefineTask", ReplyAction="http://tempuri.org/IExecutionBrokerService/DefineTaskResponse")]
         void DefineTask(ControllerFarmHost.ExecutionBrokerService.TaskDescription task);
         
@@ -1594,10 +1607,6 @@ namespace ControllerFarmHost.ExecutionBrokerService {
         
         public bool MagicHappens() {
             return base.Channel.MagicHappens();
-        }
-        
-        public void Define(ControllerFarmHost.ExecutionBrokerService.TaskDescription[] tasks, ControllerFarmHost.ExecutionBrokerService.TaskDependency[] dependencies) {
-            base.Channel.Define(tasks, dependencies);
         }
         
         public void DefineTask(ControllerFarmHost.ExecutionBrokerService.TaskDescription task) {

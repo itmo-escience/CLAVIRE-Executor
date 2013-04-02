@@ -480,6 +480,9 @@ namespace Launcher.ResourceBase {
         
         private string PasswordField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CertFileField;
+        
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
                 return this.extensionDataField;
@@ -511,6 +514,19 @@ namespace Launcher.ResourceBase {
                 if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
                     this.PasswordField = value;
                     this.RaisePropertyChanged("Password");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+        public string CertFile {
+            get {
+                return this.CertFileField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CertFileField, value) != true)) {
+                    this.CertFileField = value;
+                    this.RaisePropertyChanged("CertFile");
                 }
             }
         }

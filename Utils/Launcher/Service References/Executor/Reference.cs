@@ -251,6 +251,9 @@ namespace Launcher.Executor {
         private Launcher.Executor.TaskSchedule CurrentScheduleField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.Dictionary<string, double> EstimationsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.Dictionary<string, string> OutputParamsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -294,6 +297,19 @@ namespace Launcher.Executor {
                 if ((object.ReferenceEquals(this.CurrentScheduleField, value) != true)) {
                     this.CurrentScheduleField = value;
                     this.RaisePropertyChanged("CurrentSchedule");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.Dictionary<string, double> Estimations {
+            get {
+                return this.EstimationsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EstimationsField, value) != true)) {
+                    this.EstimationsField = value;
+                    this.RaisePropertyChanged("Estimations");
                 }
             }
         }
@@ -1537,9 +1553,6 @@ namespace Launcher.Executor {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IExecutionBrokerService/MagicHappens", ReplyAction="http://tempuri.org/IExecutionBrokerService/MagicHappensResponse")]
         bool MagicHappens();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IExecutionBrokerService/Define", ReplyAction="http://tempuri.org/IExecutionBrokerService/DefineResponse")]
-        void Define(Launcher.Executor.TaskDescription[] tasks, Launcher.Executor.TaskDependency[] dependencies);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IExecutionBrokerService/DefineTask", ReplyAction="http://tempuri.org/IExecutionBrokerService/DefineTaskResponse")]
         void DefineTask(Launcher.Executor.TaskDescription task);
         
@@ -1594,10 +1607,6 @@ namespace Launcher.Executor {
         
         public bool MagicHappens() {
             return base.Channel.MagicHappens();
-        }
-        
-        public void Define(Launcher.Executor.TaskDescription[] tasks, Launcher.Executor.TaskDependency[] dependencies) {
-            base.Channel.Define(tasks, dependencies);
         }
         
         public void DefineTask(Launcher.Executor.TaskDescription task) {

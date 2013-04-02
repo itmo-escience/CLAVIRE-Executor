@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="eE4t7BCD7HjHkEMKjj2KTOcN4hw=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="lOY3UStQL5EtMIfT27hdSm6GC7A=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IExecutionBrokerService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IExecutionBrokerService" contract="Executor.IExecutionBrokerService" bindingType="basicHttpBinding" address="http://localhost:51835/ExecutionBrokerService.svc/Execution" bindingConfiguration="BasicHttpBinding_IExecutionBrokerService">
+    <endpoint name="BasicHttpBinding_IExecutionBrokerService" contract="Executor.IExecutionBrokerService" bindingType="basicHttpBinding" address="http://localhost:61096/ExecutionBrokerService.svc/Execution" bindingConfiguration="BasicHttpBinding_IExecutionBrokerService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:51835/ExecutionBrokerService.svc/Execution</serializedValue>
+          <serializedValue>http://localhost:61096/ExecutionBrokerService.svc/Execution</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

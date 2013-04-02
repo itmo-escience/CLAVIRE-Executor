@@ -18,15 +18,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:51840/ResourceBaseService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:61095/ResourceBaseService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ResourceBaseService.disco" MetadataType="Disco" ID="3037f4a9-e681-4315-888e-6b6917ad7f72" SourceId="1" SourceUrl="http://localhost:51840/ResourceBaseService.svc?disco" />
-    <MetadataFile FileName="ResourceBaseService1.xsd" MetadataType="Schema" ID="ef869849-5a52-4905-9be4-f71c20ef5ced" SourceId="1" SourceUrl="http://localhost:51840/ResourceBaseService.svc?xsd=xsd2" />
-    <MetadataFile FileName="ResourceBaseService.wsdl" MetadataType="Wsdl" ID="c8c9750f-76b0-45fa-b6e8-1b1d07bb41a8" SourceId="1" SourceUrl="http://localhost:51840/ResourceBaseService.svc?wsdl" />
-    <MetadataFile FileName="ResourceBaseService3.xsd" MetadataType="Schema" ID="815fcc07-4208-43c0-8e8f-f00d4e7bc872" SourceId="1" SourceUrl="http://localhost:51840/ResourceBaseService.svc?xsd=xsd3" />
-    <MetadataFile FileName="ResourceBaseService.xsd" MetadataType="Schema" ID="d40e2035-5d67-4d95-9692-bcba9cf3f7bc" SourceId="1" SourceUrl="http://localhost:51840/ResourceBaseService.svc?xsd=xsd1" />
-    <MetadataFile FileName="ResourceBaseService2.xsd" MetadataType="Schema" ID="3195fad2-d3b2-4465-903a-c82c8d0ac860" SourceId="1" SourceUrl="http://localhost:51840/ResourceBaseService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ResourceBaseService4.xsd" MetadataType="Schema" ID="38c8e779-a80f-49cc-9091-20c22e52f78c" SourceId="1" SourceUrl="http://localhost:61095/ResourceBaseService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ResourceBaseService1.wsdl" MetadataType="Wsdl" ID="60391e6e-5128-4bdc-b6b0-304a12e1650c" SourceId="1" SourceUrl="http://localhost:61095/ResourceBaseService.svc?wsdl" />
+    <MetadataFile FileName="ResourceBaseService41.xsd" MetadataType="Schema" ID="c8a3dd8e-49ec-4246-95d9-00d6804da8f4" SourceId="1" SourceUrl="http://localhost:61095/ResourceBaseService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ResourceBaseService42.xsd" MetadataType="Schema" ID="4a5e5d88-95c6-4f4d-9aad-a66e50970d63" SourceId="1" SourceUrl="http://localhost:61095/ResourceBaseService.svc?xsd=xsd3" />
+    <MetadataFile FileName="ResourceBaseService1.disco" MetadataType="Disco" ID="3d72b3ac-b3b6-40c8-9fe3-ba6ae7f5b584" SourceId="1" SourceUrl="http://localhost:61095/ResourceBaseService.svc?disco" />
+    <MetadataFile FileName="ResourceBaseService43.xsd" MetadataType="Schema" ID="26421aa7-41d5-4c22-b1db-42e20202a9d4" SourceId="1" SourceUrl="http://localhost:61095/ResourceBaseService.svc?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
