@@ -234,7 +234,7 @@ namespace Launcher
             };
 
             task.ExecParams = new Dictionary<string, string>();
-            task.ExecParams["RunMode"] = "Prebilling";
+            //task.ExecParams["RunMode"] = "Prebilling";
             /*       
             task.Priority = Executor.TaskPriority.Urgent;  
             task.ExecParams = new Dictionary<string, string>();
@@ -300,7 +300,7 @@ namespace Launcher
 
                             var task = GenerateTaskDescription(taskId, WF_ID, specificResourceName);
                             executor.DefineTask(task);
-                            //executor.Execute(new[] { task.TaskId });
+                            executor.Execute(new[] { task.TaskId });
                         }
                     }
                     catch (Exception e)
