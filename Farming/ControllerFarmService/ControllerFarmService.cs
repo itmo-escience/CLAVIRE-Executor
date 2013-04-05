@@ -239,7 +239,7 @@ namespace MITP
             {
                 Log.Error("Exception in some TPL's task: " + e.ToString());
                 e.SetObserved();
-                throw e.Exception;
+                //throw e.Exception;
             };  
         }
     }
