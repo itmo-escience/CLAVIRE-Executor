@@ -33,10 +33,19 @@ namespace ControllerFarmService
         protected override bool GetFromResourceTaskStateInfo(TaskRunContext task, out string result)
         {
             var node = GetNode(task);
-            result = SshExec(node, GetTaskStateCommand(), (string)task.LocalId, null).ToLowerInvariant();
-            var clusterFolder = IncarnationParams.IncarnatePath(node.DataFolders.LocalFolder, task.TaskId, CopyPhase.Out);
-            var result2 = SshExec(node, SshUnixCommands.Ls, clusterFolder);
 
+            try
+            {
+                result = SshExec(node, GetTaskStateCommand(), (string)task.LocalId, null).ToLowerInvariant();
+            }
+            catch (Exception e)
+            {
+                Log.Error(String.Format("Exception while updating task's {0} state: {1}", task.TaskId, e));
+                result = "SshExec error while updating task's state";
+            }
+
+            string clusterFolder = IncarnationParams.IncarnatePath(node.DataFolders.LocalFolder, task.TaskId, CopyPhase.Out);
+            string result2 = SshExec(node, SshUnixCommands.Ls, clusterFolder);
             
             return result.Contains(task.LocalId.ToString()) && !result2.Contains(ClavireFinishFileName);
         }
