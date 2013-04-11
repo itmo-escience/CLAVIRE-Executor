@@ -59,7 +59,7 @@ namespace Launcher
 
         #endregion
 
-        const string USER_ID = "sm";
+        const string USER_ID = "00000000-0000-0000-0000-000000000000";
         const string WF_ID = "Launcher";
 
         readonly static string RESOURCE_NAME = FromConfig("Resource", "");//"b4.b4-131");

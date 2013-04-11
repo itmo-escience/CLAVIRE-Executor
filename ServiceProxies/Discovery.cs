@@ -39,10 +39,10 @@ namespace MITP
             return GetControllerFarm(resource.Controller.Url);
         }
 
-        public static ServiceProxies.RightsService.RightsProviderSerivceClient
+        public static ServiceProxies.UserManagementService.UmClientClient
             GetRightsService()
         {
-            return new ServiceProxies.RightsService.RightsProviderSerivceClient();
+            return new ServiceProxies.UserManagementService.UmClientClient();
         }
 
         public static ServiceProxies.AccountingService.AccountingServiceClient

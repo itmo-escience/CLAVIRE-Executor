@@ -362,7 +362,7 @@ namespace MITP
             foreach (string userId in taskUsers)
             {
                 userHasMoney[userId] = RightsProxy.HasMoney(userId);
-                allowedResourceNamesForUser[userId]= RightsProxy.GetAllowedResourceNames(userId, resources);
+                allowedResourceNamesForUser[userId] = RightsProxy.GetAllowedResourceNames(userId, resources);
             }
 
             foreach (var task in tasks)
@@ -391,17 +391,25 @@ namespace MITP
                     var allowedResources = Enumerable.Empty<Resource>();
                     if (canRunInTheFuture)
                     {
-                        allowedResources = resources.Where(r => 
-                            allowedResourceNamesForUser[task.UserId].Contains(r.ResourceName));
-
-                        if (!allowedResources.Any())
+                        if (!RightsProxy.CanExecutePackage(task.UserId, task.Package))
                         {
-                            failReasonForTask[task.TaskId] = "Not enough resource permissions to run task " + task.TaskId.ToString();
+                            failReasonForTask[task.TaskId] = "Not enough permissions to run package " + task.Package;
                             canRunInTheFuture = false;
+                        }
+                        else
+                        {
+                            allowedResources = resources.Where(r => 
+                                allowedResourceNamesForUser[task.UserId].Contains(r.ResourceName));
+
+                            if (!allowedResources.Any())
+                            {
+                                failReasonForTask[task.TaskId] = "Not enough resource permissions to run task " + task.TaskId.ToString();
+                                canRunInTheFuture = false;
+                            }
                         }
                     }
 
-                    // package
+                    // package installed
                     if (canRunInTheFuture)
                     {
                         var resourcesWithPack = allowedResources.SelectMany(

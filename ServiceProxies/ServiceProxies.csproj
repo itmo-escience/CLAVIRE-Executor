@@ -152,6 +152,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\UserManagementService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="WFStateUpdateEvent.cs">
       <DependentUpon>WFStateUpdateEvent.xsd</DependentUpon>
     </Compile>
@@ -363,6 +368,46 @@
     <None Include="Service References\SchedulerService\ServiceProxies.SchedulerService.TaskSchedulerWorkflow.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\UserManagementService\ServiceProxies.UserManagementService.ClavireUri.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserManagementService\ServiceProxies.UserManagementService.GroupAclView.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserManagementService\ServiceProxies.UserManagementService.GroupView.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserManagementService\ServiceProxies.UserManagementService.ObjectViewTree.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserManagementService\ServiceProxies.UserManagementService.RightView.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserManagementService\ServiceProxies.UserManagementService.TypeView.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserManagementService\ServiceProxies.UserManagementService.UserAclView.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserManagementService\ServiceProxies.UserManagementService.UserView.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserManagementService\UmService.wsdl" />
+    <None Include="Service References\UserManagementService\UserManagementService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UserManagementService\UserManagementService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UserManagementService\UserManagementService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UserManagementService\UserManagementService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UserManagementService\UserManagementService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="WFStateUpdateEvent.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -377,6 +422,7 @@
     <WCFMetadataStorage Include="Service References\RExService\" />
     <WCFMetadataStorage Include="Service References\RightsService\" />
     <WCFMetadataStorage Include="Service References\SchedulerService\" />
+    <WCFMetadataStorage Include="Service References\UserManagementService\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\IOService\configuration91.svcinfo" />
@@ -509,6 +555,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\ResourceBaseService\ResourceBaseService1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserManagementService\UserManagementService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserManagementService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserManagementService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserManagementService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,6 +9,12 @@ namespace MITP
 {
     public class RightsProxy
     {
+        const string URI_RESOURCE_FORMAT = "clavire://core/resources/{0}";
+        const string URI_PACKAGE_FORMAT  = "clavire://core/packages/{0}";
+
+        const string URI_RIGHT_RESOURCE_EXECUTE = "clavire://core/right/resources/EXECUTE";
+        const string URI_RIGHT_PACKAGE_EXECUTE  = "clavire://core/right/packages/EXECUTE";
+
         public const string RIGHTS_ENABLED_PARAM = "Rights.Enabled";
 
         public static bool IsRightsIgnored() // todo : m.b. property?
@@ -30,13 +36,19 @@ namespace MITP
 
             try
             {
-                allowedResources = rightsService.GetUserResourcesFromList(userId, resources.Select(r => r.ResourceName).ToArray());
+                string[] resourceUris = resources.Select(r => String.Format(URI_RESOURCE_FORMAT, r.ResourceName)).ToArray();
+
+                allowedResources = rightsService
+                    .GetAccessibleFrom(userId, resourceUris, URI_RIGHT_RESOURCE_EXECUTE)
+                    .Select(uri => uri.Name)
+                    .ToArray();
+
                 rightsService.Close();
             }
             catch (Exception e)
             {
                 rightsService.Abort();
-                Log.Error("Exception on getting allowed resources from RightsService for user " + userId + ": " + e.ToString());
+                Log.Error("Exception on getting allowed resources from UserManagement for user " + userId + ": " + e.ToString());
             }
 
             if (IsRightsIgnored())    
@@ -46,20 +58,20 @@ namespace MITP
             return allowedResources;
         }
 
-        public static bool CanExecutePackage(string userId, string packageName) // todo : use CanExecutePackage
+        public static bool CanExecutePackage(string userId, string packageName)
         {
             var rightsService = Discovery.GetRightsService();
             bool isPackageAllowed = false;
 
             try
             {
-                isPackageAllowed = rightsService.CanExecutePackage(userId, packageName);
+                isPackageAllowed = rightsService.CanAccess(userId, String.Format(URI_PACKAGE_FORMAT, packageName), URI_RIGHT_PACKAGE_EXECUTE);
                 rightsService.Close();
             }
             catch (Exception e)
             {
                 rightsService.Abort();
-                Log.Error("Exception on check from RightsService if user " + userId + " can use package " + packageName + ": " + e.ToString());
+                Log.Error("Exception on check from UserManagement if user " + userId + " can use package " + packageName + ": " + e.ToString());
             }
 
             if (IsRightsIgnored())
