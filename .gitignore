@@ -1,6 +1,7 @@
 # git ignore file
 *.obj
 *.exe
+!.nuget/nuget.exe
 *.exp
 *.pdb
 *.dll
@@ -30,3 +31,5 @@ _UpgradeReport_Files/
 _ReSharper.*/
 */bin/*.xml
 ExecutionLogs/
+packages/*
+!packages/repositories.config
