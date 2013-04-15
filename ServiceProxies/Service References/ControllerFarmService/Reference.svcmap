@@ -21,6 +21,7 @@
     <MetadataSource Address="http://localhost:8701/ControllerFarmService/" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
+    <MetadataFile FileName="item.wsdl" MetadataType="Wsdl" ID="2683bbbe-eb62-4cba-a86a-fe3d64050ee5" SourceId="1" SourceUrl="http://localhost:8701/ControllerFarmService/?wsdl=wsdl0" />
     <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="6dcfc9fa-4faa-4aee-8fe0-e0163b3b3b14" SourceId="1" SourceUrl="http://localhost:8701/ControllerFarmService/?xsd=xsd3" />
     <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="81e95397-fab4-44e7-b0bd-152234cb8ba8" SourceId="1" SourceUrl="http://localhost:8701/ControllerFarmService/?xsd=xsd2" />
     <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="6d6d9dc9-6f98-47b5-8c29-68200fcedbab" SourceId="1" SourceUrl="http://localhost:8701/ControllerFarmService/?xsd=xsd1" />

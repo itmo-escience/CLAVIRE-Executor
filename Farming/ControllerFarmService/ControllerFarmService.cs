@@ -19,7 +19,7 @@ namespace MITP
 
         //private static Logger Log = LogManager.GetCurrentClassLogger();
 
-        private void CheckNodeConfigConsistency(ulong taskId, IEnumerable<NodeConfig> config, Resource resource)
+        private void CheckNodeConfigConsistency(ulong taskId, IEnumerable<NodeRunConfig> config, Resource resource)
         {
             if (config.Any(node => node.ResourceName != resource.ResourceName))
             {

@@ -67,6 +67,9 @@ namespace MITP
 
             var collection = Mongo.GetCollection<TaskCache>();
             var tasks = collection.AsQueryable<TaskCache>().Where(t => t.Context.Resource.ResourceName.In(resourceNames)).ToArray();
+
+            return new TaskCache[0];
+
             return tasks;
         }
 

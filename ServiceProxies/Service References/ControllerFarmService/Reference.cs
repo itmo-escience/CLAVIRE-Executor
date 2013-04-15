@@ -26,7 +26,7 @@ namespace ServiceProxies.ControllerFarmService {
         private MITP.IncarnationParams IncarnationField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MITP.NodeConfig[] NodesConfigField;
+        private ServiceProxies.ControllerFarmService.NodeRunConfig[] NodesConfigField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private ulong TaskIdField;
@@ -55,7 +55,7 @@ namespace ServiceProxies.ControllerFarmService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MITP.NodeConfig[] NodesConfig {
+        public ServiceProxies.ControllerFarmService.NodeRunConfig[] NodesConfig {
             get {
                 return this.NodesConfigField;
             }
@@ -76,6 +76,83 @@ namespace ServiceProxies.ControllerFarmService {
                 if ((this.TaskIdField.Equals(value) != true)) {
                     this.TaskIdField = value;
                     this.RaisePropertyChanged("TaskId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="NodeRunConfig", Namespace="http://schemas.datacontract.org/2004/07/MITP")]
+    [System.SerializableAttribute()]
+    public partial class NodeRunConfig : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private uint CoresField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NodeNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ResourceNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public uint Cores {
+            get {
+                return this.CoresField;
+            }
+            set {
+                if ((this.CoresField.Equals(value) != true)) {
+                    this.CoresField = value;
+                    this.RaisePropertyChanged("Cores");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NodeName {
+            get {
+                return this.NodeNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NodeNameField, value) != true)) {
+                    this.NodeNameField = value;
+                    this.RaisePropertyChanged("NodeName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ResourceName {
+            get {
+                return this.ResourceNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ResourceNameField, value) != true)) {
+                    this.ResourceNameField = value;
+                    this.RaisePropertyChanged("ResourceName");
                 }
             }
         }
@@ -410,6 +487,9 @@ namespace ServiceProxies.ControllerFarmService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IControllerFarmService/GetActiveTaskIds", ReplyAction="http://tempuri.org/IControllerFarmService/GetActiveTaskIdsResponse")]
         ulong[] GetActiveTaskIds();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IControllerFarmService/GetActiveResourceNames", ReplyAction="http://tempuri.org/IControllerFarmService/GetActiveResourceNamesResponse")]
+        string[] GetActiveResourceNames();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IControllerFarmService/GetNodesState", ReplyAction="http://tempuri.org/IControllerFarmService/GetNodesStateResponse")]
         ServiceProxies.ControllerFarmService.NodeStateInfo[] GetNodesState(string resourceName);
         
@@ -458,6 +538,10 @@ namespace ServiceProxies.ControllerFarmService {
         
         public ulong[] GetActiveTaskIds() {
             return base.Channel.GetActiveTaskIds();
+        }
+        
+        public string[] GetActiveResourceNames() {
+            return base.Channel.GetActiveResourceNames();
         }
         
         public ServiceProxies.ControllerFarmService.NodeStateInfo[] GetNodesState(string resourceName) {

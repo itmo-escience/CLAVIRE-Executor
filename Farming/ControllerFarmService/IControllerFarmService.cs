@@ -16,7 +16,7 @@ namespace MITP
 
         [DataMember] public ulong TaskId { get; private set; }
         [DataMember] public IncarnationParams Incarnation { get; private set; } // todo : embed
-        [DataMember] public IEnumerable<NodeConfig> NodesConfig { get; private set; }
+        [DataMember] public IEnumerable<NodeRunConfig> NodesConfig { get; private set; }
 
         public Resource Resource { get; set; }
         public IStatelessResourceController Controller { get; set; }

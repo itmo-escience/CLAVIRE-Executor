@@ -95,6 +95,7 @@
     <Compile Include="Discovery.cs" />
     <Compile Include="Eventing.cs" />
     <Compile Include="EventReportSerializer.cs" />
+    <Compile Include="NodeConfig.cs" />
     <Compile Include="PackageBase\Estimation.cs" />
     <Compile Include="PackageBase\Model.cs" />
     <Compile Include="PackageBase\PackageBaseOutputFileManager.cs" />
@@ -225,6 +226,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ControllerFarmService\ControllerFarmService.wsdl" />
+    <None Include="Service References\ControllerFarmService\item.wsdl" />
     <None Include="Service References\ControllerFarmService\item.xsd">
       <SubType>Designer</SubType>
     </None>

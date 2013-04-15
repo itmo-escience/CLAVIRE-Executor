@@ -204,7 +204,7 @@ namespace ControllerFarmService
 
                 try
                 {
-                    long coresToUse = task.NodesConfig.Sum(conf => conf.Cores);
+                    long coresToUse = task.NodesConfig.Sum(cfg => cfg.Cores);
                     var node = GetNode(task);
                     var pack = node.PackageByName(task.Incarnation.PackageName);
 

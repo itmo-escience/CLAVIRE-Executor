@@ -104,6 +104,7 @@
     <Compile Include="Controllers\Impl\SlurmController.cs" />
     <Compile Include="Controllers\Impl\WindowsController.cs" />
     <Compile Include="Mongo.cs" />
+    <Compile Include="NodeRunConfig.cs" />
     <Compile Include="NodeState.cs" />
     <Compile Include="ResourceCache.cs" />
     <Compile Include="ResourceNodeExt.cs" />

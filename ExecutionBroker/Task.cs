@@ -399,9 +399,14 @@ namespace MITP
                             //Incarnation.ProvidedTaskId = provider.Run(this.TaskId, this.Incarnation, resource, schedule.Nodes);
                             var runContext = new ServiceProxies.ControllerFarmService.TaskRunContext()
                             {
-                                TaskId = this.TaskId,
+                                TaskId      = this.TaskId,
                                 Incarnation = this.Incarnation,
-                                NodesConfig = schedule.Nodes.ToArray()
+                                NodesConfig = schedule.Nodes.Select(n => new ServiceProxies.ControllerFarmService.NodeRunConfig()
+                                {
+                                    ResourceName = n.ResourceName,
+                                    NodeName     = n.NodeName,
+                                    Cores        = n.Cores
+                                }).ToArray()
                             };
 
                             Log.Debug("Running task on controller: " + TaskId.ToString());

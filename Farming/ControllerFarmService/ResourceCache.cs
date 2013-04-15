@@ -125,7 +125,7 @@ namespace MITP
             }
         }
 
-        public void Acquire(IEnumerable<NodeConfig> nodesConfig)
+        public void Acquire(IEnumerable<NodeRunConfig> nodesConfig)
         {
             lock (this.StateLock)
             {
@@ -153,7 +153,7 @@ namespace MITP
             }
         }
 
-        public void Release(IEnumerable<NodeConfig> nodesConfig)
+        public void Release(IEnumerable<NodeRunConfig> nodesConfig)
         {
             lock (this.StateLock)
             {

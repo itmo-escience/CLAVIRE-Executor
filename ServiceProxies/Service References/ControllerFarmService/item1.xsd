@@ -5,7 +5,7 @@
   <xs:complexType name="TaskRunContext">
     <xs:sequence>
       <xs:element minOccurs="0" name="Incarnation" nillable="true" type="tns:IncarnationParams" />
-      <xs:element minOccurs="0" name="NodesConfig" nillable="true" type="tns:ArrayOfNodeConfig" />
+      <xs:element minOccurs="0" name="NodesConfig" nillable="true" type="tns:ArrayOfNodeRunConfig" />
       <xs:element minOccurs="0" name="TaskId" type="xs:unsignedLong" />
     </xs:sequence>
   </xs:complexType>
@@ -17,7 +17,6 @@
       <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ExpectedOutputFileNames" nillable="true" type="q1:ArrayOfstring" />
       <xs:element minOccurs="0" name="FilesToCopy" nillable="true" type="tns:ArrayOfTaskFileDescription" />
       <xs:element minOccurs="0" name="PackageName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ProvidedTaskId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="UserCert" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
@@ -41,25 +40,20 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="TaskFileDescription" nillable="true" type="tns:TaskFileDescription" />
-  <xs:complexType name="ArrayOfNodeConfig">
+  <xs:complexType name="ArrayOfNodeRunConfig">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeConfig" type="tns:NodeConfig" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeRunConfig" nillable="true" type="tns:NodeRunConfig" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfNodeConfig" nillable="true" type="tns:ArrayOfNodeConfig" />
-  <xs:complexType name="NodeConfig">
-    <xs:annotation>
-      <xs:appinfo>
-        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
-      </xs:appinfo>
-    </xs:annotation>
+  <xs:element name="ArrayOfNodeRunConfig" nillable="true" type="tns:ArrayOfNodeRunConfig" />
+  <xs:complexType name="NodeRunConfig">
     <xs:sequence>
       <xs:element minOccurs="0" name="Cores" type="xs:unsignedInt" />
       <xs:element minOccurs="0" name="NodeName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ResourceName" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="NodeConfig" nillable="true" type="tns:NodeConfig" />
+  <xs:element name="NodeRunConfig" nillable="true" type="tns:NodeRunConfig" />
   <xs:complexType name="TaskStateInfo">
     <xs:sequence>
       <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ActionsDuration" nillable="true" type="q2:ArrayOfKeyValueOfstringduration" />

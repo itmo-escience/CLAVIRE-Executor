@@ -52,6 +52,18 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetActiveResourceNames">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetActiveResourceNamesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetActiveResourceNamesResult" nillable="true" type="q4:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetNodesState">
     <xs:complexType>
       <xs:sequence>
@@ -62,7 +74,7 @@
   <xs:element name="GetNodesStateResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MITP" minOccurs="0" name="GetNodesStateResult" nillable="true" type="q4:ArrayOfNodeStateInfo" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MITP" minOccurs="0" name="GetNodesStateResult" nillable="true" type="q5:ArrayOfNodeStateInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

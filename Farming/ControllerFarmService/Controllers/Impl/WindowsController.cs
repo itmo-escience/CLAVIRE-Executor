@@ -61,7 +61,7 @@ namespace MITP
         public object Run(TaskRunContext task)
         {
             ulong taskId = task.TaskId;
-            int coresToUse = (int) task.NodesConfig.Sum(conf => conf.Cores);
+            int coresToUse = (int) task.NodesConfig.Sum(cfg => cfg.Cores);
             var node = GetNode(task);
 
             string ftpFolder = IncarnationParams.IncarnatePath(node.DataFolders.ExchangeUrlFromSystem, taskId, CopyPhase.In);

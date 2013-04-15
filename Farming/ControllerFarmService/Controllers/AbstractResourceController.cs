@@ -68,7 +68,7 @@ namespace MITP
             }
         }
 
-        protected ResourceNode GetNode(Resource resource, IEnumerable<NodeConfig> nodesConfig)
+        protected ResourceNode GetNode(Resource resource, IEnumerable<NodeRunConfig> nodesConfig)
         {
             if (nodesConfig.Count() > 1)
             {
