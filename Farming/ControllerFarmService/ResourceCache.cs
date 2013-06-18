@@ -117,11 +117,13 @@ namespace MITP
                     _cache[resource.ResourceName] = resourceCache;
                 }
 
+                /*
                 //foreach (string name in resourceNames)
                 PFX.Parallel.ForEach(resourceNames, (name) =>
                 {
                     UpdateNodesState(name);
                 });
+                */
             }
         }
 
@@ -136,7 +138,7 @@ namespace MITP
                 {
                     var nodeState = nodeStates.Single(n => n.NodeName == nodeConfig.NodeName);
 
-                    if (nodeState.CoresAvailable < nodeConfig.Cores)
+                    if (nodeState.CoresAvailable < nodeConfig.Cores && nodeState.State != NodeState.Busy) // todo: think. This fixes "Busy" bug on resources update
                         nodesOverloaded = true;
 
                     nodeState.TasksSubmitted++;
