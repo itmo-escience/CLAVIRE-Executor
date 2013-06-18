@@ -19,7 +19,8 @@ namespace MITP
         private static readonly object _queueLock = new object();
         private static readonly object _updateLock = new object();
 
-        private static readonly HashSet<ulong> _readyMarks = new HashSet<ulong>();
+        private static readonly HashSet<ulong> _readyMarks   = new HashSet<ulong>();
+        private static readonly List<Task>     _definesQueue = new List<Task>();
 
         private static readonly object _briefsLock = new object();
         private static BriefTaskInfo[] _briefs = new BriefTaskInfo[0];
@@ -169,9 +170,13 @@ namespace MITP
                     {
                         var task = new Task(taskDesription);
 
+                        _definesQueue.Add(task);
+                        Log.Info(String.Format("Task {0} ({1}) def-queued", task.TaskId, task.Package));
+                        /*
                         _tasksQueue.RemoveAll(t => t.TaskId == task.TaskId);
                         _tasksQueue.Add(task);
                         Log.Info(String.Format("Task {0} ({1}) queued", task.TaskId, task.Package));
+                        */
                     }
                 }
             }
@@ -287,10 +292,16 @@ namespace MITP
 
                         foreach (ulong id in taskId)
                         {
-                            var task = _tasksQueue.Single(t => t.TaskId == id);
-                            var resource = resources.First(r => r.ResourceName == task.CurrentSchedule.ResourceName);
+                            var task = _tasksQueue.FirstOrDefault(t => t.TaskId == id);
 
-                            task.Abort(resource);
+                            if (task != null)
+                            {
+                                var resource = resources.First(r => r.ResourceName == task.CurrentSchedule.ResourceName);
+                                task.Abort(resource);
+                            }
+
+                            _definesQueue.RemoveAll(t => t.TaskId == id);
+                            _readyMarks.RemoveWhere(m => m == id);
                         }
                     }
                     catch (Exception e)
@@ -316,7 +327,11 @@ namespace MITP
                     //Log.Debug("GetInfo inside lock: " + taskId.ToString());
                     //Update(); // todo : think about Update() in GetInfo()
 
-                    var task = _tasksQueue.Last(t => t.TaskId == taskId);
+                    var task = new Task(
+                        _tasksQueue.FirstOrDefault(t => t.TaskId == taskId) ?? 
+                        _definesQueue.First(t => t.TaskId == taskId)
+                    );
+
                     return task;
                 }
                 catch (Exception e)
@@ -343,7 +358,7 @@ namespace MITP
                     {
                         lock (_queueLock)
                         {
-                            if (!_readyMarks.Any() && _tasksQueue.All(t => t.IsFinished() || (t.State == TaskState.Defined && !t.IsFake())))
+                            if (!_readyMarks.Any() && !_definesQueue.Any() && _tasksQueue.All(t => t.IsFinished() || (t.State == TaskState.Defined && !t.IsFake())))
                                 return;
                         }
 
@@ -358,6 +373,7 @@ namespace MITP
                             var selectedTasks = new List<Task>();
                             //object selectLock = new object();
                             TaskDependency[] dependencies;
+
                             lock (_queueLock)
                             {
                                 //Log.Info("Processing inputs and cloning tasks");
@@ -393,7 +409,45 @@ namespace MITP
                                 //    }
                                 //});
 
-                                /*
+                                while (_definesQueue.Any())
+                                {
+                                    var task = _definesQueue[0];
+                                    _definesQueue.RemoveAt(0);
+
+                                    _tasksQueue.RemoveAll(t => t.TaskId == task.TaskId);
+                                    _tasksQueue.Add(task);
+
+                                    Log.Info(String.Format("Task {0} ({1}) oper-queued", task.TaskId, task.Package));
+                                }
+
+                                while (_readyMarks.Any())
+                                {
+                                    ulong idToReady = _readyMarks.First();
+
+                                    try
+                                    {
+                                        _readyMarks.Remove(idToReady);
+                                        var task = _tasksQueue.First(t => t.TaskId == idToReady);
+
+                                        try
+                                        {
+                                            task.MarkAsReadyToExecute();
+                                        }
+                                        catch (Exception innerExec)
+                                        {
+                                            Log.Error(String.Format("Error on execute task {1}: {0}", innerExec, idToReady));
+
+                                            task.Fail(reason: innerExec.Message);
+                                            task.SendEvents();
+                                        }
+                                    }
+                                    catch (Exception outerExec)
+                                    {
+                                        Log.Error(String.Format("Error on execute task {1}: {0}", outerExec, idToReady));
+                                    }
+                                }
+
+                                /**/
                                 foreach (var task in _tasksQueue)
                                 {
                                     if (!task.IsFinished()) // && task.State != TaskState.Defined)
@@ -401,10 +455,10 @@ namespace MITP
                                         selectedTasks.Add(new Task(task));
                                     }
                                 }
-                                */
+                                /**/
 
                                 //selectedTasks = _tasksQueue.Where(t => t.AreInputsProcessed && !t.IsFinished()).Select(t => new Task(t)).ToList();
-                                selectedTasks = _tasksQueue.Where(t => !t.IsFinished()).Select(t => new Task(t)).ToList();
+                                //selectedTasks = _tasksQueue.Where(t => !t.IsFinished()).Select(t => new Task(t)).ToList();
                                 dependencies = _taskDependencies.Select(d => d).ToArray();
                             }
 
@@ -517,7 +571,7 @@ namespace MITP
 
                 /*
                  * no longer "DATA RACE!!!!!!!!!!!!" because of _readyMarks
-                 */
+                 *
                 processMultipleTasks(tasks.Select(task => new Func<Task>(() =>
                 {
                     lock (_queueLock)
@@ -541,6 +595,7 @@ namespace MITP
                         return null;
                     }
                 })));
+                 */
 
                 processMultipleTasks(tasks.Select(task => new Func<Task>(() =>
                 {
