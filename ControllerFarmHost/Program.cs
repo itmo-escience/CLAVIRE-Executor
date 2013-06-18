@@ -101,7 +101,13 @@ namespace ControllerFarmHost
             }
         }
 
-        static void Heartbeat()
+        enum ServiceToBeat
+        {
+            Executor,
+            ResourceBase
+        }
+        
+        static void Heartbeat(ServiceToBeat serviceType)
         {
             Thread.Sleep(TimeSpan.FromSeconds(10));
             var rnd = new System.Random();
@@ -110,32 +116,56 @@ namespace ControllerFarmHost
             {
                 try
                 {
-                    var service = new ExecutionBrokerService.ExecutionBrokerServiceClient();
-
                     // todo : heartbeat for each service in config
-                    try
+
+                    if (serviceType == ServiceToBeat.Executor)
                     {
+                        var executor = new ExecutionBrokerService.ExecutionBrokerServiceClient();
+                        try
+                        {
 
-                        //Console.Write("{0} - ", DateTime.Now.ToString(TIME_FORMAT));
-                        Indicators.IsBeating = true;
-                        service.Update();
-                        Indicators.IsBeating = false;
-                        //Console.WriteLine(DateTime.Now.ToString(TIME_FORMAT));
+                            //Console.Write("{0} - ", DateTime.Now.ToString(TIME_FORMAT));
+                            Indicators.IsBeating = true;
+                            executor.Update();
+                            Indicators.IsBeating = false;
+                            //Console.WriteLine(DateTime.Now.ToString(TIME_FORMAT));
 
-                        service.Close();
-                        Thread.Sleep(rnd.Next(TICK, TACK));
+                            executor.Close();
+                        }
+                        catch
+                        {
+                            Indicators.IsBeating = false;
+
+                            executor.Abort();
+                            throw;
+                        }
                     }
-                    catch
+                    else
+                    if (serviceType == ServiceToBeat.ResourceBase)
                     {
-                        service.Abort();
-                        throw;
+                        var resourceBase = new ResourceBaseService.ResourceBaseServiceClient();
+                        try
+                        {
+                            resourceBase.GetResourceNames(); // only need to call to refresh resources, no need in result
+                            resourceBase.Close();
+                        }
+                        catch
+                        {
+                            resourceBase.Abort();
+                            throw;
+                        }
                     }
                 }
                 catch (Exception e)
                 {
-                    Indicators.IsBeating = false;
+                    //Indicators.IsBeating = false;
                     LogToConsole(e);
                     Thread.Sleep(5000);
+                }
+                finally
+                {
+                    //Indicators.IsBeating = false;
+                    Thread.Sleep(rnd.Next(TICK, TACK));
                 }
             }
         }
@@ -252,7 +282,8 @@ namespace ControllerFarmHost
 
             new Thread(() => FarmServiceHost()).Start();
 
-            new Thread(() => Heartbeat()).Start();
+            new Thread(() => Heartbeat(ServiceToBeat.Executor)).Start();
+            new Thread(() => Heartbeat(ServiceToBeat.ResourceBase)).Start();
             new Thread(() => UpdateResources()).Start();
             new Thread(() => UpdateTasks()).Start();
         }

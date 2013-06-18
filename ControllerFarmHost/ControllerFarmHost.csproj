@@ -109,6 +109,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\ResourceBaseService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -160,6 +165,26 @@
     <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService4.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\ResourceBaseService\ControllerFarmHost.ResourceBaseService.Resource.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ResourceBaseService\ControllerFarmHost.ResourceBaseService.ResourceNode.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ResourceBaseService\ResourceBaseService.wsdl" />
+    <None Include="Service References\ResourceBaseService\ResourceBaseService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ResourceBaseService\ResourceBaseService1.wsdl" />
+    <None Include="Service References\ResourceBaseService\ResourceBaseService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ResourceBaseService\ResourceBaseService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ResourceBaseService\ResourceBaseService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="wcf_host_add.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -176,6 +201,7 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ControllerFarmService\" />
     <WCFMetadataStorage Include="Service References\ExecutionBrokerService\" />
+    <WCFMetadataStorage Include="Service References\ResourceBaseService\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\ControllerFarmService\item.disco" />
@@ -228,6 +254,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\ExecutionBrokerService\ExecutionBrokerService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ResourceBaseService\ResourceBaseService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ResourceBaseService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ResourceBaseService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ResourceBaseService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
