@@ -13,79 +13,143 @@ using PFX = System.Threading.Tasks;
 
 namespace MITP
 {
+    //[BsonIgnoreExtraElements]
     internal class TaskCache
     {
-        private static readonly TimeSpan UPDATE_DURATION_TO_WARN = TimeSpan.FromSeconds(0.3);
-        private static readonly TimeSpan UPDATE_INTERVAL = TimeSpan.FromMilliseconds(200);
+        [BsonIgnore] private static readonly TimeSpan UPDATE_DURATION_TO_WARN = TimeSpan.FromSeconds(0.3);
+        [BsonIgnore] private static readonly TimeSpan UPDATE_INTERVAL = TimeSpan.FromMilliseconds(200);
 
-        private static readonly Dictionary<ulong, TaskCache> _cache = new Dictionary<ulong, TaskCache>();
-        private static readonly object _globalLock = new object();
+        [BsonIgnore] private static List<TaskCache> _dumpedTasks = new List<TaskCache>();        
 
-        public readonly object StateLock = new object();
+        [BsonIgnore] private static readonly Dictionary<ulong, TaskCache> _cache = new Dictionary<ulong, TaskCache>();
+        [BsonIgnore] private static readonly object _globalLock = new object();
+        [BsonIgnore] private static readonly object _dumpedLock = new object();
+
+        [BsonIgnore] public /*volatile*/ readonly object StateLock; // inits in constructor
 
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         public ObjectId _id { get; set; }
 
         public TaskRunContext Context { get; private set; }
-        public TaskStateInfo StateInfo { get; private set; }       // mutable
 
-        private bool _isUpdating { get; set; }                     // mutable
-        private DateTime _lastUpdateTime { get; set; }             // mutable
+        [BsonElement] private TaskStateInfo _stateInfo; //todo : BsonElement("StateInfo")
+        [BsonIgnore]  public  TaskStateInfo StateInfo { get { return _stateInfo; } }  // mutable by setter func
 
-        /*
-        private TaskCache(TaskRunContext context)//, TaskState state = TaskState.Started, string stateComment = "")
-        {
-            Context = context;
-            //StateInfo = new TaskStateInfo(state, stateComment);
-
-            _isUpdating = false;
-            _lastUpdateTime = DateTime.Now - UPDATE_INTERVAL - TimeSpan.FromMilliseconds(50);
-        }
-        */
+        [BsonIgnore] private bool _isUpdating { get; set; }                          // mutable
+        [BsonIgnore] private DateTime _lastUpdateTime { get; set; }                  // mutable
 
         private TaskCache(TaskRunContext context, TaskStateInfo state)
         {
-            Context = context;
-            StateInfo = state;
+            lock (_globalLock)
+            {
+                StateLock = new object(); // needs to be explicitly before SetState, which triggers Save (i.e. makes object publicly available in memory)
 
-            _isUpdating = false;
-            _lastUpdateTime = DateTime.Now - UPDATE_INTERVAL - TimeSpan.FromMilliseconds(50);
+                _isUpdating = false;
+                _lastUpdateTime = DateTime.Now - UPDATE_INTERVAL - TimeSpan.FromMilliseconds(50);
+
+                Context = context;
+            }
+
+            SetState(state);
         }
 
-        private static TaskCache LoadTask(ulong taskId)
+        public void SetState(TaskStateInfo newStateInfo)
         {
-            return null; // todo : deserialize struct
+            lock (this.StateLock)
+            {
+                if (_stateInfo != null && _stateInfo.IsFinished())
+                {
+                    Log.Warn(String.Format("Tried to change state of finished task {0} to {1} ('{2}')",
+                        this.Context.TaskId, newStateInfo.State, newStateInfo.StateComment
+                    ));
 
-            var collection = Mongo.GetCollection<TaskCache>();
-            var task = collection.AsQueryable<TaskCache>().Where(t => t.Context.TaskId == taskId).SingleOrDefault();
-            return task;
+                    // ignoring changes for finished tasks
+                }
+                else
+                {
+                    this._stateInfo = new TaskStateInfo(newStateInfo);
+                    this.Save();
+
+                    if (newStateInfo.IsFinished()) // completed on this iteration
+                    {
+                        var resource = ResourceCache.GetByName(this.Context.Resource.ResourceName);
+                        resource.Release(this.Context.NodesConfig);
+
+                        // todo : import to Storage
+                    }
+                }
+            }
+        }
+        
+        public void SetState(TaskState newState, string stateComment = "")
+        {
+            lock (this.StateLock)
+            {
+                SetState(new TaskStateInfo(newState, stateComment));
+            }
         }
 
-        private static TaskCache[] LoadTasks(IEnumerable<string> resourceNames)
+        private void Save()
         {
-            return new TaskCache[0]; // todo : deserialize struct
+            lock (_dumpedLock)
+            {
+                _dumpedTasks.Add(this);
+            }
 
             var collection = Mongo.GetCollection<TaskCache>();
-            var tasks = collection.AsQueryable<TaskCache>().Where(t => t.Context.Resource.ResourceName.In(resourceNames)).ToArray();
-
-            return new TaskCache[0];
-
-            return tasks;
-        }
-
-        public void Save()
-        {
-            var collection = Mongo.GetCollection<TaskCache>();
-            lock (StateLock)
+            lock (this.StateLock)
             {
                 collection.Save(this);
             }
         }
 
-        public static void ReloadTasks(IEnumerable<string> resourceNames)
+        private static TaskCache LoadTask(ulong taskId)
+        {
+            var collection = Mongo.GetCollection<TaskCache>();
+            var task = collection.AsQueryable<TaskCache>().Where(t => t.Context.TaskId == taskId).SingleOrDefault();
+
+            if (task != null)
+                SetControllerForLoadedTask(task);
+
+            return task;
+        }
+
+        private static TaskCache[] LoadTasks(IEnumerable<string> resourceNames)
+        {
+            lock (_dumpedLock)
+            {
+                var loaded = _dumpedTasks.ToArray();
+                //_dumpedTasks.Clear();
+                return loaded;
+            }
+
+            return new TaskCache[0];
+
+
+            var collection = Mongo.GetCollection<TaskCache>();
+            var tasks = collection.AsQueryable<TaskCache>()
+                .Where(t => 
+                    t.Context.Resource.ResourceName.In(resourceNames) && 
+                    t.StateInfo.State == TaskState.Started
+                ).ToArray();
+
+            foreach (var task in tasks)
+                SetControllerForLoadedTask(task);
+
+            return tasks;
+        }
+
+        public static void DumpAllTasks()
         {
             lock (_globalLock)
             {
+                Log.Info("Dumping tasks states");
+
+                lock (_dumpedLock)
+                {
+                    _dumpedTasks.Clear();
+                }
+
                 while (_cache.Any())
                 {
                     var elem = _cache.First();
@@ -95,22 +159,52 @@ namespace MITP
                         _cache.Remove(elem.Key);
                     }
                 }
+            }
+        }
 
+        public static void RestoreTasks(IEnumerable<string> resourceNames)
+        {
+            lock (_globalLock)
+            {
+                Log.Info("Restoring tasks for resources: " + String.Join(", ", resourceNames));
                 var tasks = LoadTasks(resourceNames);
+
                 foreach (var task in tasks)
                 {
                     _cache[task.Context.TaskId] = task;
+
+                    if (!task.StateInfo.IsFinished())
+                    {
+                        var res = ResourceCache.GetByName(task.Context.Resource.ResourceName);
+                        res.Acquire(task.Context.NodesConfig);
+                    }
                 }
             }
         }
 
+        private static void SetControllerForLoadedTask(TaskCache task)
+        {
+            try
+            {
+                // DO NOT USE CURRENT CACHED CONTROLLER: could have changed parts from the task's one. Also, controllers should be stateless
+                task.Context.Controller = ControllerBuilder.Build(task.Context.Resource);
+            }
+            catch (Exception buildEx)
+            {
+                Log.Warn(String.Format("Could not build controller for loaded task {0}: {1}",
+                    task.Context.TaskId, buildEx
+                ));
+            }
+
+            task.Context.Controller = null;
+        }
+
         public static void AddTask(TaskRunContext context, TaskStateInfo state)//, TaskState state = TaskState.Started, string stateComment = "")
         {
-            var taskCache = new TaskCache(context, state);
+            var taskCache = new TaskCache(context, state); // autosaves
 
             lock (_globalLock)
             {
-                taskCache.Save(); // todo : move out of lock?
                 _cache[context.TaskId] = taskCache;
             }
         }
@@ -130,7 +224,7 @@ namespace MITP
                     }
                     else
                     {
-                        Log.Error("No cache for task " + taskId.ToString());
+                        Log.Error("No saved state for task " + taskId.ToString());
                         throw new ArgumentException("Unknown task for this farm");
                     }
                 }
@@ -141,7 +235,7 @@ namespace MITP
         }
 
         //public static void UpdateTaskState(TaskCache cache)
-        public void UpdateState()
+        public void UpdateStateAsync()
         {
             //var cache = GetById(taskId);
 
@@ -167,8 +261,6 @@ namespace MITP
                     {
                         try
                         {
-                            //throw new Exception("test");
-
                             if (!wasFinished)
                             {
                                 var timer = System.Diagnostics.Stopwatch.StartNew();
@@ -179,27 +271,12 @@ namespace MITP
                                 if (timer.Elapsed > UPDATE_DURATION_TO_WARN)
                                     Log.Warn(String.Format("Task {0} update took {1} seconds", this.Context.TaskId, timer.Elapsed.TotalSeconds)); // Context.TaskId is immutable
 
-                                lock (this.StateLock)
-                                {
-                                    this.StateInfo = newState;
-                                    this.Save();
-                                }
-
-                                if (!wasFinished && this.StateInfo.IsFinished())
-                                {
-                                    // todo : import to Storage
-                                    var resource = ResourceCache.GetByName(this.Context.Resource.ResourceName);    // Context.Resource.ResourceName is immutable
-                                    resource.Release(this.Context.NodesConfig);
-                                }
+                                SetState(newState);
                             }
                         }
                         catch (Exception e)
                         {
-                            lock (this.StateLock)
-                            {
-                                this.StateInfo = new TaskStateInfo(TaskState.Failed, e.Message); // todo : retries
-                                this.Save();
-                            }
+                            SetState(TaskState.Failed, e.Message); // todo : retries
 
                             Log.Error(String.Format("Exception on update task {0}: {1}", this.Context.TaskId, e)); // Context.TaskId is immutable
                             throw;

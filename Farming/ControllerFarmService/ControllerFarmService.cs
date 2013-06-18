@@ -4,10 +4,13 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using System.Reflection;
+using System.Threading;
+//using System.Reflection;
 using ControllerFarmService.ResourceBaseService;
 using Config = System.Configuration.ConfigurationManager;
+using PFX = System.Threading.Tasks;
 //using NLog;
+
 
 namespace MITP
 {
@@ -16,6 +19,8 @@ namespace MITP
     public class ControllerFarmService : IControllerFarmService
     {
         public const string FARMID_PARAM_NAME = "FarmId";
+
+        private static ReaderWriterLockSlim _resourcesLock = new ReaderWriterLockSlim();
 
         //private static Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -40,6 +45,8 @@ namespace MITP
 
         public void Run(TaskRunContext task)
         {
+            _resourcesLock.EnterReadLock();
+
             try
             {
                 Log.Info("Running task " + task.ToString());
@@ -64,7 +71,7 @@ namespace MITP
                     task.LocalId = task.Controller.Run(task);
 
                     Log.Info(String.Format("Task {0} ({1}) started on resource {2} with localId = {3}",
-                        task.TaskId, task.Incarnation.PackageName, task.Resource.ResourceName, task.LocalId
+                        task.TaskId, task.PackageName, task.Resource.ResourceName, task.LocalId
                     ));
 
                     var state = new TaskStateInfo(TaskState.Started, task.LocalId.ToString());
@@ -83,16 +90,22 @@ namespace MITP
                 Log.Error(String.Format("Exception on Farm.Run(task {0}): {1}", task.TaskId, e));
                 throw;
             }
+            finally
+            {
+                _resourcesLock.ExitReadLock();
+            }
         }
 
         public void Abort(ulong taskId)
         {
+            _resourcesLock.EnterReadLock();
+
             try
             {
                 Log.Info("Aborting task " + taskId.ToString());
 
                 var task = TaskCache.GetById(taskId);
-                task.UpdateState();
+                task.UpdateStateAsync();
 
                 lock (task.StateLock)
                 {
@@ -101,12 +114,7 @@ namespace MITP
                         task.Context.Controller.Abort(task.Context);
                         Log.Info("Task aborted: " + taskId.ToString());
 
-                        task.StateInfo.State = TaskState.Aborted;
-                        task.StateInfo.StateComment = "Aborted by request";
-                        task.Save();
-
-                        var resourceCache = ResourceCache.GetByName(task.Context.Resource.ResourceName);
-                        resourceCache.Release(task.Context.NodesConfig);
+                        task.SetState(TaskState.Aborted, "Aborted by request"); // autorelease resources
                     }
                     else
                     {
@@ -119,15 +127,20 @@ namespace MITP
                 Log.Error(String.Format("Error on aborting task {0}: {1}}", taskId, e));
                 throw;
             }
+            finally
+            {
+                _resourcesLock.ExitReadLock();
+            }
         }
 
         public TaskStateInfo GetTaskStateInfo(ulong taskId)
         {
+            _resourcesLock.EnterReadLock();
+
             try
             {
-                // todo : m.b. load from Mongo?
                 var task = TaskCache.GetById(taskId);
-                task.UpdateState();
+                task.UpdateStateAsync();
 
                 lock (task.StateInfo)
                 {
@@ -140,10 +153,16 @@ namespace MITP
                 Log.Error(String.Format("Error on getting task {0} state info: {1}", taskId, e));
                 throw;
             }
+            finally
+            {
+                _resourcesLock.ExitReadLock();
+            }
         }
 
         public NodeStateInfo[] GetNodesState(string resourceName)
         {
+            _resourcesLock.EnterReadLock();
+
             try
             {
                 ResourceCache.UpdateNodesState(resourceName); // todo : unify. TaskCache.UpdateState(id) OR task.UpdateState()
@@ -160,10 +179,16 @@ namespace MITP
                 Log.Error(String.Format("Error on getting resource '{0}' state info: {1}", resourceName, e));
                 throw;
             }
+            finally
+            {
+                _resourcesLock.ExitReadLock();
+            }
         }
 
         public ulong[] GetActiveTaskIds()
         {
+            _resourcesLock.EnterReadLock();
+
             try
             {
                 ulong[] ids = TaskCache.GetActiveTaskIds();
@@ -174,10 +199,16 @@ namespace MITP
                 Log.Error("Error on getting active tasks ids: " + e.ToString());
                 throw;
             }
+            finally
+            {
+                _resourcesLock.ExitReadLock();
+            }
         }
 
         public string[] GetActiveResourceNames()
         {
+            _resourcesLock.EnterReadLock();
+
             try
             {
                 string[] names = ResourceCache.GetActiveResourceNames();
@@ -188,40 +219,66 @@ namespace MITP
                 Log.Error("Error on getting active resource names: " + e.ToString());
                 throw;
             }
+            finally
+            {
+                _resourcesLock.ExitReadLock();
+            }
         }
 
-        public void ReloadAllResources()
+        public void ReloadAllResources(string dumpingKey = null)
         {
-            Log.Info("Reloading resources for controller");
-            var resourceBase = new ResourceBaseServiceClient();
-
-            try
+            PFX.Task.Factory.StartNew(() =>
             {
-                string farmId = Config.AppSettings[FARMID_PARAM_NAME];
+                _resourcesLock.EnterWriteLock(); // the only update (i.e. write) to resources
 
-                var resources = resourceBase.GetResourcesForFarm(farmId);
-                resourceBase.Close();
+                try
+                {
+                    Log.Info("Reloading resources for controller");
+                    Console.WriteLine("Reloading resources for controller");
 
-                string[] resourceNames = resources.Select(r => r.ResourceName).ToArray();
-                Log.Info("Resources to reload for farm " + farmId + ": " + String.Join(", ", resourceNames));
+                    TaskCache.DumpAllTasks();
 
-                ResourceCache.ReloadResources(resources);
-                TaskCache.ReloadTasks(resourceNames);
+                    var resourceBase = new ResourceBaseServiceClient();
 
-                Log.Info("Resource reloading done for farm " + farmId);
-            }
-            catch (Exception e)
-            {
-                resourceBase.Abort();
-                Log.Error("Exception on reloading resources: " + e.ToString());
-                throw;
-            }
+                    try
+                    {
+                        string farmId = Config.AppSettings[FARMID_PARAM_NAME];
+
+                        var resources = resourceBase.GetResourcesForFarm(farmId, dumpingKey); // waits all other dumps
+                        resourceBase.Close();
+
+                        string[] resourceNames = resources.Select(r => r.ResourceName).ToArray();
+                        Log.Info("Resources to reload for farm " + farmId + ": " + String.Join(", ", resourceNames));
+
+                        ResourceCache.ReloadResources(resources);
+                        TaskCache.RestoreTasks(resourceNames);
+                        //TaskCache.ReloadTasks(resourceNames);
+
+                        PFX.Parallel.ForEach(resourceNames, (name) =>
+                        {
+                            ResourceCache.UpdateNodesState(name);
+                        });
+
+                        Log.Info("Resource reloading done for farm " + farmId);
+                    }
+                    catch (Exception e)
+                    {
+                        resourceBase.Abort();
+                        Log.Error("Exception on reloading resources: " + e.ToString());
+                        throw;
+                    }
+                }
+                finally
+                {
+                    _resourcesLock.ExitWriteLock();
+                }
+            });
         }
 
         ControllerFarmService()
         {
             bool loaded = false;
-            for (int retries = 0; !loaded && retries < 3; retries++)
+            //for (int retries = 0; !loaded && retries < 3; retries++)
             {
                 try
                 {
