@@ -8,17 +8,24 @@ using System.Collections.ObjectModel;
 namespace MITP
 {
     [DataContract]
-    public struct NodeCredentials
+    public class NodeCredentials
     {
-        [DataMember(Order=0, IsRequired=true)] public string Username;
-        [DataMember(Order=1, IsRequired=true)] public string Password;
-        [DataMember(Order=2, IsRequired=false)] public string CertFile;
+        [DataMember(Order=0, IsRequired=true)]  public string Username { get; private set; }
+        [DataMember(Order=1, IsRequired=true)]  public string Password { get; private set; }
+        [DataMember(Order=2, IsRequired=false)] public string CertFile { get; private set; }
+
+        public NodeCredentials(string userName, string password, string certFile = null)
+        {
+            Username = userName;
+            Password = password;
+            CertFile = certFile;
+        }
     }
 
     [DataContract]
     public class NodeServices
     {
-        [DataMember(IsRequired=true)] public string ExecutionUrl;
+        [DataMember(IsRequired=true)] public string ExecutionUrl { get; private set; }
         //[DataMember] public string MonitoringUrl;
         //[DataMember] public string TaskInfoUrl;
 
@@ -49,7 +56,7 @@ namespace MITP
         [DataMember]
         public uint TasksSubmissionLimit  { get; private set; }
 
-        [DataMember] public NodeServices Services { get; private set; }
+        [DataMember] public NodeServices    Services    { get; private set; }
         [DataMember] public NodeDataFolders DataFolders { get; private set; }
         [DataMember] public NodeCredentials Credentials { get; private set; }
 
@@ -77,6 +84,9 @@ namespace MITP
         
         private void Init()
         {
+            if (Credentials == null)
+                Credentials = new NodeCredentials(null, null, null);
+
             if (SupportedArchitectures == null)
                 SupportedArchitectures = new string[0];
 
@@ -132,11 +142,11 @@ namespace MITP
                 DataFolders = new NodeDataFolders(defaultValues.DataFolders);
 
             Credentials = new NodeCredentials
-            {
-                Username = (Credentials.Username != null)? Credentials.Username: defaultValues.Credentials.Username,
-                Password = (Credentials.Password != null)? Credentials.Password: defaultValues.Credentials.Password,
-                CertFile = (Credentials.CertFile != null)? Credentials.CertFile: defaultValues.Credentials.CertFile,
-            };
+            (
+                userName: (Credentials.Username ?? defaultValues.Credentials.Username),
+                password: (Credentials.Password ?? defaultValues.Credentials.Password),
+                certFile: (Credentials.CertFile ?? defaultValues.Credentials.CertFile)
+            );
 
             if (CoresCount == 0 && defaultValues.CoresCount > 0)
                 CoresCount = defaultValues.CoresCount;

@@ -320,7 +320,7 @@ namespace ControllerFarmService.ResourceBaseService {
                 return this.CredentialsField;
             }
             set {
-                if ((this.CredentialsField.Equals(value) != true)) {
+                if ((object.ReferenceEquals(this.CredentialsField, value) != true)) {
                     this.CredentialsField = value;
                     this.RaisePropertyChanged("Credentials");
                 }
@@ -471,7 +471,7 @@ namespace ControllerFarmService.ResourceBaseService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="NodeCredentials", Namespace="http://schemas.datacontract.org/2004/07/MITP")]
     [System.SerializableAttribute()]
-    public partial struct NodeCredentials : System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class NodeCredentials : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -483,6 +483,7 @@ namespace ControllerFarmService.ResourceBaseService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CertFileField;
         
+        [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
                 return this.extensionDataField;
@@ -533,7 +534,7 @@ namespace ControllerFarmService.ResourceBaseService {
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
-        void RaisePropertyChanged(string propertyName) {
+        protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
@@ -852,7 +853,7 @@ namespace ControllerFarmService.ResourceBaseService {
         ControllerFarmService.ResourceBaseService.ResourceNode GetResourceNodeByName(string resourceName, string nodeName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IResourceBaseService/GetResourcesForFarm", ReplyAction="http://tempuri.org/IResourceBaseService/GetResourcesForFarmResponse")]
-        ControllerFarmService.ResourceBaseService.Resource[] GetResourcesForFarm(string farmId);
+        ControllerFarmService.ResourceBaseService.Resource[] GetResourcesForFarm(string farmId, string dumpingKey);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -902,8 +903,8 @@ namespace ControllerFarmService.ResourceBaseService {
             return base.Channel.GetResourceNodeByName(resourceName, nodeName);
         }
         
-        public ControllerFarmService.ResourceBaseService.Resource[] GetResourcesForFarm(string farmId) {
-            return base.Channel.GetResourcesForFarm(farmId);
+        public ControllerFarmService.ResourceBaseService.Resource[] GetResourcesForFarm(string farmId, string dumpingKey) {
+            return base.Channel.GetResourcesForFarm(farmId, dumpingKey);
         }
     }
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/MITP" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MITP" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:61095/ResourceBaseService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:import schemaLocation="http://localhost:61095/ResourceBaseService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="ArrayOfResource">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Resource" nillable="true" type="tns:Resource" />
@@ -32,7 +31,7 @@
   <xs:complexType name="ResourceNode">
     <xs:sequence>
       <xs:element minOccurs="0" name="CoresCount" type="xs:unsignedInt" />
-      <xs:element minOccurs="0" name="Credentials" type="tns:NodeCredentials" />
+      <xs:element minOccurs="0" name="Credentials" nillable="true" type="tns:NodeCredentials" />
       <xs:element minOccurs="0" name="DataFolders" nillable="true" type="tns:NodeDataFolders" />
       <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="HardwareParams" nillable="true" type="q3:ArrayOfKeyValueOfstringstring" />
       <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="OtherSoftware" nillable="true" type="q4:ArrayOfstring" />
@@ -47,11 +46,6 @@
   </xs:complexType>
   <xs:element name="ResourceNode" nillable="true" type="tns:ResourceNode" />
   <xs:complexType name="NodeCredentials">
-    <xs:annotation>
-      <xs:appinfo>
-        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
-      </xs:appinfo>
-    </xs:annotation>
     <xs:sequence>
       <xs:element name="Username" nillable="true" type="xs:string" />
       <xs:element name="Password" nillable="true" type="xs:string" />

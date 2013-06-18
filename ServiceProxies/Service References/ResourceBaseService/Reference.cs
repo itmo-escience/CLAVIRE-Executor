@@ -320,7 +320,7 @@ namespace ServiceProxies.ResourceBaseService {
                 return this.CredentialsField;
             }
             set {
-                if ((this.CredentialsField.Equals(value) != true)) {
+                if ((object.ReferenceEquals(this.CredentialsField, value) != true)) {
                     this.CredentialsField = value;
                     this.RaisePropertyChanged("Credentials");
                 }
@@ -471,7 +471,7 @@ namespace ServiceProxies.ResourceBaseService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="NodeCredentials", Namespace="http://schemas.datacontract.org/2004/07/MITP")]
     [System.SerializableAttribute()]
-    public partial struct NodeCredentials : System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class NodeCredentials : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -483,6 +483,7 @@ namespace ServiceProxies.ResourceBaseService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CertFileField;
         
+        [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
                 return this.extensionDataField;
@@ -533,7 +534,7 @@ namespace ServiceProxies.ResourceBaseService {
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
-        void RaisePropertyChanged(string propertyName) {
+        protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
