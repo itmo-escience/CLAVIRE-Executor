@@ -39,7 +39,7 @@ namespace ServiceProxies.ResourceBaseService
                             }
 
                             string[] availableNodeNames = nodesStateInfo.Where(n => n.State == ControllerFarmService.NodeState.Available).Select(n => n.NodeName).ToArray();
-                            resource.Nodes = resource.Nodes.Where(n => availableNodeNames.Contains(n.NodeName)).ToArray();
+                            //resource.Nodes = resource.Nodes.Where(n => availableNodeNames.Contains(n.NodeName)).ToArray();
 
                             controller.Close();
                         }
