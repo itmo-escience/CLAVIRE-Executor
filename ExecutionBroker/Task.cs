@@ -54,6 +54,7 @@ namespace MITP
         }
         /* */
         private bool _inputsProcessed = false;
+        private string _inputsProcessingError = null;
         public bool AreInputsProcessed { get { return _inputsProcessed; } }
 
         private Eventing.EventType? _lastEvent = null;
@@ -195,6 +196,7 @@ namespace MITP
             State = otherTask.State;
 
             _inputsProcessed = otherTask._inputsProcessed;
+            _inputsProcessingError = otherTask._inputsProcessingError;
 
             _failReason = otherTask._failReason;
             if (otherTask._lastEvent != null && otherTask._lastEvent.HasValue)
@@ -215,7 +217,7 @@ namespace MITP
 
 
 		[NonSerialized]
-		private object _taskLock = new object();
+		private volatile object _taskLock = new object();
 
         public void Save() // todo : Task.Save()
 		{
@@ -283,6 +285,9 @@ namespace MITP
             {
                 this.State = TaskState.ReadyToExecute;
                 Time.Edge(started: TaskTimeMetric.Queued, finished: TaskTimeMetric.Postponed);
+
+                if (_inputsProcessed && _inputsProcessingError != null)
+                    throw new Exception("Inputs processed with error: " + _inputsProcessingError);
             }
         }
 
@@ -320,6 +325,7 @@ namespace MITP
                         }
                         catch (Exception e)
                         {
+                            _inputsProcessingError = e.Message;
                             Log.Error(String.Format("Error while processing inputs for task {0}: {1}", this.TaskId, e));
 
                             if (this.State == TaskState.ReadyToExecute)
@@ -381,6 +387,9 @@ namespace MITP
                     Incarnation.PackageName = Package;
                     Incarnation.UserCert = UserCert;
 
+                    if (String.IsNullOrWhiteSpace(Incarnation.CommandLine))
+                        throw new Exception("Impossible to run task with empty command line");
+
                     if (!Incarnation.CommandLine.Contains("{0}") && 
                         Incarnation.CommandLine.StartsWith(Package, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -400,7 +409,21 @@ namespace MITP
                             var runContext = new ServiceProxies.ControllerFarmService.TaskRunContext()
                             {
                                 TaskId      = this.TaskId,
-                                Incarnation = this.Incarnation,
+
+                                //Incarnation = this.Incarnation,
+                                UserCert = this.UserCert,
+                                PackageName = this.Incarnation.PackageName,
+                                CommandLine = this.Incarnation.CommandLine,
+
+                                InputFiles  = this.Incarnation.FilesToCopy.Select(f => new ServiceProxies.ControllerFarmService.FileContext()
+                                {
+                                    FileName  = f.FileName,
+                                    StorageId = f.StorageId,
+                                }).ToArray(),
+                                
+                                ExpectedOutputFileNames = this.Incarnation.ExpectedOutputFileNames.ToArray(),
+                                
+
                                 NodesConfig = schedule.Nodes.Select(n => new ServiceProxies.ControllerFarmService.NodeRunConfig()
                                 {
                                     ResourceName = n.ResourceName,

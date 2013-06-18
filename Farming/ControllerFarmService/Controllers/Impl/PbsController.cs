@@ -33,7 +33,7 @@ namespace MITP
         public object Run(TaskRunContext task)
         {
             var node = GetNode(task);
-            var pack = PackageByName(node, task.Incarnation.PackageName);
+            var pack = PackageByName(node, task.PackageName);
             ulong taskId = task.TaskId;
 
             Log.Info("Locking operation");
@@ -43,7 +43,7 @@ namespace MITP
             string clusterHomeFolder = CopyInputFiles(task, out fileNames);
 
 
-            string cmdLine = String.Format(task.Incarnation.CommandLine, pack.AppPath, taskId, fileNames.Trim());
+            string cmdLine = String.Format(task.CommandLine, pack.AppPath, taskId, fileNames.Trim());
             Log.Info("cmdline = " + cmdLine);
 
             String scriptPath;

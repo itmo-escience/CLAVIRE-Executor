@@ -179,14 +179,14 @@ namespace ControllerFarmService
             lock (_gridLock)
             {
                 RefreshCertificate();
-                var incarnation = task.Incarnation;
+                //var incarnation = task.Incarnation;
 
                 string tmpFileName = null;
-                if (incarnation.UserCert != null)
+                if (task.UserCert != null)
                 {
                     Log.Info("Using user's certificate");
                     tmpFileName = Path.GetTempFileName();
-                    IOProxy.Storage.Download(incarnation.UserCert, tmpFileName);
+                    IOProxy.Storage.Download(task.UserCert, tmpFileName);
 
                     var scpForCert = new SSH.Scp(HELPER_SSH_HOST, HELPER_SSH_USER, HELPER_SSH_PASS);
                     scpForCert.Connect();
@@ -206,18 +206,19 @@ namespace ControllerFarmService
                 {
                     long coresToUse = task.NodesConfig.Sum(cfg => cfg.Cores);
                     var node = GetNode(task);
-                    var pack = node.PackageByName(task.Incarnation.PackageName);
+                    var pack = node.PackageByName(task.PackageName);
 
                     // todo : remove
-                    incarnation.CommandLine = incarnation.CommandLine.Replace("java -jar ", "");
-                    if (incarnation.PackageName.ToLowerInvariant() == "cnm")
-                        incarnation.CommandLine = incarnation.CommandLine.Replace("{0}", "ru.ifmo.hpc.main.ExtendedModel");
+                    string commandLine = task.CommandLine;
+                    commandLine = commandLine.Replace("java -jar ", "");
+                    if (task.PackageName.ToLowerInvariant() == "cnm")
+                        commandLine = commandLine.Replace("{0}", "ru.ifmo.hpc.main.ExtendedModel");
                     else
-                    if (incarnation.PackageName.ToLowerInvariant() == "ism")
-                        incarnation.CommandLine = incarnation.CommandLine.Replace("{0}", "ru.ifmo.hpc.main.SpreadModel");
+                    if (task.PackageName.ToLowerInvariant() == "ism")
+                        commandLine = commandLine.Replace("{0}", "ru.ifmo.hpc.main.SpreadModel");
                     else
-                        //if (incarnation.PackageName.ToLowerInvariant() == "orca")
-                        incarnation.CommandLine = incarnation.CommandLine.Replace("{0}", "");
+                        //if (task.PackageName.ToLowerInvariant() == "orca")
+                        commandLine = commandLine.Replace("{0}", "");
 
 
                     string ftpFolderFromSystem = IncarnationParams.IncarnatePath(node.DataFolders.ExchangeUrlFromSystem, task.TaskId, CopyPhase.In);
@@ -245,9 +246,9 @@ namespace ControllerFarmService
                         scriptContent.Append(pack.AppPath);
 
                         /*
-                        if (incarnation.PackageName.ToLowerInvariant() == "orca")
+                        if (task.PackageName.ToLowerInvariant() == "orca")
                         {
-                            string[] args = incarnation.CommandLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                            string[] args = commandLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             for (int i = 0; i < args.Length; i++)
                             {
                                 if (args[i] == "orca.out")
@@ -258,7 +259,7 @@ namespace ControllerFarmService
                         }
                         else*/
                         {
-                            scriptContent.Append(" " + incarnation.CommandLine);
+                            scriptContent.Append(" " + commandLine);
                         }
 
                         string scriptLocalPath = Path.GetTempFileName();
@@ -290,7 +291,7 @@ namespace ControllerFarmService
                         jobFileContent.AppendFormat(@"          ""run.sh"": ""run.sh""," + endl);
                     jobFileContent.AppendFormat(@"          " + String.Join(
                         "," + endl + "          ",
-                        incarnation.FilesToCopy.Select(
+                        task.InputFiles.Select(
                             file => String.Format(@"""{0}"": ""{0}""", file.FileName)
                         )
                     ));
@@ -298,13 +299,13 @@ namespace ControllerFarmService
 
                     jobFileContent.AppendFormat(@"      ""output_files"": {{" + endl);
 
-                    //if (incarnation.PackageName.ToLowerInvariant() == "cnm")
+                    //if (task.PackageName.ToLowerInvariant() == "cnm")
                     //    jobFileContent.AppendFormat(@"          ""output.dat"": ""output.dat""" + endl);
                     //else
-                    if (incarnation.PackageName.ToLowerInvariant() == "ism")
+                    if (task.PackageName.ToLowerInvariant() == "ism")
                         jobFileContent.AppendFormat(@"          ""output.dat"": ""output.dat""" + endl);
                     else
-                    if (incarnation.PackageName.ToLowerInvariant() == "orca")
+                    if (task.PackageName.ToLowerInvariant() == "orca")
                     {
                         jobFileContent.AppendFormat(@"          ""orca.out"":    ""orca.out""," + endl);
                         jobFileContent.AppendFormat(@"          ""eldens.cube"": ""eldens.cube""" + endl);
@@ -313,7 +314,7 @@ namespace ControllerFarmService
                     {
                         jobFileContent.AppendFormat(@"          " + String.Join(
                             "," + endl + "          ",
-                            incarnation.ExpectedOutputFileNames
+                            task.ExpectedOutputFileNames
                                 .Where(name => name != "std.out" && name != "std.err")
                                 .Select(
                                     name => String.Format(@"""{0}"": ""{0}""", name)
@@ -393,7 +394,7 @@ namespace ControllerFarmService
                 }
                 finally
                 {
-                    if (incarnation.UserCert != null)
+                    if (task.UserCert != null)
                     {
                         Log.Info("Wiping user's certificate");
                         tmpFileName = Path.GetTempFileName();

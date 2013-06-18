@@ -23,13 +23,25 @@ namespace ServiceProxies.ControllerFarmService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MITP.IncarnationParams IncarnationField;
+        private string CommandLineField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string[] ExpectedOutputFileNamesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.ControllerFarmService.FileContext[] InputFilesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private ServiceProxies.ControllerFarmService.NodeRunConfig[] NodesConfigField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PackageNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private ulong TaskIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UserCertField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -42,14 +54,40 @@ namespace ServiceProxies.ControllerFarmService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MITP.IncarnationParams Incarnation {
+        public string CommandLine {
             get {
-                return this.IncarnationField;
+                return this.CommandLineField;
             }
             set {
-                if ((object.ReferenceEquals(this.IncarnationField, value) != true)) {
-                    this.IncarnationField = value;
-                    this.RaisePropertyChanged("Incarnation");
+                if ((object.ReferenceEquals(this.CommandLineField, value) != true)) {
+                    this.CommandLineField = value;
+                    this.RaisePropertyChanged("CommandLine");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string[] ExpectedOutputFileNames {
+            get {
+                return this.ExpectedOutputFileNamesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ExpectedOutputFileNamesField, value) != true)) {
+                    this.ExpectedOutputFileNamesField = value;
+                    this.RaisePropertyChanged("ExpectedOutputFileNames");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.ControllerFarmService.FileContext[] InputFiles {
+            get {
+                return this.InputFilesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.InputFilesField, value) != true)) {
+                    this.InputFilesField = value;
+                    this.RaisePropertyChanged("InputFiles");
                 }
             }
         }
@@ -68,6 +106,19 @@ namespace ServiceProxies.ControllerFarmService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string PackageName {
+            get {
+                return this.PackageNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PackageNameField, value) != true)) {
+                    this.PackageNameField = value;
+                    this.RaisePropertyChanged("PackageName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public ulong TaskId {
             get {
                 return this.TaskIdField;
@@ -76,6 +127,80 @@ namespace ServiceProxies.ControllerFarmService {
                 if ((this.TaskIdField.Equals(value) != true)) {
                     this.TaskIdField = value;
                     this.RaisePropertyChanged("TaskId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string UserCert {
+            get {
+                return this.UserCertField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserCertField, value) != true)) {
+                    this.UserCertField = value;
+                    this.RaisePropertyChanged("UserCert");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="FileContext", Namespace="http://schemas.datacontract.org/2004/07/MITP")]
+    [System.SerializableAttribute()]
+    public partial class FileContext : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string FileNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string StorageIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string FileName {
+            get {
+                return this.FileNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FileNameField, value) != true)) {
+                    this.FileNameField = value;
+                    this.RaisePropertyChanged("FileName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string StorageId {
+            get {
+                return this.StorageIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.StorageIdField, value) != true)) {
+                    this.StorageIdField = value;
+                    this.RaisePropertyChanged("StorageId");
                 }
             }
         }

@@ -5,21 +5,40 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using ControllerFarmService.ResourceBaseService;
 
 namespace MITP
 {
     [DataContract]
-    public class TaskRunContext// todo : compare with Task and TaskDescription
+    public class FileContext
+    {
+        [DataMember] public string FileName  { get; private set; }
+        [DataMember] public string StorageId { get; private set; }
+    }
+
+    [DataContract]
+    [BsonIgnoreExtraElements]
+    public class TaskRunContext // todo : compare with Task and TaskDescription
     {
         public object LocalId { get; set; }
 
         [DataMember] public ulong TaskId { get; private set; }
-        [DataMember] public IncarnationParams Incarnation { get; private set; } // todo : embed
-        [DataMember] public IEnumerable<NodeRunConfig> NodesConfig { get; private set; }
+        
+        //[DataMember] public IncarnationParams Incarnation { get; private set; } // todo : embed
+        [DataMember] public string UserCert    { get; private set; }
+
+        [DataMember] public string PackageName { get; private set; }
+        [DataMember] public string CommandLine { get; private set; }
+
+        [DataMember] public IEnumerable<FileContext> InputFiles         { get; private set; }
+        [DataMember] public IEnumerable<string> ExpectedOutputFileNames { get; private set; }
+        
+        [DataMember] public IEnumerable<NodeRunConfig> NodesConfig      { get; private set; }
 
         public Resource Resource { get; set; }
-        public IStatelessResourceController Controller { get; set; }
+
+        [BsonIgnore] public IStatelessResourceController Controller { get; set; }
     }
 
     [DataContract]
@@ -28,13 +47,18 @@ namespace MITP
         [DataMember] public TaskState State { get; set; }
         [DataMember] public string StateComment { get; set; }
 
-        [DataMember] public Dictionary<string, TimeSpan> ActionsDuration { get; private set; }
+        [DataMember] public Dictionary<string, TimeSpan> ActionsDuration  { get; private set; }
 
         [DataMember] public Dictionary<string, double> ResourceConsuption { get; private set; }
 
         public bool IsFinished()
         {
-            if (State != TaskState.Started)
+            return IsFinished(State);
+        }
+
+        public static bool IsFinished(TaskState state)
+        {
+            if (state != TaskState.Started)
                 return true;
 
             return false;
@@ -83,8 +107,8 @@ namespace MITP
         [OperationContract]
         NodeStateInfo[] GetNodesState(string resourceName);
 
-        [OperationContract]
-        void ReloadAllResources();
+        [OperationContract(IsOneWay=true)]
+        void ReloadAllResources(string dumpingKey = null);
     }
 
     /*

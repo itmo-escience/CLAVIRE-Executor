@@ -80,7 +80,7 @@ namespace MITP
                 taskId, node.NodeName
             ));
 
-            var pack = node.Packages.First(p => String.Equals(p.Name, task.Incarnation.PackageName, StringComparison.InvariantCultureIgnoreCase));
+            var pack = node.Packages.First(p => String.Equals(p.Name, task.PackageName, StringComparison.InvariantCultureIgnoreCase));
             string batchContent = "";
             batchContent += "mkdir " + tmpFolder.TrimEnd(new char[] { '/', '\\' }) + Environment.NewLine;
 
@@ -111,10 +111,10 @@ namespace MITP
             foreach (var envVar in pack.EnvVars)
                 batchContent += "set " + envVar.Key + "=" + envVar.Value + Environment.NewLine;
 
-            string commandLine = task.Incarnation.CommandLine;
+            string commandLine = task.CommandLine;
             //var pack = node.Packages.First(p => commandLine.StartsWith(p.Name, StringComparison.InvariantCultureIgnoreCase));
             //commandLine = pack.Params["appPath"] + commandLine.Substring(pack.Name.Length);
-            commandLine = String.Format(task.Incarnation.CommandLine, pack.AppPath);
+            commandLine = String.Format(task.CommandLine, pack.AppPath);
             //commandLine = String.Format(incarnation.CommandLine, pack.Params["appPath"]);
 
             batchContent += "echo %time% > clavire_task_started" + Environment.NewLine;
@@ -176,7 +176,7 @@ namespace MITP
             PFX.Parallel.ForEach(resource.Nodes, node =>
             {
                 var rexService = GetREx(node.Services.ExecutionUrl);
-                //rexService.InnerChannel.OperationTimeout = TimeSpan.FromSeconds(10);
+                rexService.InnerChannel.OperationTimeout = TimeSpan.FromSeconds(5);
 
                 try
                 {

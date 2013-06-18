@@ -187,7 +187,7 @@ namespace ControllerFarmService
 
             Log.Info("Copying input files for task " + task.TaskId.ToString());
             fileNames = ""; //String.Join(" ", incarnation.FilesToCopy.Select(f => f.FileName));
-            foreach (var file in task.Incarnation.FilesToCopy)
+            foreach (var file in task.InputFiles)
             {
                 string tmpFile = Path.GetTempFileName();
                 IOProxy.Storage.Download(file.StorageId, tmpFile);
@@ -209,7 +209,7 @@ namespace ControllerFarmService
         {
             ulong taskId = task.TaskId;
             var node = GetNode(task);
-            var pack = PackageByName(node, task.Incarnation.PackageName);
+            var pack = PackageByName(node, task.PackageName);
 
             // temporary hack: files are not pushed from resource => using path from resource for scp copying
             string outFolderFromSystem = IncarnationParams.IncarnatePath(node.DataFolders.ExchangeUrlFromResource, taskId, CopyPhase.Out);

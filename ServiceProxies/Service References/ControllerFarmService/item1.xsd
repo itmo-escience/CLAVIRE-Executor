@@ -1,45 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/MITP" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MITP" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8701/ControllerFarmService/?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:import schemaLocation="http://localhost:8701/ControllerFarmService/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="TaskRunContext">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Incarnation" nillable="true" type="tns:IncarnationParams" />
-      <xs:element minOccurs="0" name="NodesConfig" nillable="true" type="tns:ArrayOfNodeRunConfig" />
-      <xs:element minOccurs="0" name="TaskId" type="xs:unsignedLong" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="TaskRunContext" nillable="true" type="tns:TaskRunContext" />
-  <xs:complexType name="IncarnationParams">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="CanExpectMoreFiles" type="xs:boolean" />
       <xs:element minOccurs="0" name="CommandLine" nillable="true" type="xs:string" />
       <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ExpectedOutputFileNames" nillable="true" type="q1:ArrayOfstring" />
-      <xs:element minOccurs="0" name="FilesToCopy" nillable="true" type="tns:ArrayOfTaskFileDescription" />
+      <xs:element minOccurs="0" name="InputFiles" nillable="true" type="tns:ArrayOfFileContext" />
+      <xs:element minOccurs="0" name="NodesConfig" nillable="true" type="tns:ArrayOfNodeRunConfig" />
       <xs:element minOccurs="0" name="PackageName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TaskId" type="xs:unsignedLong" />
       <xs:element minOccurs="0" name="UserCert" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="IncarnationParams" nillable="true" type="tns:IncarnationParams" />
-  <xs:complexType name="ArrayOfTaskFileDescription">
+  <xs:element name="TaskRunContext" nillable="true" type="tns:TaskRunContext" />
+  <xs:complexType name="ArrayOfFileContext">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="TaskFileDescription" type="tns:TaskFileDescription" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FileContext" nillable="true" type="tns:FileContext" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfTaskFileDescription" nillable="true" type="tns:ArrayOfTaskFileDescription" />
-  <xs:complexType name="TaskFileDescription">
-    <xs:annotation>
-      <xs:appinfo>
-        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
-      </xs:appinfo>
-    </xs:annotation>
+  <xs:element name="ArrayOfFileContext" nillable="true" type="tns:ArrayOfFileContext" />
+  <xs:complexType name="FileContext">
     <xs:sequence>
       <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="SlotName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="StorageId" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="TaskFileDescription" nillable="true" type="tns:TaskFileDescription" />
+  <xs:element name="FileContext" nillable="true" type="tns:FileContext" />
   <xs:complexType name="ArrayOfNodeRunConfig">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeRunConfig" nillable="true" type="tns:NodeRunConfig" />
