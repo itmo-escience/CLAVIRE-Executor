@@ -13,13 +13,15 @@ namespace MITP
     public class ControllerDescription
     {
         [DataMember] public string FarmId { get; private set; }
-        [DataMember] public string Type { get; private set; }
-        [DataMember] public string Url { get; private set; }
+        [DataMember] public string Type   { get; private set; }
+        [DataMember] public string Url    { get; private set; }
     }
 
     [DataContract]
     public class Resource
     {
+        public string Json { get; private set; }
+
         [DataMember] public string ResourceName { get; private set; } 
         [DataMember] public string ResourceDescription { get; private set; }
         [DataMember] public IEnumerable<string> SupportedArchitectures { get; private set; }
@@ -61,6 +63,25 @@ namespace MITP
             // Constructor is private. Resources can only be loaded from base
         }
 
+        public static Resource BuildFromDescription(string json)
+        {
+            int startPos = json.IndexOf('{');
+            json = json.Substring(startPos);
+
+            var serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(Resource));
+            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(json));
+            var res = (Resource)serializer.ReadObject(memStream);
+
+            foreach (var node in res.Nodes)
+            {
+                node.ResourceName = res.ResourceName;
+                node.OverrideNulls(res._nodeDefaults);
+            }
+
+            res.Json = json;
+            return res;
+        }
+
         public static IEnumerable<Resource> Load(IEnumerable<string> configurationFiles = null) // todo: Resource.configurationFiles -> urls
         {
             if (configurationFiles == null)
@@ -74,18 +95,7 @@ namespace MITP
                 try
                 {
                     string json = File.ReadAllText(filePath);
-                    int startPos = json.IndexOf('{');
-                    json = json.Substring(startPos);
-
-                    var serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(Resource));
-                    var memStream = new MemoryStream(Encoding.UTF8.GetBytes(json));
-                    var res = (Resource) serializer.ReadObject(memStream);
-
-                    foreach (var node in res.Nodes)
-                    {
-                        node.ResourceName = res.ResourceName;
-                        node.OverrideNulls(res._nodeDefaults);
-                    }
+                    var res = Resource.BuildFromDescription(json);
 
                     resources.Add(res);
                 }

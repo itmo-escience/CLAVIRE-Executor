@@ -27,6 +27,6 @@ namespace MITP
         ResourceNode GetResourceNodeByName(string resourceName, string nodeName);
 
         [OperationContract]
-        Resource[] GetResourcesForFarm(string farmId = null);
+        Resource[] GetResourcesForFarm(string farmId = null, string dumpingKey = null);
     }
 }
