@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.IO;
+using System.Threading;
 using System.Diagnostics;
 using Config = System.Web.Configuration.WebConfigurationManager;
 
@@ -11,14 +13,29 @@ namespace RExService
 {
     public class RExService : IRExService
     {
+        private static readonly TimeSpan JOB_FILE_CHECK_INTERVAL     = TimeSpan.FromSeconds(0.3);
+        private static readonly TimeSpan JOB_FILE_CHECK_MAX_INTERVAL = TimeSpan.FromSeconds(3);
+
         #region IRExService Members
 
         public int Exec(ulong taskId)
         {
             try
             {
+                string jobFilePath = Config.AppSettings["JobsFolder"] + taskId + @"\job_" + taskId + ".cmd";
+
+                var whenStarted = DateTime.Now;
+                while (!File.Exists(jobFilePath) && DateTime.Now < whenStarted + JOB_FILE_CHECK_MAX_INTERVAL)
+                {
+                    Console.WriteLine("Job file not found! Id = " + taskId.ToString());
+                    Thread.Sleep(JOB_FILE_CHECK_INTERVAL);
+                }
+
+                string jobBatchContent = File.ReadAllText(jobFilePath);
+                Console.WriteLine("Batch content for id = " + taskId.ToString() + ": " + Environment.NewLine + jobBatchContent);
+
                 string bin = "cmd.exe";
-                string args = "/c " + Config.AppSettings["JobsFolder"] + taskId + @"\job_" + taskId + ".cmd";
+                string args = "/c " + jobFilePath;
 
                 var procInfo = new ProcessStartInfo(bin, args);
                 //procInfo.UseShellExecute = true;
