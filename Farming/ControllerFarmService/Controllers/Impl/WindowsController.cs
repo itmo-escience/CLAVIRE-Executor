@@ -8,11 +8,14 @@ using System.ServiceModel;
 using ControllerFarmService.ResourceBaseService;
 using ControllerFarmService.RExService;
 using PFX = System.Threading.Tasks;
+using Config = System.Configuration.ConfigurationManager;
 
 namespace MITP
 {
     public class WindowsController : AbstractResourceController, IStatelessResourceController
     {
+        private const string DEBUG_PAUSE_PARAM_NAME = "Windows.Debug.Pause.BeforeLine";
+
         private RExServiceClient GetREx(string url)
         {
             var service = new RExServiceClient();
@@ -149,10 +152,24 @@ namespace MITP
                 sharedOutputFolder.TrimEnd(new char[] { '/', '\\' })
             );
 
+            
+            int pauseLine = -1;
+            Int32.TryParse(Config.AppSettings[DEBUG_PAUSE_PARAM_NAME] ?? "-1", out pauseLine);
+            if (pauseLine >= 0)
+            {
+                var batchLines = batchContent.Replace("\r", "").Split(new[] { '\n' });
+                string newBatchContent =
+                    String.Join(Environment.NewLine, batchLines.Take(pauseLine)) +
+                    "pause" + Environment.NewLine +
+                    String.Join(Environment.NewLine, batchLines.Skip(pauseLine));
+                batchContent = newBatchContent;
+            }
+
+
             IOProxy.Ftp.UploadFileContent(batchContent, jobFtpFolder, jobFileName);
 
 
-            var rexService = GetREx(node.Services.ExecutionUrl);
+            var rexService = GetREx(node.Services.ExecutionUrl);     // todo : close service client!
             int pid = rexService.Exec(taskId);
 
             Log.Debug(String.Format(
