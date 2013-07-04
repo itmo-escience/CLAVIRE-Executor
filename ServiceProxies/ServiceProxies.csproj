@@ -71,7 +71,8 @@
     <Reference Include="PackageBase.Serializer">
       <HintPath>..\..\Libs\PackageBase.Serializer.dll</HintPath>
     </Reference>
-    <Reference Include="Scheduler.TimeMeter">
+    <Reference Include="Scheduler.TimeMeter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\Scheduler.TimeMeter.dll</HintPath>
     </Reference>
     <Reference Include="SchedulerCommon">
@@ -336,26 +337,26 @@
     <None Include="Service References\RightsService\ServiceProxies.RightsService.HealthState.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\SchedulerService\SchedulerService.wsdl" />
-    <None Include="Service References\SchedulerService\SchedulerService.xsd">
+    <None Include="Service References\SchedulerService\SchedulerService1.wsdl" />
+    <None Include="Service References\SchedulerService\SchedulerService7.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\SchedulerService\SchedulerService1.xsd">
+    <None Include="Service References\SchedulerService\SchedulerService71.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\SchedulerService\SchedulerService2.xsd">
+    <None Include="Service References\SchedulerService\SchedulerService72.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\SchedulerService\SchedulerService3.xsd">
+    <None Include="Service References\SchedulerService\SchedulerService73.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\SchedulerService\SchedulerService4.xsd">
+    <None Include="Service References\SchedulerService\SchedulerService74.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\SchedulerService\SchedulerService5.xsd">
+    <None Include="Service References\SchedulerService\SchedulerService75.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\SchedulerService\SchedulerService6.xsd">
+    <None Include="Service References\SchedulerService\SchedulerService76.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\SchedulerService\ServiceProxies.SchedulerService.LaunchPlan.datasource">
@@ -529,9 +530,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\SchedulerService\SchedulerService.disco" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\SchedulerService\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
@@ -572,6 +570,9 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SchedulerService\SchedulerService1.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
