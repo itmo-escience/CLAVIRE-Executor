@@ -347,9 +347,8 @@ namespace MITP
                     catch (Exception estimEx)
                     {
                         Log.Warn(String.Format(
-                            "Exception while estimating task {2} on node '{3}' by models in PackageBase : {0}\n{1}",
-                            estimEx.Message, estimEx.StackTrace,
-                            engineState._taskDescription.TaskId, node.NodeName
+                            "Exception while estimating task {1} on node '{2}' by models in PackageBase : {0}",
+                            estimEx, engineState._taskDescription.TaskId, node.NodeName
                         ));
                     }
                 }
