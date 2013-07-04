@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using Easis.PackageBase.Definition;
 using ServiceProxies.ResourceBaseService;
+using Config = System.Configuration.ConfigurationManager;
 
 namespace MITP
 {
@@ -23,6 +24,8 @@ namespace MITP
     [DataContract]
     public class TaskSchedule   // todo : TaskSchedule & FullTaskSchedule
     {
+        private const string SCHEDULE_ALL_TASKS_PARAM_NAME = "Scheduler.SendAllTasks";
+
         public ulong TaskId { get; private set; }
         
         [DataMember]
@@ -711,6 +714,8 @@ namespace MITP
                 {
                     ApplicationName = t.Package,
 
+                    WFid = t.WfId,
+
                     Id = t.TaskId,
                     IsUrgent = (t.Priority == TaskPriority.Urgent),
                     Parameters = new Dictionary<string, string>(t.Params),
@@ -772,15 +777,19 @@ namespace MITP
                     },                            
                 }).ToArray();
 
+            bool sendAllTasks = (Config.AppSettings[SCHEDULE_ALL_TASKS_PARAM_NAME] ?? "false").ToLowerInvariant().Trim() == "true";
+            
             wf.Tasks = tasks
-                .Where(t => 
-                    (schedulingWfId == null && (t.State == TaskState.ReadyToExecute || t.State == TaskState.Scheduled)) ||
+                .Where(t =>
+                    (schedulingWfId == null && (t.State == TaskState.ReadyToExecute || t.State == TaskState.Scheduled || (t.State == TaskState.Defined && sendAllTasks))) ||
                     
                     // to plan ahead all tasks in urgent WF, including future ones
                     (t.WfId == schedulingWfId && (t.State == TaskState.ReadyToExecute || t.State == TaskState.Scheduled || t.State == TaskState.Defined))
                 )
                 .Select(t => new ServiceProxies.SchedulerService.EstimatedTask()
                 {
+                    WFid = t.WfId,
+
                     Id = t.TaskId,
                     ApplicationName = (t.Package + (String.IsNullOrWhiteSpace(t.Method)? "": "_" + t.Method)).ToUpperInvariant(),
 
