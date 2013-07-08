@@ -19,7 +19,7 @@ namespace MITP
         [BsonIgnore] private static readonly TimeSpan UPDATE_DURATION_TO_WARN = TimeSpan.FromSeconds(0.3);
         [BsonIgnore] private static readonly TimeSpan UPDATE_INTERVAL = TimeSpan.FromMilliseconds(200);
 
-        [BsonIgnore] private static List<TaskCache> _dumpedTasks = new List<TaskCache>();        
+        [BsonIgnore] private static Dictionary<ulong, TaskCache> _dumpedTasks = new Dictionary<ulong,TaskCache>();
 
         [BsonIgnore] private static readonly Dictionary<ulong, TaskCache> _cache = new Dictionary<ulong, TaskCache>();
         [BsonIgnore] private static readonly object _globalLock = new object();
@@ -93,7 +93,7 @@ namespace MITP
         {
             lock (_dumpedLock)
             {
-                _dumpedTasks.Add(this);
+                _dumpedTasks[this.Context.TaskId] = this;
             }
 
             var collection = Mongo.GetCollection<TaskCache>();
@@ -118,7 +118,7 @@ namespace MITP
         {
             lock (_dumpedLock)
             {
-                var loaded = _dumpedTasks.ToArray();
+                var loaded = _dumpedTasks.Values.ToArray();
                 //_dumpedTasks.Clear();
                 return loaded;
             }
