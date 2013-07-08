@@ -58,9 +58,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson, Version=1.6.0.4624, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\PB_Serializer\MongoDB.Bson.dll</HintPath>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\..\Libs\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="NetLibrary">
       <HintPath>..\..\Libs\NetLibrary.dll</HintPath>
