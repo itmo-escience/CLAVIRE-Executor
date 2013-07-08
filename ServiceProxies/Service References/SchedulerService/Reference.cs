@@ -15,10 +15,10 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskScheduler.Workflow", Namespace="http://schemas.datacontract.org/2004/07/Scheduler")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Workflow", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.TaskSchedulerUrgentWorkflow))]
-    public partial class TaskSchedulerWorkflow : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.UrgentWorkflow))]
+    public partial class Workflow : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -33,7 +33,7 @@ namespace ServiceProxies.SchedulerService {
         private bool OptimizeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.TaskSchedulerTask[] TasksField;
+        private ServiceProxies.SchedulerService.Task[] TasksField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -85,7 +85,7 @@ namespace ServiceProxies.SchedulerService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.TaskSchedulerTask[] Tasks {
+        public ServiceProxies.SchedulerService.Task[] Tasks {
             get {
                 return this.TasksField;
             }
@@ -109,9 +109,9 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskScheduler.UrgentWorkflow", Namespace="http://schemas.datacontract.org/2004/07/Scheduler")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UrgentWorkflow", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
-    public partial class TaskSchedulerUrgentWorkflow : ServiceProxies.SchedulerService.TaskSchedulerWorkflow {
+    public partial class UrgentWorkflow : ServiceProxies.SchedulerService.Workflow {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private double MaxExecutionTimeField;
@@ -148,7 +148,7 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TasksDepenendency", Namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TasksDepenendency", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     public partial class TasksDepenendency : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -209,10 +209,9 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskScheduler.Task", Namespace="http://schemas.datacontract.org/2004/07/Scheduler")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Task", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.TaskSchedulerActiveTask))]
-    public partial class TaskSchedulerTask : ServiceProxies.SchedulerService.TaskSchedulerBaseTask {
+    public partial class Task : ServiceProxies.SchedulerService.BaseTask {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private ServiceProxies.SchedulerService.LaunchDestination[] SuitableDestinationsField;
@@ -233,13 +232,12 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskScheduler.BaseTask", Namespace="http://schemas.datacontract.org/2004/07/Scheduler")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BaseTask", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.ActiveEstimatedTask))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.EstimatedTask))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.TaskSchedulerTask))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.TaskSchedulerActiveTask))]
-    public partial class TaskSchedulerBaseTask : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.Task))]
+    public partial class BaseTask : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -330,9 +328,9 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ActiveEstimatedTask", Namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ActiveEstimatedTask", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
-    public partial class ActiveEstimatedTask : ServiceProxies.SchedulerService.TaskSchedulerBaseTask {
+    public partial class ActiveEstimatedTask : ServiceProxies.SchedulerService.BaseTask {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private ServiceProxies.SchedulerService.ActiveEstimation EstimationField;
@@ -344,7 +342,7 @@ namespace ServiceProxies.SchedulerService {
         private bool MonopolizeResourceField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.TaskSchedulerTaskState StateField;
+        private ServiceProxies.SchedulerService.TaskState StateField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public ServiceProxies.SchedulerService.ActiveEstimation Estimation {
@@ -386,7 +384,7 @@ namespace ServiceProxies.SchedulerService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.TaskSchedulerTaskState State {
+        public ServiceProxies.SchedulerService.TaskState State {
             get {
                 return this.StateField;
             }
@@ -401,12 +399,37 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EstimatedTask", Namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EstimatedTask", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
-    public partial class EstimatedTask : ServiceProxies.SchedulerService.TaskSchedulerBaseTask {
+    public partial class EstimatedTask : ServiceProxies.SchedulerService.BaseTask {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int DepthLevelField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private ServiceProxies.SchedulerService.ResourceEstimation[] EstimationsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.EstimatedTask[] ProvidesDependenciesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.EstimatedTask[] RequiresDependenciesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.ActiveEstimatedTask ScheduledInstanceField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int DepthLevel {
+            get {
+                return this.DepthLevelField;
+            }
+            set {
+                if ((this.DepthLevelField.Equals(value) != true)) {
+                    this.DepthLevelField = value;
+                    this.RaisePropertyChanged("DepthLevel");
+                }
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public ServiceProxies.SchedulerService.ResourceEstimation[] Estimations {
@@ -420,90 +443,42 @@ namespace ServiceProxies.SchedulerService {
                 }
             }
         }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskScheduler.ActiveTask", Namespace="http://schemas.datacontract.org/2004/07/Scheduler")]
-    [System.SerializableAttribute()]
-    public partial class TaskSchedulerActiveTask : ServiceProxies.SchedulerService.TaskSchedulerTask {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.LaunchDestination DestinationField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double EstimatedLaunchTimeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.EstimationResult EstimationField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool IsUrgentField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.TaskSchedulerTaskState StateField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.LaunchDestination Destination {
+        public ServiceProxies.SchedulerService.EstimatedTask[] ProvidesDependencies {
             get {
-                return this.DestinationField;
+                return this.ProvidesDependenciesField;
             }
             set {
-                if ((object.ReferenceEquals(this.DestinationField, value) != true)) {
-                    this.DestinationField = value;
-                    this.RaisePropertyChanged("Destination");
+                if ((object.ReferenceEquals(this.ProvidesDependenciesField, value) != true)) {
+                    this.ProvidesDependenciesField = value;
+                    this.RaisePropertyChanged("ProvidesDependencies");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double EstimatedLaunchTime {
+        public ServiceProxies.SchedulerService.EstimatedTask[] RequiresDependencies {
             get {
-                return this.EstimatedLaunchTimeField;
+                return this.RequiresDependenciesField;
             }
             set {
-                if ((this.EstimatedLaunchTimeField.Equals(value) != true)) {
-                    this.EstimatedLaunchTimeField = value;
-                    this.RaisePropertyChanged("EstimatedLaunchTime");
+                if ((object.ReferenceEquals(this.RequiresDependenciesField, value) != true)) {
+                    this.RequiresDependenciesField = value;
+                    this.RaisePropertyChanged("RequiresDependencies");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.EstimationResult Estimation {
+        public ServiceProxies.SchedulerService.ActiveEstimatedTask ScheduledInstance {
             get {
-                return this.EstimationField;
+                return this.ScheduledInstanceField;
             }
             set {
-                if ((object.ReferenceEquals(this.EstimationField, value) != true)) {
-                    this.EstimationField = value;
-                    this.RaisePropertyChanged("Estimation");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IsUrgent {
-            get {
-                return this.IsUrgentField;
-            }
-            set {
-                if ((this.IsUrgentField.Equals(value) != true)) {
-                    this.IsUrgentField = value;
-                    this.RaisePropertyChanged("IsUrgent");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.TaskSchedulerTaskState State {
-            get {
-                return this.StateField;
-            }
-            set {
-                if ((this.StateField.Equals(value) != true)) {
-                    this.StateField = value;
-                    this.RaisePropertyChanged("State");
+                if ((object.ReferenceEquals(this.ScheduledInstanceField, value) != true)) {
+                    this.ScheduledInstanceField = value;
+                    this.RaisePropertyChanged("ScheduledInstance");
                 }
             }
         }
@@ -511,7 +486,7 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="LaunchDestination", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LaunchDestination", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     public partial class LaunchDestination : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -572,7 +547,7 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ActiveEstimation", Namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ActiveEstimation", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     public partial class ActiveEstimation : ServiceProxies.SchedulerService.ResourceEstimation {
         
@@ -610,8 +585,8 @@ namespace ServiceProxies.SchedulerService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskScheduler.TaskState", Namespace="http://schemas.datacontract.org/2004/07/Scheduler")]
-    public enum TaskSchedulerTaskState : int {
+    [System.Runtime.Serialization.DataContractAttribute(Name="TaskState", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
+    public enum TaskState : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         LAUNCHED = 0,
@@ -625,7 +600,7 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ResourceEstimation", Namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResourceEstimation", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.ActiveEstimation))]
     public partial class ResourceEstimation : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -638,6 +613,9 @@ namespace ServiceProxies.SchedulerService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private ServiceProxies.SchedulerService.EstimationResult ResultField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.EstimatedTask TaskField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -675,6 +653,19 @@ namespace ServiceProxies.SchedulerService {
             }
         }
         
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.EstimatedTask Task {
+            get {
+                return this.TaskField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TaskField, value) != true)) {
+                    this.TaskField = value;
+                    this.RaisePropertyChanged("Task");
+                }
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -687,7 +678,7 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Resource", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Resource", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     public partial class Resource : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -764,7 +755,7 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EstimationResult", Namespace="http://schemas.datacontract.org/2004/07/TimeMeter")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EstimationResult", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     public partial class EstimationResult : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -840,7 +831,7 @@ namespace ServiceProxies.SchedulerService {
         
         [System.Diagnostics.DebuggerStepThroughAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-        [System.Runtime.Serialization.DataContractAttribute(Name="EstimationResult.ParameterValue", Namespace="http://schemas.datacontract.org/2004/07/TimeMeter")]
+        [System.Runtime.Serialization.DataContractAttribute(Name="EstimationResult.ParameterValue", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         [System.SerializableAttribute()]
         public partial struct ParameterValue : System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
             
@@ -917,7 +908,7 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Node", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Node", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     public partial class Node : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1026,300 +1017,7 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskScheduler.LaunchPlan", Namespace="http://schemas.datacontract.org/2004/07/Scheduler")]
-    [System.SerializableAttribute()]
-    public partial class TaskSchedulerLaunchPlan : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double EstimatedExecutionTimeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.TaskSchedulerActiveTask[] PlanField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public double EstimatedExecutionTime {
-            get {
-                return this.EstimatedExecutionTimeField;
-            }
-            set {
-                if ((this.EstimatedExecutionTimeField.Equals(value) != true)) {
-                    this.EstimatedExecutionTimeField = value;
-                    this.RaisePropertyChanged("EstimatedExecutionTime");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.TaskSchedulerActiveTask[] Plan {
-            get {
-                return this.PlanField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PlanField, value) != true)) {
-                    this.PlanField = value;
-                    this.RaisePropertyChanged("Plan");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
-    [System.SerializableAttribute()]
-    public partial struct ErrorMessage : System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.ErrorCode CodeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string MessageField;
-        
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.ErrorCode Code {
-            get {
-                return this.CodeField;
-            }
-            set {
-                if ((this.CodeField.Equals(value) != true)) {
-                    this.CodeField = value;
-                    this.RaisePropertyChanged("Code");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Message {
-            get {
-                return this.MessageField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
-                    this.MessageField = value;
-                    this.RaisePropertyChanged("Message");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ErrorCode", Namespace="http://schemas.datacontract.org/2004/07/Common")]
-    public enum ErrorCode : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        UNKNOWN = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ACCESS = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        IO = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DATABASE = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ARGUMENT = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        CONFIGURATION = 5,
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EstimatedWorkflow", Namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.EstimatedUrgentWorkflow))]
-    public partial class EstimatedWorkflow : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.ActiveEstimatedTask[] ActiveTasksField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.TasksDepenendency[] DependenciesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool OptimizeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ServiceProxies.SchedulerService.EstimatedTask[] TasksField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.ActiveEstimatedTask[] ActiveTasks {
-            get {
-                return this.ActiveTasksField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ActiveTasksField, value) != true)) {
-                    this.ActiveTasksField = value;
-                    this.RaisePropertyChanged("ActiveTasks");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.TasksDepenendency[] Dependencies {
-            get {
-                return this.DependenciesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DependenciesField, value) != true)) {
-                    this.DependenciesField = value;
-                    this.RaisePropertyChanged("Dependencies");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Optimize {
-            get {
-                return this.OptimizeField;
-            }
-            set {
-                if ((this.OptimizeField.Equals(value) != true)) {
-                    this.OptimizeField = value;
-                    this.RaisePropertyChanged("Optimize");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public ServiceProxies.SchedulerService.EstimatedTask[] Tasks {
-            get {
-                return this.TasksField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TasksField, value) != true)) {
-                    this.TasksField = value;
-                    this.RaisePropertyChanged("Tasks");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EstimatedUrgentWorkflow", Namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated")]
-    [System.SerializableAttribute()]
-    public partial class EstimatedUrgentWorkflow : ServiceProxies.SchedulerService.EstimatedWorkflow {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double MaxExecutionTimeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double MinExecutionTimeField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public double MaxExecutionTime {
-            get {
-                return this.MaxExecutionTimeField;
-            }
-            set {
-                if ((this.MaxExecutionTimeField.Equals(value) != true)) {
-                    this.MaxExecutionTimeField = value;
-                    this.RaisePropertyChanged("MaxExecutionTime");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public double MinExecutionTime {
-            get {
-                return this.MinExecutionTimeField;
-            }
-            set {
-                if ((this.MinExecutionTimeField.Equals(value) != true)) {
-                    this.MinExecutionTimeField = value;
-                    this.RaisePropertyChanged("MinExecutionTime");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="LaunchPlan", Namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LaunchPlan", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.UrgentPlan))]
     public partial class LaunchPlan : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -1397,14 +1095,14 @@ namespace ServiceProxies.SchedulerService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UrgentPlan", Namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UrgentPlan", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     public partial class UrgentPlan : ServiceProxies.SchedulerService.LaunchPlan {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="NodeAvailabilityTime", Namespace="http://schemas.datacontract.org/2004/07/Scheduler")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="NodeAvailabilityTime", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
     [System.SerializableAttribute()]
     public partial class NodeAvailabilityTime : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1431,60 +1129,401 @@ namespace ServiceProxies.SchedulerService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
+    [System.SerializableAttribute()]
+    public partial struct ErrorMessage : System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.ErrorCode CodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.ErrorCode Code {
+            get {
+                return this.CodeField;
+            }
+            set {
+                if ((this.CodeField.Equals(value) != true)) {
+                    this.CodeField = value;
+                    this.RaisePropertyChanged("Code");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ErrorCode", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
+    public enum ErrorCode : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        UNKNOWN = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ACCESS = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        IO = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        DATABASE = 3,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ARGUMENT = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        CONFIGURATION = 5,
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EstimatedWorkflow", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceProxies.SchedulerService.EstimatedUrgentWorkflow))]
+    public partial class EstimatedWorkflow : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.ActiveEstimatedTask[] ActiveTasksField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.TasksDepenendency[] DependenciesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool OptimizeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.ResourceOffer PreferredOfferField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.ResourceOffer[] ResourceOffersField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.EstimatedTask[] TasksField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.ActiveEstimatedTask[] ActiveTasks {
+            get {
+                return this.ActiveTasksField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ActiveTasksField, value) != true)) {
+                    this.ActiveTasksField = value;
+                    this.RaisePropertyChanged("ActiveTasks");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.TasksDepenendency[] Dependencies {
+            get {
+                return this.DependenciesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DependenciesField, value) != true)) {
+                    this.DependenciesField = value;
+                    this.RaisePropertyChanged("Dependencies");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Optimize {
+            get {
+                return this.OptimizeField;
+            }
+            set {
+                if ((this.OptimizeField.Equals(value) != true)) {
+                    this.OptimizeField = value;
+                    this.RaisePropertyChanged("Optimize");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.ResourceOffer PreferredOffer {
+            get {
+                return this.PreferredOfferField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PreferredOfferField, value) != true)) {
+                    this.PreferredOfferField = value;
+                    this.RaisePropertyChanged("PreferredOffer");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.ResourceOffer[] ResourceOffers {
+            get {
+                return this.ResourceOffersField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ResourceOffersField, value) != true)) {
+                    this.ResourceOffersField = value;
+                    this.RaisePropertyChanged("ResourceOffers");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.EstimatedTask[] Tasks {
+            get {
+                return this.TasksField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TasksField, value) != true)) {
+                    this.TasksField = value;
+                    this.RaisePropertyChanged("Tasks");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResourceOffer", Namespace="http://schemas.datacontract.org/2004/07/Scheduler")]
+    [System.SerializableAttribute()]
+    public partial class ResourceOffer : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.EstimatedTask[] OutsourceTasksField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.Resource ResourceField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ServiceProxies.SchedulerService.EstimatedWorkflow WFField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.EstimatedTask[] OutsourceTasks {
+            get {
+                return this.OutsourceTasksField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OutsourceTasksField, value) != true)) {
+                    this.OutsourceTasksField = value;
+                    this.RaisePropertyChanged("OutsourceTasks");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.Resource Resource {
+            get {
+                return this.ResourceField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ResourceField, value) != true)) {
+                    this.ResourceField = value;
+                    this.RaisePropertyChanged("Resource");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ServiceProxies.SchedulerService.EstimatedWorkflow WF {
+            get {
+                return this.WFField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.WFField, value) != true)) {
+                    this.WFField = value;
+                    this.RaisePropertyChanged("WF");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EstimatedUrgentWorkflow", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
+    [System.SerializableAttribute()]
+    public partial class EstimatedUrgentWorkflow : ServiceProxies.SchedulerService.EstimatedWorkflow {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private double MaxExecutionTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private double MinExecutionTimeField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public double MaxExecutionTime {
+            get {
+                return this.MaxExecutionTimeField;
+            }
+            set {
+                if ((this.MaxExecutionTimeField.Equals(value) != true)) {
+                    this.MaxExecutionTimeField = value;
+                    this.RaisePropertyChanged("MaxExecutionTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public double MinExecutionTime {
+            get {
+                return this.MinExecutionTimeField;
+            }
+            set {
+                if ((this.MinExecutionTimeField.Equals(value) != true)) {
+                    this.MinExecutionTimeField = value;
+                    this.RaisePropertyChanged("MinExecutionTime");
+                }
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SchedulerService.ISchedulerService")]
     public interface ISchedulerService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/Reschedule", ReplyAction="http://tempuri.org/IScheduler/RescheduleResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/RescheduleErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
-        ServiceProxies.SchedulerService.TaskSchedulerLaunchPlan Reschedule(ServiceProxies.SchedulerService.TaskSchedulerWorkflow workflow);
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/RescheduleErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
+        ServiceProxies.SchedulerService.LaunchPlan Reschedule(ServiceProxies.SchedulerService.Workflow workflow);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/RescheduleEstimated", ReplyAction="http://tempuri.org/IScheduler/RescheduleEstimatedResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/RescheduleEstimatedErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/RescheduleEstimatedErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         ServiceProxies.SchedulerService.LaunchPlan RescheduleEstimated(ServiceProxies.SchedulerService.EstimatedWorkflow workflow);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/CreateTestWF", ReplyAction="http://tempuri.org/IScheduler/CreateTestWFResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/CreateTestWFErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
-        ServiceProxies.SchedulerService.TaskSchedulerWorkflow CreateTestWF();
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/CreateTestWFErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
+        ServiceProxies.SchedulerService.Workflow CreateTestWF();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/RescheduleUrgent", ReplyAction="http://tempuri.org/IScheduler/RescheduleUrgentResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/RescheduleUrgentErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
-        ServiceProxies.SchedulerService.TaskSchedulerLaunchPlan RescheduleUrgent(ServiceProxies.SchedulerService.TaskSchedulerUrgentWorkflow workflow);
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/RescheduleUrgentErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
+        ServiceProxies.SchedulerService.LaunchPlan RescheduleUrgent(ServiceProxies.SchedulerService.UrgentWorkflow workflow);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/CreateUrgentTestWF", ReplyAction="http://tempuri.org/IScheduler/CreateUrgentTestWFResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/CreateUrgentTestWFErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
-        ServiceProxies.SchedulerService.TaskSchedulerUrgentWorkflow CreateUrgentTestWF();
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/CreateUrgentTestWFErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
+        ServiceProxies.SchedulerService.UrgentWorkflow CreateUrgentTestWF();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/GetClusterNames", ReplyAction="http://tempuri.org/IScheduler/GetClusterNamesResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetClusterNamesErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetClusterNamesErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         string[] GetClusterNames();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/GetAppNames", ReplyAction="http://tempuri.org/IScheduler/GetAppNamesResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetAppNamesErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetAppNamesErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         string[] GetAppNames();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/GetDefaultUHName", ReplyAction="http://tempuri.org/IScheduler/GetDefaultUHNameResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetDefaultUHNameErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetDefaultUHNameErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         string GetDefaultUHName();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/GetUHNames", ReplyAction="http://tempuri.org/IScheduler/GetUHNamesResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetUHNamesErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetUHNamesErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         string[] GetUHNames();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/SetDefaultUHName", ReplyAction="http://tempuri.org/IScheduler/SetDefaultUHNameResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/SetDefaultUHNameErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/SetDefaultUHNameErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         void SetDefaultUHName(string newName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/GetDefaultHName", ReplyAction="http://tempuri.org/IScheduler/GetDefaultHNameResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetDefaultHNameErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetDefaultHNameErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         string GetDefaultHName();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/GetHNames", ReplyAction="http://tempuri.org/IScheduler/GetHNamesResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetHNamesErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/GetHNamesErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         string[] GetHNames();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScheduler/SetDefaultHName", ReplyAction="http://tempuri.org/IScheduler/SetDefaultHNameResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/SetDefaultHNameErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/Common")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceProxies.SchedulerService.ErrorMessage), Action="http://tempuri.org/IScheduler/SetDefaultHNameErrorMessageFault", Name="ErrorMessage", Namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon")]
         void SetDefaultHName(string newName);
     }
     
@@ -1515,7 +1554,7 @@ namespace ServiceProxies.SchedulerService {
                 base(binding, remoteAddress) {
         }
         
-        public ServiceProxies.SchedulerService.TaskSchedulerLaunchPlan Reschedule(ServiceProxies.SchedulerService.TaskSchedulerWorkflow workflow) {
+        public ServiceProxies.SchedulerService.LaunchPlan Reschedule(ServiceProxies.SchedulerService.Workflow workflow) {
             return base.Channel.Reschedule(workflow);
         }
         
@@ -1523,15 +1562,15 @@ namespace ServiceProxies.SchedulerService {
             return base.Channel.RescheduleEstimated(workflow);
         }
         
-        public ServiceProxies.SchedulerService.TaskSchedulerWorkflow CreateTestWF() {
+        public ServiceProxies.SchedulerService.Workflow CreateTestWF() {
             return base.Channel.CreateTestWF();
         }
         
-        public ServiceProxies.SchedulerService.TaskSchedulerLaunchPlan RescheduleUrgent(ServiceProxies.SchedulerService.TaskSchedulerUrgentWorkflow workflow) {
+        public ServiceProxies.SchedulerService.LaunchPlan RescheduleUrgent(ServiceProxies.SchedulerService.UrgentWorkflow workflow) {
             return base.Channel.RescheduleUrgent(workflow);
         }
         
-        public ServiceProxies.SchedulerService.TaskSchedulerUrgentWorkflow CreateUrgentTestWF() {
+        public ServiceProxies.SchedulerService.UrgentWorkflow CreateUrgentTestWF() {
             return base.Channel.CreateUrgentTestWF();
         }
         

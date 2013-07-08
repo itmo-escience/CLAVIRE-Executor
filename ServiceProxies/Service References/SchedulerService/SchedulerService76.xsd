@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="ArrayOfKeyValueOfstringstring">
-    <xs:annotation>
-      <xs:appinfo>
-        <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
-      </xs:appinfo>
-    </xs:annotation>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Scheduler" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Scheduler" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon" />
+  <xs:complexType name="ResourceOffer">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfstringstring">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="Key" nillable="true" type="xs:string" />
-            <xs:element name="Value" nillable="true" type="xs:string" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="OutsourceTasks" nillable="true" type="q1:ArrayOfEstimatedTask" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="Resource" nillable="true" type="q2:Resource" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="WF" nillable="true" type="q3:EstimatedWorkflow" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfKeyValueOfstringstring" nillable="true" type="tns:ArrayOfKeyValueOfstringstring" />
-  <xs:complexType name="ArrayOfstring">
+  <xs:element name="ResourceOffer" nillable="true" type="tns:ResourceOffer" />
+  <xs:complexType name="ArrayOfResourceOffer">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResourceOffer" nillable="true" type="tns:ResourceOffer" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
+  <xs:element name="ArrayOfResourceOffer" nillable="true" type="tns:ArrayOfResourceOffer" />
 </xs:schema>

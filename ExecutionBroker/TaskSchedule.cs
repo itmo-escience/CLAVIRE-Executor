@@ -672,18 +672,18 @@ namespace MITP
                 perms.Where(p => p.StartsWith(resName)).Select(st => st.Substring(resName.Length+1))
             );
 
-            var taskStateConvert = new Func<Task, ServiceProxies.SchedulerService.TaskSchedulerTaskState>(task =>
+            var taskStateConvert = new Func<Task, ServiceProxies.SchedulerService.TaskState>(task =>
             {
                 switch (task.State)
                 {
                     case TaskState.Started:
-                        return ServiceProxies.SchedulerService.TaskSchedulerTaskState.LAUNCHED;
+                        return ServiceProxies.SchedulerService.TaskState.LAUNCHED;
 
                     case TaskState.Scheduled:
-                        return ServiceProxies.SchedulerService.TaskSchedulerTaskState.SCHEDULED;
+                        return ServiceProxies.SchedulerService.TaskState.SCHEDULED;
 
                     case TaskState.ReadyToExecute:
-                        return ServiceProxies.SchedulerService.TaskSchedulerTaskState.SCHEDULED;
+                        return ServiceProxies.SchedulerService.TaskState.SCHEDULED;
 
                     default:
                         throw new Exception(String.Format(
@@ -980,18 +980,18 @@ namespace MITP
             }
             else
             {
-                var actionConvert = new Func<ServiceProxies.SchedulerService.TaskSchedulerTaskState, ScheduledAction>(
+                var actionConvert = new Func<ServiceProxies.SchedulerService.TaskState, ScheduledAction>(
                     actionByScheduler =>
                     {
                         switch (actionByScheduler)
                         {
-                            case ServiceProxies.SchedulerService.TaskSchedulerTaskState.ABORTED:
+                            case ServiceProxies.SchedulerService.TaskState.ABORTED:
                                 return ScheduledAction.Abort;
 
-                            case ServiceProxies.SchedulerService.TaskSchedulerTaskState.LAUNCHED:
+                            case ServiceProxies.SchedulerService.TaskState.LAUNCHED:
                                 return ScheduledAction.Run;
 
-                            case ServiceProxies.SchedulerService.TaskSchedulerTaskState.SCHEDULED:
+                            case ServiceProxies.SchedulerService.TaskState.SCHEDULED:
                                 return ScheduledAction.None;
 
                             default:

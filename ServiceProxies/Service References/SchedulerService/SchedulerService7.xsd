@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Scheduler" />
-  <xs:import schemaLocation="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Scheduler.Estimated" />
-  <xs:import schemaLocation="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SchedulerCommon" />
+  <xs:import schemaLocation="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:element name="Reschedule">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Scheduler" minOccurs="0" name="workflow" nillable="true" type="q1:TaskScheduler.Workflow" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="workflow" nillable="true" type="q1:Workflow" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="RescheduleResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Scheduler" minOccurs="0" name="RescheduleResult" nillable="true" type="q2:TaskScheduler.LaunchPlan" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="RescheduleResult" nillable="true" type="q2:LaunchPlan" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="RescheduleEstimated">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Scheduler.Estimated" minOccurs="0" name="workflow" nillable="true" type="q3:EstimatedWorkflow" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="workflow" nillable="true" type="q3:EstimatedWorkflow" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="RescheduleEstimatedResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Scheduler.Estimated" minOccurs="0" name="RescheduleEstimatedResult" nillable="true" type="q4:LaunchPlan" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="RescheduleEstimatedResult" nillable="true" type="q4:LaunchPlan" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -39,21 +38,21 @@
   <xs:element name="CreateTestWFResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Scheduler" minOccurs="0" name="CreateTestWFResult" nillable="true" type="q5:TaskScheduler.Workflow" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="CreateTestWFResult" nillable="true" type="q5:Workflow" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="RescheduleUrgent">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Scheduler" minOccurs="0" name="workflow" nillable="true" type="q6:TaskScheduler.UrgentWorkflow" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="workflow" nillable="true" type="q6:UrgentWorkflow" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="RescheduleUrgentResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Scheduler" minOccurs="0" name="RescheduleUrgentResult" nillable="true" type="q7:TaskScheduler.LaunchPlan" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="RescheduleUrgentResult" nillable="true" type="q7:LaunchPlan" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -65,7 +64,7 @@
   <xs:element name="CreateUrgentTestWFResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Scheduler" minOccurs="0" name="CreateUrgentTestWFResult" nillable="true" type="q8:TaskScheduler.UrgentWorkflow" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/SchedulerCommon" minOccurs="0" name="CreateUrgentTestWFResult" nillable="true" type="q8:UrgentWorkflow" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

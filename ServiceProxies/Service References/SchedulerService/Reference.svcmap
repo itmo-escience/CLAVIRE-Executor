@@ -24,9 +24,7 @@
     <MetadataFile FileName="SchedulerService7.xsd" MetadataType="Schema" ID="c3a2b130-2a90-4348-b236-393953dd6fbf" SourceId="1" SourceUrl="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd0" />
     <MetadataFile FileName="SchedulerService71.xsd" MetadataType="Schema" ID="70af7384-bef6-4b4d-992b-24c07d054737" SourceId="1" SourceUrl="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd3" />
     <MetadataFile FileName="SchedulerService72.xsd" MetadataType="Schema" ID="cabc21c5-aace-442b-9d83-b0b628413162" SourceId="1" SourceUrl="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd2" />
-    <MetadataFile FileName="SchedulerService73.xsd" MetadataType="Schema" ID="110e7022-9846-4152-82e5-6481c8dbed71" SourceId="1" SourceUrl="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd5" />
     <MetadataFile FileName="SchedulerService1.wsdl" MetadataType="Wsdl" ID="e8522f45-03fe-447b-9841-8bb95c8844de" SourceId="1" SourceUrl="http://192.168.4.1/SchedulerService/SchedulerService.svc?wsdl" />
-    <MetadataFile FileName="SchedulerService74.xsd" MetadataType="Schema" ID="a6df2570-65a7-464f-877e-2f63a55a315d" SourceId="1" SourceUrl="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd6" />
     <MetadataFile FileName="SchedulerService75.xsd" MetadataType="Schema" ID="44185295-46e6-405f-9a3f-bf03ddeca452" SourceId="1" SourceUrl="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd1" />
     <MetadataFile FileName="SchedulerService76.xsd" MetadataType="Schema" ID="c279264e-4e54-4303-aec1-da241c119dcc" SourceId="1" SourceUrl="http://192.168.4.1/SchedulerService/SchedulerService.svc?xsd=xsd4" />
     <MetadataFile FileName="SchedulerService1.disco" MetadataType="Disco" ID="e1c1108b-a36e-4f0f-bb5e-dbedd34fd39d" SourceId="1" SourceUrl="http://192.168.4.1/SchedulerService/SchedulerService.svc?disco" />

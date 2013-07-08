@@ -347,12 +347,6 @@
     <None Include="Service References\SchedulerService\SchedulerService72.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\SchedulerService\SchedulerService73.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\SchedulerService\SchedulerService74.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\SchedulerService\SchedulerService75.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -362,13 +356,10 @@
     <None Include="Service References\SchedulerService\ServiceProxies.SchedulerService.LaunchPlan.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\SchedulerService\ServiceProxies.SchedulerService.TaskSchedulerLaunchPlan.datasource">
+    <None Include="Service References\SchedulerService\ServiceProxies.SchedulerService.UrgentWorkflow.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\SchedulerService\ServiceProxies.SchedulerService.TaskSchedulerUrgentWorkflow.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SchedulerService\ServiceProxies.SchedulerService.TaskSchedulerWorkflow.datasource">
+    <None Include="Service References\SchedulerService\ServiceProxies.SchedulerService.Workflow.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\UserManagementService\ServiceProxies.UserManagementService.ClavireUri.datasource">
