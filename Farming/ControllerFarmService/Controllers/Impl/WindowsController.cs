@@ -125,12 +125,22 @@ namespace MITP
                 "cmd.exe /c " + commandLine + Environment.NewLine;
             batchContent += "echo %time% > clavire_task_finished" + Environment.NewLine;
 
+
+            foreach (string copyPath in pack.CleanupIgnore)
+            {
+                batchContent += String.Format(
+                    @"xcopy {1} {0} /z /s /e /c /i /h /r /y" + Environment.NewLine,
+                    (sharedOutputFolder.TrimEnd(new char[] { '/', '\\' }) + "/" + copyPath.TrimStart(new char[] { '/', '\\' })).Replace("/", "\\"),
+                    (tmpFolder.TrimEnd(new char[] { '/', '\\' })          + "/" + copyPath.TrimStart(new char[] { '/', '\\' })).Replace("/", "\\")
+                );
+            }
+
             foreach (string delPath in pack.Cleanup)
             {
                 batchContent += String.Format(
                     @"rmdir /s /q {0}" + Environment.NewLine + 
                     @"del /f /s /q {0}" + Environment.NewLine,
-                    tmpFolder + delPath
+                    tmpFolder + delPath  // todo: delPath.TrimStart
                 );
             }
 

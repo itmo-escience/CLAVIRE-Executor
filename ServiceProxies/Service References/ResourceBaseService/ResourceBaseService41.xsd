@@ -71,9 +71,10 @@
   <xs:complexType name="PackageOnNode">
     <xs:sequence>
       <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Cleanup" nillable="true" type="q6:ArrayOfstring" />
-      <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="CopyOnStartup" nillable="true" type="q7:ArrayOfstring" />
-      <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="EnvVars" nillable="true" type="q8:ArrayOfKeyValueOfstringstring" />
-      <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Params" nillable="true" type="q9:ArrayOfKeyValueOfstringstring" />
+      <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="CleanupIgnore" nillable="true" type="q7:ArrayOfstring" />
+      <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="CopyOnStartup" nillable="true" type="q8:ArrayOfstring" />
+      <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="EnvVars" nillable="true" type="q9:ArrayOfKeyValueOfstringstring" />
+      <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Params" nillable="true" type="q10:ArrayOfKeyValueOfstringstring" />
       <xs:element name="Name" nillable="true" type="xs:string" />
       <xs:element name="Version" nillable="true" type="xs:string" />
       <xs:element name="AppPath" nillable="true" type="xs:string" />

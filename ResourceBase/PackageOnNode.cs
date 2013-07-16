@@ -34,6 +34,9 @@ namespace MITP
         [DataMember]
         public IEnumerable<string> Cleanup { get; private set; }
 
+        [DataMember]
+        public IEnumerable<string> CleanupIgnore { get; private set; }
+
         private void Init()
         {
             if (CopyOnStartup == null)
@@ -41,6 +44,9 @@ namespace MITP
 
             if (Cleanup == null)
                 Cleanup = new string[0];
+
+            if (CleanupIgnore == null)
+                CleanupIgnore = new string[0];
 
             if (EnvVars == null)
                 EnvVars = new Dictionary<string, string>();
@@ -74,8 +80,9 @@ namespace MITP
             LocalDir = other.LocalDir;
 
             // it's ok, because those enumerable fields are read-only:
-            if (other.CopyOnStartup != null) CopyOnStartup = other.CopyOnStartup;
-            if (other.Cleanup != null) Cleanup = other.Cleanup;
+            if (other.CopyOnStartup != null) CopyOnStartup = other.CopyOnStartup.ToArray();
+            if (other.CleanupIgnore != null) CleanupIgnore = other.CleanupIgnore.ToArray();
+            if (other.Cleanup != null) Cleanup = other.Cleanup.ToArray();
 
             if (other.EnvVars != null)
                 EnvVars = new Dictionary<string, string>(other.EnvVars);

@@ -137,6 +137,7 @@
     <None Include="Service References\ResourceBaseService\ControllerFarmService.ResourceBaseService.ResourceNode.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\ResourceBaseService\ResourceBaseService.wsdl" />
     <None Include="Service References\ResourceBaseService\ResourceBaseService1.wsdl" />
     <None Include="Service References\ResourceBaseService\ResourceBaseService4.xsd">
       <SubType>Designer</SubType>
