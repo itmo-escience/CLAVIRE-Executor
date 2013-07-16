@@ -841,8 +841,17 @@ namespace MITP
                                     //new TimeMeter.EstimationResult.ParameterValue()
                                     {
                                         Name = "NODES", NewValue = "1" // todo: pair.Key.NodeNames.Count
+                                    },
+
+                                    new ServiceProxies.SchedulerService.EstimationResult.ParameterValue()
+                                    //new TimeMeter.EstimationResult.ParameterValue()
+                                    {
+                                        Name = "TOTAL_OUTPUT_FILE_SIZE", 
+                                        NewValue = pair.Value.ByModel.TotalOutputFileSize.IsSet ? 
+                                            pair.Value.ByModel.TotalOutputFileSize.Value.ToString() :
+                                            null
                                     }
-                                }
+                                }.Where(p => p.NewValue != null).ToArray()
                             }
                         }
                     ).ToArray(),
