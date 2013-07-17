@@ -169,7 +169,7 @@ namespace MITP
             {
                 var batchLines = batchContent.Replace("\r", "").Split(new[] { '\n' });
                 string newBatchContent =
-                    String.Join(Environment.NewLine, batchLines.Take(pauseLine)) +
+                    String.Join(Environment.NewLine, batchLines.Take(pauseLine)) + Environment.NewLine +
                     "pause" + Environment.NewLine +
                     String.Join(Environment.NewLine, batchLines.Skip(pauseLine));
                 batchContent = newBatchContent;
