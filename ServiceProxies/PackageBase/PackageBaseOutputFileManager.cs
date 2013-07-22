@@ -43,25 +43,33 @@ namespace MITP
                 _tmpFilesToDel = new List<string>();
             }
 
-            public string GetFileName(string filePath, IOutFileDef fileDef)
+            public string GetFilePathForStorage(IOutFileDef fileDef)
             {
+                /*
                 if (fileDef == null)
                 {
-                    Log.Warn(String.Format("Output FileDef is null for file '{0}'", filePath));
-                    return filePath.TrimStart(new[] { '/', '\\' });
+                    Log.Warn(String.Format("Output FileDef is null for file '{0}'", filePathOrigin));
+                    return filePathRenamed.TrimStart(new[] { '/', '\\' }).Replace('\\', '/');
                 }
+                */
 
-                string folder = String.IsNullOrEmpty(filePath)? "/": Path.GetDirectoryName(filePath);
-                folder = fileDef.Path ?? folder;
-                folder = folder.Trim(new[] { '/', '\\' }) + "/";
-                if (folder == "/")
-                    folder = "";
+                string folder   = (fileDef.Path ?? "").Trim(new[] { '/', '\\' });
+                string fileName = fileDef.ExpectedName.Trim(new[] { '/', '\\' });
 
-                string fileName = fileDef.ExpectedName;
-                if (String.IsNullOrEmpty(fileName))
-                    fileName = Path.GetFileName(filePath);
+                string path = (folder + "/" + fileName).TrimStart(new[] { '/', '\\' }).Replace('\\', '/');
 
-                return (folder + fileName.TrimStart(new[] { '/', '\\' })).Replace('\\', '/');
+                return path;
+            }
+
+            
+            public string GetFilePathForStorage(string filePathOrigin, string filePathRenamed)//, IOutFileDef fileDef)
+            {
+                if (String.IsNullOrEmpty(filePathRenamed))
+                    filePathRenamed = filePathOrigin;
+
+                string path = filePathRenamed.TrimStart(new[] { '/', '\\' }).Replace('\\', '/');
+                
+                return path;
             }
 
             public string GetSlotName(IOutFileDef fileDef)
@@ -75,12 +83,13 @@ namespace MITP
                 return fileDef.Name;
             }
 
-            public long OutputFileCopy(IOutFileDef fileDef, string filePath, DynamicContext ctx)
+            public long OutputFileCopy(IOutFileDef fileDef, string filePath, DynamicContext ctx, string newFilePath = null)
             {
                 _filesToCopyFromFTP.Add(Tuple.Create(
-                    new TaskFileDescription { 
-                        FileName = GetFileName(filePath, fileDef),
-                        SlotName = GetSlotName(fileDef) 
+                    new TaskFileDescription
+                    {
+                        FileName = GetFilePathForStorage(filePathOrigin: filePath, filePathRenamed: newFilePath), //,  fileDef),
+                        SlotName = GetSlotName(fileDef)
                     },
                     filePath
                 ));
@@ -113,9 +122,10 @@ namespace MITP
                 string tmpFilePath = Path.GetTempFileName();
                 _tmpFilesToDel.Add(tmpFilePath);
 
-                string fileName = GetFileName("", fileDef);
+                string fileName = GetFilePathForStorage(fileDef);
                 _filesToCopyFromTmp.Add(Tuple.Create(
-                    new TaskFileDescription { 
+                    new TaskFileDescription
+                    {
                         FileName = fileName,
                         SlotName = GetSlotName(fileDef)
                     },
@@ -158,7 +168,7 @@ namespace MITP
 
                     outFiles.Add(descr);
                 }
-                
+
                 Log.Debug("Moving output files to storage done");
 
                 Cleanup();
