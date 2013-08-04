@@ -1,4 +1,6 @@
-﻿using System;
+﻿extern alias ModelAdjust;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,8 @@ using Easis.PackageBase.Engine;
 using Easis.PackageBase.Definition;
 using Easis.PackageBase.Types;
 using ServiceProxies.ResourceBaseService;
+
+using estimationAdjuster = ModelAdjust.ModelEstimation.MLEstimator;
 
 namespace MITP
 {
@@ -148,19 +152,120 @@ namespace MITP
         }
         #endregion
 
-        private static Dictionary<string, double> AutoAdjustCoefsByHistory(PackageEngine engine, ResourceNode node, Dictionary<string, object> fixedCoefs, Dictionary<string, double> adjustableCoefs)
+        private static Dictionary<string, double> AutoAdjustCoefsByHistory(PackageEngine engine, IEnumerable<Resource> resources, ResourceNode node, Dictionary<string, object> fixedCoefs, Dictionary<string, double> adjustableCoefs)
         {
             lock (_historyLock)
-            {
+            {   
                 //Log.Info("Adjusting coefs");
                 string packageName = engine.CompiledMode.ModeQName.PackageName.ToLowerInvariant();
                 var history = GetHistorySamples(packageName, node.ResourceName, node.NodeName);
 
-                if (history.Length < 1)
+                if (history.Length < 5)
                 {
                     //Log.Debug("Not enough history samples to adjust coefs");
                     return null;
+                }                
+
+                // todo : cache coefs for "resource.node.package"
+
+                List<string> coefNames = history.SelectMany(h => h.ModelCoefs.Keys).Distinct()
+                    .Union(fixedCoefs.Keys.Distinct())
+                    .Union(adjustableCoefs.Keys.Distinct())
+                    .OrderBy(name => name)
+                    .ToList();
+
+                double[,] historySampleNum = new double[history.Length, 2];
+                for (int i = 0; i < historySampleNum.GetLength(0); i++)
+                {
+                    historySampleNum[i, 0] = i;
+                    historySampleNum[i, 1] = history[i].CalcTime.TotalSeconds;
                 }
+
+                Func<double[], Dictionary<string, double>> coefVectorToDict = (double[] c) =>
+                {
+                    var dict = new Dictionary<string, double>();
+                    for (int i = 0; i < c.Length; i++)
+                        dict[coefNames[i]] = c[i];
+                    return dict;
+                };
+
+                // todo : cache model results (also + common lambda for getMean & getSigma)
+                
+                estimationAdjuster.meanFunction  getMean  = (c, x) => 
+                {
+                    try
+                    {
+                        var h = history[(int) x[0]];
+
+                        Dictionary<string, object> coefs = coefVectorToDict(c).ToDictionary(
+                            pair => pair.Key,
+                            pair => (object) pair.Value
+                        );
+
+                        var estimNode = resources.Single(r => r.ResourceName == h.NodesConfig.Single().ResourceName)
+                            .Nodes.Single(n => n.NodeName == h.NodesConfig.Single().NodeName);
+
+                        return EstimateOnNode(h.EstimatorEngine, coefs, estimNode).CalculationTime.Value;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn("Error on model adjust: " + e.ToString());
+                        return 0;
+                    }
+                };
+
+
+                estimationAdjuster.sigmaFunction getSigma = (c, x) =>
+                {
+                    try
+                    {
+                        var h = history[(int) x[0]];
+
+                        Dictionary<string, object> coefs = coefVectorToDict(c).ToDictionary(
+                            pair => pair.Key,
+                            pair => (object) pair.Value
+                        );
+
+                        var estimNode = resources.Single(r => r.ResourceName == h.NodesConfig.Single().ResourceName)
+                            .Nodes.Single(n => n.NodeName == h.NodesConfig.Single().NodeName);
+
+                        return EstimateOnNode(h.EstimatorEngine, coefs, estimNode).CalculationTime.Dispersion;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn("Error on model adjust: " + e.ToString());
+                        return 0;
+                    }
+                };
+
+                var estimator = new estimationAdjuster(historySampleNum, coefNames.Count, getMean, getSigma, 1.0e-4, false);
+
+                var coefsStartingVector = new double[coefNames.Count];
+                var isAdjustable        = new bool[coefNames.Count];
+
+                foreach (var coefPair in adjustableCoefs)
+                {
+                    int pos = coefNames.IndexOf(coefPair.Key);
+                    coefsStartingVector[pos] = coefPair.Value;
+                    isAdjustable[pos] = true;
+                }
+
+                foreach (var coefPair in fixedCoefs)
+                    coefsStartingVector[coefNames.IndexOf(coefPair.Key)] = (coefPair.Value is Double) ? (double)coefPair.Value : 0.0;
+
+                if (isAdjustable.Any(b => b))
+                {
+                    // todo : ExecWithTimeLimit
+                    var coefsAdjustedVector = estimator.estimate(coefsStartingVector, isAdjustable);
+
+                    var adjusted = coefVectorToDict(coefsAdjustedVector);
+                    return adjusted;
+                }
+                else
+                    return new Dictionary<string, double>();
+
+
+
 
                 if (packageName == "bsm")
                 {
@@ -184,7 +289,7 @@ namespace MITP
             }
         }
 
-        private static Dictionary<string, object> GetModelCoefs(PackageEngine engine, ResourceNode node)
+        private static Dictionary<string, object> GetModelCoefs(PackageEngine engine, IEnumerable<Resource> resources, ResourceNode node)
         {
             var fixedCoefs = new Dictionary<string, object>(engine.CompiledMode.Models.DefaultCoeffs);
             var adjustableCoefs  = new Dictionary<string, double>();
@@ -226,7 +331,7 @@ namespace MITP
                 }
             }
 
-            var adjustedCoefs = AutoAdjustCoefsByHistory(engine, node, fixedCoefs, adjustableCoefs) ?? new Dictionary<string, double>();
+            var adjustedCoefs = AutoAdjustCoefsByHistory(engine, resources, node, fixedCoefs, adjustableCoefs) ?? new Dictionary<string, double>();
             if (adjustableCoefs.Any())
                 Log.Info("Model coefs were adjusted");
 
@@ -283,25 +388,9 @@ namespace MITP
                     try
                     {
                         var res = allRes.Single(r => r.Name == node.ResourceName);
-                        var dest = new Common.LaunchDestination()
-                        {
-                            ResourceName = node.ResourceName,
-                            NodeNames = new[] { node.NodeName },
-                        };
+                        var modelCoefs = GetModelCoefs(engine, resources, node);
 
-                        var modelExecParams = new Dictionary<string, object>();
-                        foreach (string paramId in TimeMeter.ClusterParameterReader.GetAvailableParameterIds())   // from scheduler. Why?
-                        {
-                            try { modelExecParams[paramId] = TimeMeter.ClusterParameterReader.GetValue(paramId, res, dest); }
-                            catch (Exception) { /* it's ok not to extract all possible params */ }
-                        }
-
-                        var modelCoefs = GetModelCoefs(engine, node);
-                        var modelEstimation = engine.Estimate(modelExecParams, modelCoefs);
-                        if (engine.Ctx.Result.Messages.Any())
-                        {
-                            Log.Warn("Messages on estimation: " + String.Join("\n", engine.Ctx.Result.Messages.Select(mess => mess.Message)));
-                        }
+                        var modelEstimation = EstimateOnNode(engine, modelCoefs, node, res);
 
                         //double estimationInSeconds = engine.Estimate(modelExecParams, modelCoefs);
                         if (modelEstimation != null /* == no errors */ && modelEstimation.CalculationTime.IsSet &&
@@ -364,5 +453,50 @@ namespace MITP
 
             return estims;
         }    
+
+        private static ModelEstimation EstimateOnNode(PackageEngine engine, Dictionary<string, object> modelCoefs, ResourceNode node, Common.Resource res = null)
+        {
+            var modelExecParams = new Dictionary<string, object>();
+            foreach (string paramId in TimeMeter.ClusterParameterReader.GetAvailableParameterIds())   // from scheduler. Why?
+            {
+                try 
+                {
+                    if (res == null)
+                    {
+                        var n = new Common.Node()
+                        {
+                            ResourceName   = node.ResourceName,
+                            DNSName        = node.NodeName,
+
+                            CoresAvailable = node.CoresAvailable,
+                            CoresTotal     = (int) node.CoresCount,
+
+                            Parameters     = new Dictionary<string,string>(node.HardwareParams)
+                        };
+
+                        modelExecParams[paramId] = TimeMeter.ClusterParameterReader.GetValue(paramId, n);
+                    }
+                    else
+                    {
+                        var dest = new Common.LaunchDestination()
+                        {
+                            ResourceName = node.ResourceName,
+                            NodeNames = new[] { node.NodeName },
+                        };
+
+                        modelExecParams[paramId] = TimeMeter.ClusterParameterReader.GetValue(paramId, res, dest);
+                    }
+                }
+                catch (Exception) { /* it's ok not to extract all possible params */ }
+            }
+
+            var modelEstimation = engine.Estimate(modelExecParams, modelCoefs);
+            if (engine.Ctx.Result.Messages.Any())
+            {
+                Log.Warn("Messages on estimation: " + String.Join("\n", engine.Ctx.Result.Messages.Select(mess => mess.Message)));
+            }
+
+            return modelEstimation;
+        }
     }
 }

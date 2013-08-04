@@ -1,4 +1,6 @@
-﻿using System;
+﻿extern alias ModelAdjust;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,8 @@ using Easis.PackageBase.Engine;
 using Easis.PackageBase.Definition;
 using Easis.PackageBase.Types;
 using System.Runtime.Serialization;
+
+using ModelEstimation = Easis.PackageBase.Definition.ModelEstimation;
 
 namespace MITP
 {
