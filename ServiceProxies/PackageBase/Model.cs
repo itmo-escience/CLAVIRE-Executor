@@ -52,77 +52,33 @@ namespace MITP
         private const string FIXED_COEF_PREFIX = "model.";
         private const string ADJUSTABLE_COEF_PREFIX = "model*.";
 
-        #region BSM Estimator
+        #region Coefs cache
+        
+        private const int NUM_RUNS_TO_RECOMPUTE_COEFS_CACHE = 10;
+        private static readonly TimeSpan TIME_LIMIT_TO_COMPUTE_ADJUSTED_COEFS = TimeSpan.FromSeconds(1);
 
-        private class BSMSimpleEstimator
+        private static Dictionary<string, Dictionary<string, double>> _cachedCoefValues = new Dictionary<string, Dictionary<string, double>>();
+        private static Dictionary<string, int> _cachedSamplesCount = new Dictionary<string, int>();
+
+        private static void SetRecomputedCoefsCache(string key, Dictionary<string, double> newCache, int samplesCount)
         {
-            private const double BsmA = 10.0;
-            private const double BsmB = 24.5;
-
-            /// <summary>
-            /// Оценка параметра perf модели производительности BSM
-            /// T(N) = (a * N + b) * perf
-            /// </summary>
-            /// <param name="fTime">Массив времени прогноза (N)</param>
-            /// <param name="cTime">Массив времени счета</param>
-            /// <returns>Оценка параметра perf</returns>
-            public static double BsmEstimatePerf(double[] fTime, double[] cTime)
-            {
-                var nom = 0.0;
-                var denom = 0.0;
-                for (int i = 0; i < fTime.Length; i++)
-                {
-                    nom += (BsmA * fTime[i] + BsmB) * cTime[i];
-                    denom += (BsmA * fTime[i] + BsmB) * (BsmA * fTime[i] + BsmB);
-                }
-                return nom / denom;
-            }
-
-            /// <summary>
-            /// Оценка СКО относительно погрешности
-            /// T(N) = (a * N + b) * perf
-            /// Ширина интервала 2СКО: (a * N * perf) * z * 2
-            /// </summary>
-            /// <param name="perf">Параметра модели времени BSM</param>
-            /// <param name="fTime">Массив времени прогноза (N)</param>
-            /// <param name="cTime">Массив времени счета</param>
-            /// <returns>Величина относительной погрешности z</returns>
-            public static double BsmRelativeStDev(double perf, double[] fTime, double[] cTime)
-            {
-                var relErr = new double[fTime.Length];
-                for (int i = 0; i < fTime.Length; i++)
-                    relErr[i] = ((BsmA * fTime[i] + BsmB) * perf - cTime[i]) / (BsmA * fTime[i] * perf);
-                return StDev(relErr);
-            }
-
-            /// <summary>
-            /// Математическое ожидание
-            /// </summary>
-            /// <param name="x">Массив чисел</param>
-            /// <returns>Математическое ожидание</returns>
-            private static double Mean(double[] x)
-            {
-                var sum = 0.0;
-                for (int i = 0; i < x.Length; i++)
-                    sum += x[i];
-                return sum / x.Length;
-            }
-
-            /// <summary>
-            /// СКО
-            /// </summary>
-            /// <param name="x">Массив чисел</param>
-            /// <returns>СКО</returns>
-            private static double StDev(double[] x)
-            {
-                var sum = 0.0;
-                var m = Mean(x);
-                for (int i = 0; i < x.Length; i++)
-                    sum += (m - x[i]) * (m - x[i]);
-                return Math.Sqrt(sum / x.Length);
-            }
+            _cachedCoefValues[key]   = new Dictionary<string, double>(newCache);
+            _cachedSamplesCount[key] = samplesCount;
         }
 
+        private static Dictionary<string, double> GetCoefsCahce(string key, out int samplesCount)
+        {
+            if (!_cachedSamplesCount.ContainsKey(key))
+                _cachedSamplesCount[key] = 0;
+
+            if (!_cachedCoefValues.ContainsKey(key))
+                _cachedCoefValues[key] = new Dictionary<string, double>();
+
+            samplesCount = _cachedSamplesCount[key];
+            var cacheCopy = new Dictionary<string, double>(_cachedCoefValues[key]);
+            return cacheCopy;
+        }
+        
         #endregion
 
         #region History
@@ -156,17 +112,22 @@ namespace MITP
         {
             lock (_historyLock)
             {   
-                //Log.Info("Adjusting coefs");
                 string packageName = engine.CompiledMode.ModeQName.PackageName.ToLowerInvariant();
                 var history = GetHistorySamples(packageName, node.ResourceName, node.NodeName);
 
-                if (history.Length < 5)
+                string cacheKey = String.Format("{0}.{1}.{2}", node.ResourceName, node.NodeName, packageName);                
+                int cachedSamplesCount;
+                var cachedCoefs = GetCoefsCahce(cacheKey, out cachedSamplesCount);
+
+                if (history.Length < cachedSamplesCount + NUM_RUNS_TO_RECOMPUTE_COEFS_CACHE)
                 {
                     //Log.Debug("Not enough history samples to adjust coefs");
-                    return null;
-                }                
+                    //return null;
 
-                // todo : cache coefs for "resource.node.package"
+                    return cachedCoefs;
+                }
+
+                Log.Debug("Recomputing model coefs for " + cacheKey);
 
                 List<string> coefNames = history.SelectMany(h => h.ModelCoefs.Keys).Distinct()
                     .Union(fixedCoefs.Keys.Distinct())
@@ -200,11 +161,11 @@ namespace MITP
                             lastCoefs.Zip(c, (c1, c2) => Math.Abs(c1 - c2)).All(diff => diff < 1e-12))
                             return lastEstim;
 
-                        var h = history[(int)x[0]];
+                        var h = history[(int) x[0]];
 
                         Dictionary<string, object> coefs = coefVectorToDict(c).ToDictionary(
                             pair => pair.Key,
-                            pair => (object)pair.Value
+                            pair => (object) pair.Value
                         );
 
                         var estimNode = resources.Single(r => r.ResourceName == h.NodesConfig.Single().ResourceName)
@@ -250,36 +211,30 @@ namespace MITP
 
                 if (isAdjustable.Any(b => b))
                 {
-                    // todo : ExecWithTimeLimit
-                    var coefsAdjustedVector = estimator.estimate(coefsStartingVector, isAdjustable);
+                    Dictionary<string, double> adjusted = null;
 
-                    var adjusted = coefVectorToDict(coefsAdjustedVector);
+                    try
+                    {
+                        Tools.ProcessWithTimeLimit(TIME_LIMIT_TO_COMPUTE_ADJUSTED_COEFS, () =>
+                        {
+                            var coefsAdjustedVector = estimator.estimate(coefsStartingVector, isAdjustable);
+                            adjusted = coefVectorToDict(coefsAdjustedVector);
+                        });
+                    }
+                    catch (TimeLimitException tle)
+                    {
+                        Log.Warn("Failed to recompute coefs in time: " + tle.ToString());
+                        adjusted = cachedCoefs; // will recompute only if history changes => no repeated fails
+                    }
+
+                    SetRecomputedCoefsCache(cacheKey, adjusted, history.Length);
+
                     return adjusted;
                 }
                 else
-                    return new Dictionary<string, double>(); // todo: return null?
-
-
-
-
-                if (packageName == "bsm")
                 {
-                    double[] fTime = history.Select(hs => double.Parse(hs.PackParams["ForecastSize"])).ToArray();
-                    double[] cTime = history.Select(hs => hs.CalcTime.TotalSeconds).ToArray();
-
-                    double perf = BSMSimpleEstimator.BsmEstimatePerf(fTime, cTime);
-                    double dev = BSMSimpleEstimator.BsmRelativeStDev(perf, fTime, cTime);
-
-                    return new Dictionary<string, double>()
-                    {
-                        { "Perf", perf },
-                        { "D", dev }
-                    };
-                }
-                else
-                {
-                    Log.Warn("Unsupported package to adjust coefs: " + packageName);
-                    return null;
+                    //return new Dictionary<string, double>(); // todo: return null?
+                    return cachedCoefs;
                 }
             }
         }
