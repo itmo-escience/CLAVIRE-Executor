@@ -96,11 +96,13 @@ namespace MITP
                 _dumpedTasks[this.Context.TaskId] = this;
             }
 
+            /*
             var collection = Mongo.GetCollection<TaskCache>();
             lock (this.StateLock)
             {
                 collection.Save(this);
             }
+            */
         }
 
         private static TaskCache LoadTask(ulong taskId)
