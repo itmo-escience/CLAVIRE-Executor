@@ -189,53 +189,48 @@ namespace MITP
                     return dict;
                 };
 
-                // todo : cache model results (also + common lambda for getMean & getSigma)
+                double[] lastCoefs = null;
+                ModelEstimation lastEstim = null;
+
+                Func<double[], double[], ModelEstimation> getEstim = (c, x) =>
+                {
+                    try
+                    {
+                        if (lastEstim != null && lastCoefs != null &&
+                            lastCoefs.Zip(c, (c1, c2) => Math.Abs(c1 - c2)).All(diff => diff < 1e-12))
+                            return lastEstim;
+
+                        var h = history[(int)x[0]];
+
+                        Dictionary<string, object> coefs = coefVectorToDict(c).ToDictionary(
+                            pair => pair.Key,
+                            pair => (object)pair.Value
+                        );
+
+                        var estimNode = resources.Single(r => r.ResourceName == h.NodesConfig.Single().ResourceName)
+                            .Nodes.Single(n => n.NodeName == h.NodesConfig.Single().NodeName);
+
+                        lastEstim = EstimateOnNode(h.EstimatorEngine, coefs, estimNode);
+                        lastCoefs = (double[]) c.Clone();
+                        return lastEstim;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn("Error on model adjust: " + e.ToString());
+                        return null;
+                    }
+                };
                 
                 estimationAdjuster.meanFunction  getMean  = (c, x) => 
                 {
-                    try
-                    {
-                        var h = history[(int) x[0]];
-
-                        Dictionary<string, object> coefs = coefVectorToDict(c).ToDictionary(
-                            pair => pair.Key,
-                            pair => (object) pair.Value
-                        );
-
-                        var estimNode = resources.Single(r => r.ResourceName == h.NodesConfig.Single().ResourceName)
-                            .Nodes.Single(n => n.NodeName == h.NodesConfig.Single().NodeName);
-
-                        return EstimateOnNode(h.EstimatorEngine, coefs, estimNode).CalculationTime.Value;
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Warn("Error on model adjust: " + e.ToString());
-                        return 0;
-                    }
+                    var estim = getEstim(c, x);
+                    return (estim != null)? estim.CalculationTime.Value: 0.0;
                 };
-
 
                 estimationAdjuster.sigmaFunction getSigma = (c, x) =>
                 {
-                    try
-                    {
-                        var h = history[(int) x[0]];
-
-                        Dictionary<string, object> coefs = coefVectorToDict(c).ToDictionary(
-                            pair => pair.Key,
-                            pair => (object) pair.Value
-                        );
-
-                        var estimNode = resources.Single(r => r.ResourceName == h.NodesConfig.Single().ResourceName)
-                            .Nodes.Single(n => n.NodeName == h.NodesConfig.Single().NodeName);
-
-                        return EstimateOnNode(h.EstimatorEngine, coefs, estimNode).CalculationTime.Dispersion;
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Warn("Error on model adjust: " + e.ToString());
-                        return 0;
-                    }
+                    var estim = getEstim(c, x);
+                    return (estim != null)? estim.CalculationTime.Dispersion: 0.0;
                 };
 
                 var estimator = new estimationAdjuster(historySampleNum, coefNames.Count, getMean, getSigma, 1.0e-4, false);
@@ -262,7 +257,7 @@ namespace MITP
                     return adjusted;
                 }
                 else
-                    return new Dictionary<string, double>();
+                    return new Dictionary<string, double>(); // todo: return null?
 
 
 
