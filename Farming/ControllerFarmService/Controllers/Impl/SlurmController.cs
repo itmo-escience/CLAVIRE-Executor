@@ -88,7 +88,8 @@ namespace MITP
 
             // -n = do not override files, so user's input file doesn't vanish => copying startup files in reverse order
             foreach (string path in pack.CopyOnStartup.Reverse())
-                scriptContent.Append("cp -r -n " + path + " ./\n"); 
+                scriptContent.Append("cp -r " + path + " ./\n"); 
+                //scriptContent.Append("cp -r -n " + path + " ./\n"); 
 
             scriptContent.Append(cmdLine);
             scriptContent.AppendFormat("\ndate +%s%N > {0}\n", ClavireFinishFileName);
