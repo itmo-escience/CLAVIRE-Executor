@@ -55,7 +55,9 @@ namespace MITP
         #region Coefs cache
         
         private const int NUM_RUNS_TO_RECOMPUTE_COEFS_CACHE = 10;
-        private static readonly TimeSpan TIME_LIMIT_TO_COMPUTE_ADJUSTED_COEFS = TimeSpan.FromSeconds(1);
+        private static readonly TimeSpan TIME_LIMIT_TO_COMPUTE_ADJUSTED_COEFS = TimeSpan.FromSeconds(5);
+
+        private const double ADJUSTING_PRECISION = 1e-4;
 
         private static Dictionary<string, Dictionary<string, double>> _cachedCoefValues = new Dictionary<string, Dictionary<string, double>>();
         private static Dictionary<string, int> _cachedSamplesCount = new Dictionary<string, int>();
@@ -194,20 +196,20 @@ namespace MITP
                     return (estim != null)? estim.CalculationTime.Dispersion: 0.0;
                 };
 
-                var estimator = new estimationAdjuster(historySampleNum, coefNames.Count, getMean, getSigma, 1.0e-4, false);
+                var estimator = new estimationAdjuster(historySampleNum, coefNames.Count, getMean, getSigma, ADJUSTING_PRECISION, false);
 
                 var coefsStartingVector = new double[coefNames.Count];
                 var isAdjustable        = new bool[coefNames.Count];
 
-                foreach (var coefPair in adjustableCoefs)
+                foreach (var coefPair in fixedCoefs)
+                    coefsStartingVector[coefNames.IndexOf(coefPair.Key)] = (coefPair.Value is Double) ? (double)coefPair.Value : 0.0;
+
+                foreach (var coefPair in adjustableCoefs) // rewrites fixed coefs
                 {
                     int pos = coefNames.IndexOf(coefPair.Key);
                     coefsStartingVector[pos] = coefPair.Value;
                     isAdjustable[pos] = true;
                 }
-
-                foreach (var coefPair in fixedCoefs)
-                    coefsStartingVector[coefNames.IndexOf(coefPair.Key)] = (coefPair.Value is Double) ? (double)coefPair.Value : 0.0;
 
                 if (isAdjustable.Any(b => b))
                 {
