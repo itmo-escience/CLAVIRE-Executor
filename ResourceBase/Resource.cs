@@ -94,7 +94,45 @@ namespace MITP
             {
                 try
                 {
-                    string json = File.ReadAllText(filePath);
+                    string template = File.ReadAllText(filePath);
+
+                    if (!template.TrimStart().StartsWith("<#@"))
+                    {
+                        string assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "");
+                        string assemblyDir = Path.GetDirectoryName(assemblyLocation);
+
+                        var used_assemblies_location = Directory.GetFiles(assemblyDir, "*.dll").Where(name => !name.ToLowerInvariant().Contains("mono.texttemplating"));
+
+                        string new_template = @"<#@ template debug=""false"" hostspecific=""false"" language=""C#"" #>" + Environment.NewLine; // inherits=""MITP.Resource""
+                        foreach (string location in used_assemblies_location)
+                            new_template += String.Format(@"<#@ assembly name=""{0}"" #>{1}", location, Environment.NewLine);
+
+                        new_template += @"<#@ import namespace=""System.Collections.Generic"" #>" + Environment.NewLine;
+                        new_template += @"<#@ import namespace=""MITP"" #>" + Environment.NewLine;
+
+                        template = new_template + template;
+
+
+                        
+                        /*template =
+@"<#@ template debug=""false"" hostspecific=""false"" language=""C#"" #>
+<#@ assembly name=""D:\Clavire\Executor\ResourceBase\bin\Debug\ResourceBase.dll"" #>
+<#@ import namespace=""System.Collections.Generic"" #>" + Environment.NewLine + template;
+//<#@ import namespace=""MITP.Resource"" #>" + Environment.NewLine + template;
+//<#@ assembly name=""ResourceBase.dll"" #>
+//<#@ import namespace=""System.Linq"" #>" + Environment.NewLine + template;
+//<#@ output extension="".js"" #>" + Environment.NewLine + template;
+                         */
+                    }
+
+                    var generator = new Mono.TextTemplating.TemplateGenerator();
+                    //generator.AddParameter("", "parameter", "WorldName", "5");
+
+                    var engine = new Mono.TextTemplating.TemplatingEngine();
+                    string json = engine.ProcessTemplate(template, generator);                   
+                    
+                    
+                    //string json = File.ReadAllText(filePath);
                     var res = Resource.BuildFromDescription(json);
 
                     resources.Add(res);
@@ -107,6 +145,17 @@ namespace MITP
 
             return resources;
         }
+
+        public static string InstalledPackages(string resourceName, string nodeName)
+        {
+            return "";
+            return @"			{
+                ""Name"": ""TestP"",
+                ""Version"": ""v1"",
+                ""AppPath"": ""D:\\CLAVIRE\\_testp\\testp.exe""
+			}";
+        }
+
 
         /*
         public IEnumerable<Tuple<ResourceNode, int>> NodesInConfig(ResourceConfig config)
