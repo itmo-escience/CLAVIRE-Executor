@@ -28,5 +28,11 @@ namespace MITP
 
         [OperationContract]
         Resource[] GetResourcesForFarm(string farmId = null, string dumpingKey = null);
+
+        [OperationContract]
+        void AddInstalledPackage(string resourceName, string nodeName, PackageOnNode pack);
+
+        [OperationContract]
+        void RemoveInstalledPackage(string resourceName, string nodeName, string packName);
     }
 }

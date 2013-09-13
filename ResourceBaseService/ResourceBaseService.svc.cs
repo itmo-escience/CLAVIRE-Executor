@@ -249,5 +249,15 @@ namespace MITP
 
             return resourcesForFarm;
         }
+
+        public void AddInstalledPackage(string resourceName, string nodeName, PackageOnNode pack)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveInstalledPackage(string resourceName, string nodeName, string packName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
