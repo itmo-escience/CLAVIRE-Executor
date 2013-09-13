@@ -17,6 +17,7 @@ namespace MITP
 {
     public class PbsController : ASshBasedController, IStatelessResourceController
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
       
         private abstract class SshPbsCommands
         {
@@ -36,7 +37,7 @@ namespace MITP
             var pack = PackageByName(node, task.PackageName);
             ulong taskId = task.TaskId;
 
-            Log.Info("Locking operation");
+            logger.Trace("Locking operation");
             var operationHolder = LockOperation(task.TaskId, TaskLock.WRITE_OPERATION_EXECUTED);
 
             string fileNames;
@@ -44,21 +45,21 @@ namespace MITP
 
 
             string cmdLine = String.Format(task.CommandLine, pack.AppPath, taskId, fileNames.Trim());
-            Log.Info("cmdline = " + cmdLine);
+            logger.Debug("Task {0}, cmdline = {1}", task.TaskId, cmdLine);
 
             String scriptPath;
 
-            Log.Info("Preparing script");
+            logger.Trace("Preparing script");
             ScriptPrepare(pack, cmdLine, node, clusterHomeFolder, out scriptPath);
-            Log.Info("Script prepared. Executing it.");
+            logger.Trace("Script prepared. Executing it.");
 
             var result = ExecuteRun(node, scriptPath);
             
             string jobId = result.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).First();
-            Log.Info("Exec done. Job id = " + jobId);
+            logger.Info("Exec done on node {1}.{2}. Job id = {0}", jobId, node.ResourceName, node.NodeName);
 
             UnLockOperation(task.TaskId, operationHolder);
-            Log.Info("Operation unlocked");
+            logger.Trace("Operation unlocked");
 
             return jobId;
         }
@@ -107,11 +108,9 @@ namespace MITP
             }
             catch (Exception e)
             {
-                Log.Error(String.Format("Failed to abort task {1} on resource {2}: {3}{0}{4}",
-                    Environment.NewLine,
-                    task.TaskId, task.Resource.ResourceName,
-                    e.Message, e.StackTrace
-                ));
+                logger.ErrorException(e, "Failed to abort task {0} on resource {1}",
+                    task.TaskId, task.Resource.ResourceName
+                );
                 // todo : throw;
             }
         }

@@ -20,25 +20,25 @@ namespace MITP
     {
         public const string FARMID_PARAM_NAME = "FarmId";
 
-        private static ReaderWriterLockSlim _resourcesLock = new ReaderWriterLockSlim();
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        //private static Logger Log = LogManager.GetCurrentClassLogger();
+        private static ReaderWriterLockSlim _resourcesLock = new ReaderWriterLockSlim();
 
         private void CheckNodeConfigConsistency(ulong taskId, IEnumerable<NodeRunConfig> config, Resource resource)
         {
             if (config.Any(node => node.ResourceName != resource.ResourceName))
             {
-                Log.Error("Node configs have different resources: " + String.Join(", ", config.Select(c => c.ResourceName)));
+                logger.Error("Node configs have different resources: " + String.Join(", ", config.Select(c => c.ResourceName)));
                 throw new ArgumentException("All node configs should have the same resource name");
             }
 
             var unknownNodes = config.Select(n => n.NodeName).Except(resource.Nodes.Select(n => n.NodeName));
             if (unknownNodes.Any())
             {
-                Log.Error(String.Format(
-                    "Task {0} has unknown nodes for resource {1}: {2}",
+                logger.Error("Task {0} has unknown nodes for resource {1}: {2}",
                     taskId, resource.ResourceName, String.Join(", ", unknownNodes)
-                ));
+                );
+
                 throw new Exception("Wrong node config for task " + taskId.ToString() + ": " + String.Join(", ", unknownNodes));
             }
         }
@@ -49,7 +49,7 @@ namespace MITP
 
             try
             {
-                Log.Info("Running task " + task.ToString());
+                logger.Info("Running task " + task.ToString());
 
                 string resourceName = task.NodesConfig.First().ResourceName;
                 var resourceCache = ResourceCache.GetByName(resourceName);
@@ -66,13 +66,13 @@ namespace MITP
                 {
                     resourceCache.Acquire(task.NodesConfig);  // todo : m.b. move under resourceCache.StateLock?
 
-                    Log.Info(String.Format("Trying to run task {0} on resource {1}", task.TaskId, task.Resource.ResourceName));
+                    logger.Info("Trying to run task {0} on resource {1}", task.TaskId, task.Resource.ResourceName);
 
                     task.LocalId = task.Controller.Run(task);
 
-                    Log.Info(String.Format("Task {0} ({1}) started on resource {2} with localId = {3}",
+                    logger.Info("Task {0} ({1}) started on resource {2} with localId = {3}",
                         task.TaskId, task.PackageName, task.Resource.ResourceName, task.LocalId
-                    ));
+                    );
 
                     var state = new TaskStateInfo(TaskState.Started, task.LocalId.ToString());
                     TaskCache.AddTask(task, state);
@@ -81,13 +81,13 @@ namespace MITP
                 {
                     resourceCache.Release(task.NodesConfig);
 
-                    Log.Error(String.Format("Unable to run task {0}: {1}", task.TaskId, e));
+                    logger.ErrorException("Unable to run task " + task.TaskId.ToString(), e);
                     throw;
                 }
             }
             catch (Exception e)
             {
-                Log.Error(String.Format("Exception on Farm.Run(task {0}): {1}", task.TaskId, e));
+                logger.ErrorException(e, "Exception on Farm.Run(task {0})", task.TaskId);
                 throw;
             }
             finally
@@ -102,7 +102,7 @@ namespace MITP
 
             try
             {
-                Log.Info("Aborting task " + taskId.ToString());
+                logger.Info("Aborting task " + taskId.ToString());
 
                 var task = TaskCache.GetById(taskId);
                 task.UpdateStateAsync();
@@ -112,19 +112,19 @@ namespace MITP
                     if (task.StateInfo.State == TaskState.Started)
                     {
                         task.Context.Controller.Abort(task.Context);
-                        Log.Info("Task aborted: " + taskId.ToString());
+                        logger.Info("Task aborted: " + taskId.ToString());
 
                         task.SetState(TaskState.Aborted, "Aborted by request"); // autorelease resources
                     }
                     else
                     {
-                        Log.Warn("Task was not started: " + taskId.ToString());
+                        logger.Warn("Task was not started: " + taskId.ToString());
                     }
                 }
             }
             catch (Exception e)
             {
-                Log.Error(String.Format("Error on aborting task {0}: {1}}", taskId, e));
+                logger.ErrorException("Error on aborting task " + taskId.ToString(), e);
                 throw;
             }
             finally
@@ -150,7 +150,7 @@ namespace MITP
             }
             catch (Exception e)
             {
-                Log.Error(String.Format("Error on getting task {0} state info: {1}", taskId, e));
+                logger.ErrorException(e, "Error on getting task {0} state info", taskId);
                 throw;
             }
             finally
@@ -176,7 +176,7 @@ namespace MITP
             }
             catch (Exception e)
             {
-                Log.Error(String.Format("Error on getting resource '{0}' state info: {1}", resourceName, e));
+                logger.ErrorException(e, "Error on getting resource '{0}' state info", resourceName);
                 throw;
             }
             finally
@@ -196,7 +196,7 @@ namespace MITP
             }
             catch (Exception e)
             {
-                Log.Error("Error on getting active tasks ids: " + e.ToString());
+                logger.ErrorException("Error on getting active tasks ids", e);
                 throw;
             }
             finally
@@ -216,7 +216,7 @@ namespace MITP
             }
             catch (Exception e)
             {
-                Log.Error("Error on getting active resource names: " + e.ToString());
+                logger.ErrorException("Error on getting active resource names", e);
                 throw;
             }
             finally
@@ -233,7 +233,7 @@ namespace MITP
 
                 try
                 {
-                    Log.Info("Reloading resources for controller");
+                    logger.Info("Reloading resources for controller, key = '{0}'", dumpingKey ?? "");
                     Console.WriteLine("Reloading resources for controller");
 
                     TaskCache.DumpAllTasks();
@@ -248,7 +248,7 @@ namespace MITP
                         resourceBase.Close();
 
                         string[] resourceNames = resources.Select(r => r.ResourceName).ToArray();
-                        Log.Info("Resources to reload for farm " + farmId + ": " + String.Join(", ", resourceNames));
+                        logger.Info("Resources to reload for farm {0}: {1}", farmId, String.Join(", ", resourceNames));
 
                         ResourceCache.ReloadResources(resources);
                         TaskCache.RestoreTasks(resourceNames);
@@ -259,12 +259,12 @@ namespace MITP
                             ResourceCache.UpdateNodesState(name);
                         });
 
-                        Log.Info("Resource reloading done for farm " + farmId);
+                        logger.Info("Resource reloading done for farm " + farmId);
                     }
                     catch (Exception e)
                     {
                         resourceBase.Abort();
-                        Log.Error("Exception on reloading resources: " + e.ToString());
+                        logger.ErrorException("Exception on reloading resources", e);
                         throw;
                     }
                 }
@@ -287,14 +287,14 @@ namespace MITP
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Could not load resources on server start. Retying. " + e.ToString());
+                    logger.ErrorException("Could not load resources on server start. Retying.", e);
                     System.Threading.Thread.Sleep(200);
                 }
             }
 
             System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (sender, e) =>
             {
-                Log.Error("Exception in some TPL's task: " + e.ToString());
+                logger.ErrorException("Exception in some TPL's task", e.Exception);
                 e.SetObserved();
                 //throw e.Exception;
             };  

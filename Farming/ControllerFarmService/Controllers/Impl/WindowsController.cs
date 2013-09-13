@@ -16,6 +16,8 @@ namespace MITP
     {
         private const string DEBUG_PAUSE_PARAM_NAME = "Windows.Debug.Pause.BeforeLine";
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private RExServiceClient GetREx(string url)
         {
             var service = new RExServiceClient();
@@ -27,7 +29,7 @@ namespace MITP
         {
             string[] providedWords = ((string)task.LocalId).Split(new char[] { '\n' }); // todo : string -> string[]
             if (providedWords.Length > 2)
-                Log.Warn(String.Format("Too many sections in provided task id for win PC: {0}", task.LocalId));
+                logger.Warn("Too many sections in provided task id for win PC: {0}", task.LocalId);
 
             string pid = providedWords[0];
             string nodeName = providedWords[1];
@@ -50,10 +52,7 @@ namespace MITP
             catch (Exception e)
             {
                 rexService.Abort();
-                Log.Warn(String.Format(
-                    "Exception while getting task '{0}' state (local id = {1}): {2}",
-                    task.TaskId, task.LocalId, e
-                ));
+                logger.WarnException(e, "Exception while getting task '{0}' state (local id = {1}): {2}", task.TaskId, task.LocalId);
 
                 throw;
                 //return new TaskStateInfo(TaskState.Started, "");
@@ -78,10 +77,7 @@ namespace MITP
 
             string jobFileName = "job_" + taskId + ".cmd";
 
-            Log.Info(String.Format(
-                "Trying to exec task {0} on win PC {1}",
-                taskId, node.NodeName
-            ));
+            logger.Info("Trying to exec task {0} on win PC {1}.{2}", taskId, node.ResourceName, node.NodeName);
 
             var pack = node.Packages.First(p => String.Equals(p.Name, task.PackageName, StringComparison.InvariantCultureIgnoreCase));
             string batchContent = "";
@@ -182,17 +178,14 @@ namespace MITP
             var rexService = GetREx(node.Services.ExecutionUrl);     // todo : close service client!
             int pid = rexService.Exec(taskId);
 
-            Log.Debug(String.Format(
-                "Task {0} ({1}) started on pc {2} with pid = {3}",
-                taskId, pack.Name, node.NodeName, pid
-            ));
+            logger.Info("Task {0} ({1}) started on pc {2}.{3} with pid = {4}", taskId, pack.Name, node.ResourceName, node.NodeName, pid);
 
             return pid + "\n" + node.NodeName;
         }
 
         public void Abort(TaskRunContext task)
         {
-            Log.Warn("Abort not implemented");
+            logger.Warn("Abort is not implemented on windows controller!");
         }
 
         public IEnumerable<NodeStateResponse> GetNodesState(Resource resource)
@@ -222,11 +215,7 @@ namespace MITP
                 {
                     rexService.Abort();
 
-                    Log.Warn(String.Format(
-                        "Node {0}.{1} is down: {2}",
-                        node.ResourceName, node.NodeName,
-                        e
-                    ));
+                    logger.Debug("Node {0}.{1} is down: {2}", node.ResourceName, node.NodeName, e);
 
                     lock (respLock)
                     {

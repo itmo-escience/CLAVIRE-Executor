@@ -13,6 +13,8 @@ namespace MITP
     {
         protected ConcurrentDictionary<ulong, TaskLock> locks = new ConcurrentDictionary<ulong, TaskLock>();
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         //private ConcurrentStack<>
         
         protected PackageOnNode PackageByName(ResourceNode node, string packageName)
@@ -72,10 +74,10 @@ namespace MITP
         {
             if (nodesConfig.Count() > 1)
             {
-                Log.Warn(String.Format(
+                logger.Warn(
                     "More than one node scheduled, but resource provider doesn’t support different settings on different nodes. Using settings from node '{0}'.",
                     nodesConfig.First().NodeName
-                ));
+                );
             }
 
             var node = resource.Nodes.First(n => n.NodeName == nodesConfig.First().NodeName);

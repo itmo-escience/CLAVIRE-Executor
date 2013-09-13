@@ -15,6 +15,8 @@ namespace ControllerFarmService
     {
         private static object _gridLock = new object();
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         // todo : { "Name": "ORCA", "Version": "v1", "AppPath": "/grid/software/orca-2.6.35-nompi/bin/" },
 
 
@@ -103,16 +105,13 @@ namespace ControllerFarmService
                 {
                     if (needToRefresh)
                     {
-                        Log.Debug("Creating new grid proxy certificate");
+                        logger.Info("Creating new grid proxy certificate");
                         SshExec(PilotCommands.GenerateProxyCertificate, "");
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.Warn(String.Format(
-                        "Creation of grid proxy certificate has failed: {0}\n{1}",
-                        e.Message, e.StackTrace
-                    ));
+                    logger.WarnException("Creation of grid proxy certificate has failed", e);
                 }
             }
         }
@@ -184,7 +183,7 @@ namespace ControllerFarmService
                 string tmpFileName = null;
                 if (task.UserCert != null)
                 {
-                    Log.Info("Using user's certificate");
+                    logger.Info("Using user's certificate for task {0}", task.TaskId);
                     tmpFileName = Path.GetTempFileName();
                     IOProxy.Storage.Download(task.UserCert, tmpFileName);
 
@@ -199,7 +198,7 @@ namespace ControllerFarmService
                 }
                 else
                 {
-                    Log.Info("Using system's certificate");
+                    logger.Info("Using system's certificate for task {0}", task.TaskId);
                 }
 
                 try
@@ -339,7 +338,7 @@ namespace ControllerFarmService
 
                     jobFileContent.AppendFormat(@"}}" + endl + "}}", node.NodeAddress);
 
-                    Log.Debug(String.Format("Task's '{0}' grid job JSON: ", task.TaskId, jobFileContent));
+                    logger.Debug(String.Format("Task's '{0}' grid job JSON: ", task.TaskId, jobFileContent));
 
                     string jobFileName = "job_" + task.TaskId.ToString() + ".js";
                     string jobFilePathOnHelper = JOBS_FOLDER_ON_HELPER + jobFileName;
@@ -366,29 +365,19 @@ namespace ControllerFarmService
 
                     // Запускаем
 
-                    Log.Info(String.Format(
-                        "Trying to exec task {0} on grid cluster {1}",
-                        task.TaskId, node.NodeName
-                    ));
+                    logger.Info("Trying to exec task {0} on grid cluster {1}.{2}", task.TaskId, node.ResourceName, node.NodeName);
 
                     string launchResult = SshExec(PilotCommands.SubmitJob, jobFilePathOnHelper, pilotUrl: node.Services.ExecutionUrl);
                     int urlPos = launchResult.IndexOf("https://");
                     string jobUrl = launchResult.Substring(urlPos).Trim() + "a";
-                    Log.Debug(jobUrl);
 
-                    Log.Info(String.Format(
-                        "Task {0} launched on grid with jobUrl = {1}",
-                        task.TaskId, jobUrl
-                    ));
+                    logger.Info("Task {0} launched on grid with jobUrl = '{1}'", task.TaskId, jobUrl);
 
                     return jobUrl;
                 }
                 catch (Exception e)
                 {
-                    Log.Error(String.Format(
-                        "Error while starting task {0} in grid: {1}\n{2}",
-                        task.TaskId, e.Message, e.StackTrace
-                    ));
+                    logger.ErrorException(e, "Error while starting task {0} in grid", task.TaskId);
 
                     throw;
                 }
@@ -396,9 +385,9 @@ namespace ControllerFarmService
                 {
                     if (task.UserCert != null)
                     {
-                        Log.Info("Wiping user's certificate");
+                        logger.Info("Wiping user's certificate");
                         tmpFileName = Path.GetTempFileName();
-                        File.WriteAllText(tmpFileName, "Wiped by Easis system");
+                        File.WriteAllText(tmpFileName, "Wiped by Clavire");
 
                         var scpForCert = new SSH.Scp(HELPER_SSH_HOST, HELPER_SSH_USER, HELPER_SSH_PASS);
                         scpForCert.Connect();

@@ -8,6 +8,7 @@ namespace MITP
 {
     public static class NLogExt
     {
+        /*
         private static string AddAffix<T>(Logger logger, string message, T affix)
         {
             string updatedMessage;
@@ -98,5 +99,21 @@ namespace MITP
         }
 
         #endregion
+        */
+        public static void WarnException(this Logger logger, Exception ex, string message, params object[] args)
+        {
+            logger.WarnException(String.Format(message, args), ex);
+        }
+
+        public static void ErrorException(this Logger logger, Exception ex, string message, params object[] args)
+        {
+            logger.ErrorException(String.Format(message, args), ex);
+        }
+
+        public static void FatalException(this Logger logger, Exception ex, string message, params object[] args)
+        {
+            logger.FatalException(String.Format(message, args), ex);
+        }
+    
     }
 }

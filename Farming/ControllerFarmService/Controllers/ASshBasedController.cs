@@ -22,6 +22,8 @@ namespace ControllerFarmService
             // '-500M' == 'less than 500 MB'
             // todo : REMOVE RESTRICTION FOR FILES MORE THAN 500 MB IN SIZE
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private SshConnectionPool _sshPool = new SshConnectionPool();
         private CopierConnectionPool _copierPool = new CopierConnectionPool();
         public static String ClavireStartFileName = "clavire_start_time.txt";
@@ -57,7 +59,7 @@ namespace ControllerFarmService
                 foreach (var s in sshCommands)
                 {
                     if (!s.Contains("pbsnodes") && !s.Contains("qstat"))
-                        Log.Info("Ssh command to execute: " + s);
+                        logger.Trace("Ssh command to execute: " + s);
 
                     /*
                     sshExec.Connect();
@@ -81,7 +83,7 @@ namespace ControllerFarmService
             }
             catch (Exception e)
             {
-                Log.Warn(e.Message);
+                logger.WarnException("SSH exec caused exception", e);
                 throw;
             }
             finally
@@ -112,7 +114,7 @@ namespace ControllerFarmService
             }
 
             if (!command.Contains("pbsnodes") && !command.Contains("qstat"))
-                Log.Info("ssh execution result : " + sshOut);
+                logger.Trace("ssh execution result : " + sshOut);
 
             return sshOut;
         }
@@ -174,18 +176,18 @@ namespace ControllerFarmService
 
             try
             {
-                Log.Info(Thread.CurrentThread.ManagedThreadId + " entered.");
+                logger.Trace(Thread.CurrentThread.ManagedThreadId + " entered.");
 
                 SshExec(node, "mkdir " + clusterHomeFolder);
 
-                Log.Info(Thread.CurrentThread.ManagedThreadId + " exited.");
+                logger.Trace(Thread.CurrentThread.ManagedThreadId + " exited.");
             }
             catch (Exception e)
             {
-                Log.Warn(e.ToString());
+                logger.WarnException("SSH exec in CopyInputFiles caused exception", e);
             }
 
-            Log.Info("Copying input files for task " + task.TaskId.ToString());
+            logger.Info("Copying input files for task {0}", task.TaskId);
             fileNames = ""; //String.Join(" ", incarnation.FilesToCopy.Select(f => f.FileName));
             foreach (var file in task.InputFiles)
             {
@@ -195,7 +197,7 @@ namespace ControllerFarmService
                 string fileOnCluster = clusterHomeFolder.TrimEnd(new[] { '/', '\\' }) + "/" + file.FileName;
                 fileNames += " " + fileOnCluster;
 
-                Log.Info("Copying file " + fileOnCluster);
+                logger.Debug("Copying file " + fileOnCluster);
                 //ScpCopy(node, fileOnCluster, tmpFile);
                 UploadFile(node, fileOnCluster, tmpFile);
                 File.Delete(tmpFile);
@@ -250,13 +252,13 @@ namespace ControllerFarmService
                     IOProxy.Ftp.MakePath(dir);
                 else
                 {
-                    Log.Debug("Creating dir " + dir);
+                    logger.Debug("Creating dir " + dir);
                     Directory.CreateDirectory(dir);
                 }
             }
 
 
-            Log.Info("Copying output files");
+            logger.Info("Copying output files for task {0}", task.TaskId);
             //System.Threading.Tasks.Parallel.ForEach(fileNames, (fileName) =>
             foreach (string fileName in fileNames)
             {
@@ -265,7 +267,7 @@ namespace ControllerFarmService
                     string tmpFile = Path.GetTempFileName();
                     try
                     {
-                        Log.Info("Copying file " + clusterFolder + fileName);
+                        logger.Debug("Copying file " + clusterFolder + fileName);
                         //ScpGet(node, clusterFolder + fileName, tmpFile, false);
                         DownloadFile(node, clusterFolder + fileName, tmpFile);
 
@@ -275,15 +277,15 @@ namespace ControllerFarmService
                             File.Copy(tmpFile, outFolderFromSystem + fileName);
 
                         File.Delete(tmpFile);
-                        Log.Info("File copied " + fileName);
+                        logger.Debug("File copied " + fileName);
                     }
                     catch (Ssh.SshTransferException e)
                     {
-                        Log.Warn(String.Format("During coping file {0} for task {1} from error was happend: {2}", fileName, taskId, e)); // todo : lolwut?
+                        logger.WarnException(e, "SshTransferException on file '{0}' copy for task {1}", clusterFolder + fileName, task.TaskId);
                     }
                     catch (Exception e)
                     {
-                        Log.Warn(String.Format("Exception on file '{0}' copy: {1}", clusterFolder + fileName, e));
+                        logger.WarnException(e, "Exception on file '{0}' copy for task {1}", clusterFolder + fileName, task.TaskId);
                     }
                 }
             }//);

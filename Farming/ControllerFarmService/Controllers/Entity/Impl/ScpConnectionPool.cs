@@ -14,13 +14,15 @@ namespace ControllerFarmService.Controllers.Entity
     {
         private static int DEFAULT_SCP_PORT = 22;
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         // Madness?! THIS IS SPARTAAAAAAAAAAAA!!!!!!!!!!!!!
         private Renci.SshNet.SftpClient _sftpClient;
         private Tamir.SharpSsh.Scp _scp;
 
         public SecureCopier(ResourceNode node)
         {
-            Log.Info("SCP: Establishing connection to node " + node.ResourceName + "." + node.NodeName);
+            logger.Trace("SCP: Establishing connection to node {0}.{1}", node.ResourceName, node.NodeName);
 
             var nodeAddress = node.NodeAddress; // todo : OR ExecutionUrl????!!!!!
             var addrParts = node.NodeAddress.Split(':');
@@ -39,11 +41,11 @@ namespace ControllerFarmService.Controllers.Entity
             {
                 foreach (var prompt in e.Prompts)
                 {
-                    Log.Debug("Interactive request by resource node " + node.NodeName + ": '" + prompt.Request + "'");
+                    logger.Trace("Interactive request by resource node {0}: '{1}'", node.NodeName, prompt.Request);
 
                     if (prompt.Request.ToLowerInvariant().Contains("password"))
                     {
-                        Log.Debug("Responding by password");
+                        logger.Trace("Responding by password");
                         prompt.Response = node.Credentials.Password;
                     }
                 }
@@ -76,7 +78,7 @@ namespace ControllerFarmService.Controllers.Entity
             }
             catch (Exception e)
             {
-                Log.Warn("Unable to use sftp. Rolling bask to SCP for resource node " + node.ResourceName + "." + node.NodeName + ": " + e.ToString());
+                logger.WarnException(e, "Unable to use sftp. Rolling back to SCP for resource node {0}.{1}", node.ResourceName, node.NodeName);
                 _sftpClient = null;
 
                 _scp = new Scp(nodeAddress, node.Credentials.Username, node.Credentials.Password);

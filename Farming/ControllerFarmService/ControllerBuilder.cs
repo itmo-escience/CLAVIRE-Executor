@@ -9,6 +9,8 @@ namespace MITP
 {
     internal class ControllerBuilder
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static IStatelessResourceController Build(Resource resource)
         {
             try
@@ -23,9 +25,8 @@ namespace MITP
             }
             catch (Exception e)
             {
-                Log.Error(String.Format("Exception while building controller: {0}\n{1}",
-                    e.Message, e.StackTrace
-                ));
+                logger.ErrorException("Exception while building controller!", e);
+
                 throw new Exception("Unknown controller " + resource.Controller.Type, e);
             }
         }

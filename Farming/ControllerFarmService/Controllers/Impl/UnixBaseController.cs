@@ -15,8 +15,10 @@ namespace ControllerFarmService
     public class UnixBaseController : PbsController, IStatelessResourceController
     {
         //think to remove this criteria
-        public static double BUSY_RANGE = 90.0; 
-        
+        public static double BUSY_RANGE = 90.0;
+
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private abstract class SshUnixCommands
         {
             public const string Run = "sh";
@@ -40,7 +42,7 @@ namespace ControllerFarmService
             }
             catch (Exception e)
             {
-                Log.Error(String.Format("Exception while updating task's {0} state: {1}", task.TaskId, e));
+                logger.ErrorException(e, "Exception while updating task's {0} state", task.TaskId);
                 result = "SshExec error while updating task's state";
             }
 
@@ -77,7 +79,7 @@ namespace ControllerFarmService
             foreach(var node in resource.Nodes)
             {
                 string responseString = SshExec(node, SshUnixCommands.GetNodeState).ToLowerInvariant();
-                Log.Debug("Load response: " + responseString);
+                logger.Trace("Load response: " + responseString);
 
                 /*
                 string LOAD_STRING_START = "load average: ";
@@ -95,10 +97,10 @@ namespace ControllerFarmService
 
                 var rx = new Regex(@": (\d+[,.]\d*), (\d+[,.]\d*), (\d+[,.]\d*)\s*$");
                 string loadStr = rx.Match(responseString).Groups[1].Value.Replace(',', '.');
-                Log.Debug("Load string: " + loadStr);
+                logger.Trace("Load string: " + loadStr);
                 
                 double loadValue = double.Parse(loadStr, CultureInfo.InvariantCulture);
-                Log.Debug("Load value: " + loadValue.ToString());
+                logger.Trace("Load value: " + loadValue.ToString());
 
                 var state = (loadValue < BUSY_RANGE)
                               ? new NodeStateResponse(node.NodeName) {State = NodeState.Available}

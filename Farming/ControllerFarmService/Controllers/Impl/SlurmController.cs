@@ -19,6 +19,8 @@ namespace MITP
     {
         private const string PARTITION_NAME_PARAM = "Partition";
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private abstract class SshCommands
         {
             public const string Run = "sbatch";
@@ -39,26 +41,27 @@ namespace MITP
             var pack = PackageByName(node, task.PackageName);
             ulong taskId = task.TaskId;
 
-            Log.Info("Locking operation");
+            logger.Trace("Locking operation");
             var operationHolder = LockOperation(task.TaskId, TaskLock.WRITE_OPERATION_EXECUTED);
 
             string fileNames;
             string clusterHomeFolder = CopyInputFiles(task, out fileNames);
 
             string cmdLine = String.Format(task.CommandLine, pack.AppPath, taskId, fileNames.Trim());
-            Log.Debug("cmdline = " + cmdLine);
+            logger.Debug("Task {0}, cmdline = {1}", task.TaskId, cmdLine);
 
-            Log.Info("Preparing script");
+            logger.Trace("Preparing script");
             string scriptPath = MakeScript(pack, cmdLine, node, clusterHomeFolder);
+            logger.Trace("Script prepared. Executing it.");
 
-            Log.Info("Script prepared. Executing it.");
             var result = SshExec(node, SshCommands.Run, scriptPath);
 
-            UnLockOperation(task.TaskId, operationHolder);
-            Log.Info("Operation unlocked");
-
             string jobId = result.Split(new[] { '\r', '\n', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries).Last();
-            Log.Info("Exec done. Job id = " + jobId);
+            logger.Info("Exec done on node {1}.{2}. Job id = {0}", jobId, node.ResourceName, node.NodeName);
+
+            UnLockOperation(task.TaskId, operationHolder);
+            logger.Trace("Operation unlocked");
+
             return jobId;
         }
 
@@ -112,11 +115,9 @@ namespace MITP
             }
             catch (Exception e)
             {
-                Log.Error(String.Format("Failed to abort task {1} on resource {2}: {3}{0}{4}",
-                    Environment.NewLine,
-                    task.TaskId, task.Resource.ResourceName,
-                    e.Message, e.StackTrace
-                ));
+                logger.ErrorException(e, "Failed to abort task {0} on resource {1}",
+                    task.TaskId, task.Resource.ResourceName
+                );
                 // todo : throw;
             }
         }
@@ -128,6 +129,7 @@ namespace MITP
             string result = SshExec(node, SshCommands.GetTaskState, (string)task.LocalId);
             string result_UPPER = result.ToUpperInvariant();
 
+            // todo: arrays -> dictionary by TaskState
             string[] runningTokens   = new[] { "CONFIGURING", "COMPLETING", "PENDING", "RUNNING", "SUSPENDED" };
             string[] abortedTokens   = new[] { "CANCELLED", "TIMEOUT" };
             string[] failedTokens    = new[] { "FAILED", "NODE_FAIL", "PREEMPTED" };
@@ -149,7 +151,7 @@ namespace MITP
             }
             else
             {
-                Log.Warn("Wnknown responce from SLURM. Hoping task was completed: " + result);
+                logger.Warn("Wnknown responce from SLURM. Hoping task was completed: " + result);
 
                 CopyOutputsToExchange(task);
                 return new TaskStateInfo(TaskState.Completed, result);

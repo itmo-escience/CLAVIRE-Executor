@@ -15,6 +15,8 @@ namespace ControllerFarmService.Controllers.Entity
     {
         public static string MAX_SESSION_AMOUNT = "DefaultMaxSession";
         public static readonly TimeSpan SESSION_TIMEOUT = TimeSpan.FromMinutes(3);
+
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         
         ConcurrentStack<T> sshSessions = new ConcurrentStack<T>();
         private IDictionary<T, DateTime> whenConnected = new ConcurrentDictionary<T, DateTime>();
@@ -70,11 +72,10 @@ namespace ControllerFarmService.Controllers.Entity
                             }
                             catch (Exception closeEx)
                             {
-                                Log.Error(String.Format(
+                                logger.ErrorException(closeEx,
                                     "Could not close old connection to {0}.{1}: {2}",
-                                    node.ResourceName, node.NodeName,
-                                    closeEx
-                                ));
+                                    node.ResourceName, node.NodeName
+                                );
                             }
                             finally
                             {

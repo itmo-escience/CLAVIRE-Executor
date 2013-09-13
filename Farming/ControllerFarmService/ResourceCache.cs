@@ -19,6 +19,8 @@ namespace MITP
         private static readonly TimeSpan UPDATE_DURATION_TO_WARN = TimeSpan.FromSeconds(0.3);
         private static readonly TimeSpan UPDATE_INTERVAL = TimeSpan.FromMilliseconds(300);
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private static readonly Dictionary<string, ResourceCache> _cache = new Dictionary<string, ResourceCache>();
         private static readonly object _globalLock = new object();
 
@@ -56,7 +58,7 @@ namespace MITP
             {
                 if (!_cache.ContainsKey(resourceName))
                 {
-                    Log.Error("No cache for resource " + resourceName);
+                    logger.Error("No cache for resource " + resourceName);
                     throw new ArgumentException("Unknown resource for this farm");
                 }
 
@@ -149,7 +151,7 @@ namespace MITP
 
                 if (nodesOverloaded)
                 {
-                    Log.Error("Nodes overload for resource " + this.Resource.ResourceName);
+                    logger.Error("Nodes overload for resource " + this.Resource.ResourceName);
                     throw new Exception("Nodes are overloaded for resource " + this.Resource.ResourceName);
                 }
             }
@@ -165,10 +167,10 @@ namespace MITP
 
                     if (nodeState == null)
                     {
-                        Log.Warn(String.Format(
+                        logger.Warn(
                             "Found unknown node '{0}.{1}' in config for some task while releasing resource",
                             nodeConfig.ResourceName, nodeConfig.NodeName
-                        ));
+                        );
                     }
                     else
                     {
@@ -177,13 +179,13 @@ namespace MITP
 
                         if (nodeState.TasksSubmitted < 0)
                         {
-                            Log.Error("TasksSubmitted < 0 on node " + nodeState.NodeName + ". Setting it to 0");
+                            logger.Error("TasksSubmitted < 0 on node '{0}.{1}'. Setting it to 0", nodeState.ResourceName, nodeState.NodeName);
                             nodeState.TasksSubmitted = 0;
                         }
 
                         if (nodeState.CoresReserved < 0)
                         {
-                            Log.Error("CoresReserved < 0 on node " + nodeState.NodeName + ". Setting it to 0");
+                            logger.Error("CoresReserved < 0 on node '{0}.{1}'. Setting it to 0", nodeState.ResourceName, nodeState.NodeName);
                             nodeState.CoresReserved = 0;
                         }
                     }
@@ -224,13 +226,11 @@ namespace MITP
 
                             timer.Stop();
                             if (timer.Elapsed > UPDATE_DURATION_TO_WARN)
-                                Log.Warn(String.Format("Resource '{0}' update took {1} seconds", resourceName, timer.Elapsed.TotalSeconds));
+                                logger.Warn("Resource '{0}' update took {1} seconds", resourceName, timer.Elapsed.TotalSeconds);
                         }
                         catch (Exception e)
                         {
-                            Log.Error(String.Format("Error on updating resource '{0}' state: {1}",
-                                resourceName, e
-                            ));
+                            logger.ErrorException(e, "Error on updating resource '{0}' state", resourceName);
                             stateResponse = cache.Resource.Nodes.Select(node => new NodeStateResponse(node.NodeName) { State = NodeState.Down });
                         }
 
@@ -246,14 +246,14 @@ namespace MITP
                                     if (nodeCache != null)
                                         nodeCache.ApplyState(nodeResponse);
                                     else
-                                        Log.Warn("Resource returned info on unknown node " + nodeResponse.NodeName);
+                                        logger.Warn("Resource returned info on unknown node " + nodeResponse.NodeName);
 
                                     cache.Save();
                                 }
                             }
                             catch (Exception e)
                             {
-                                Log.Error(String.Format("Exception on applying resource '{0}' nodes state: {1}", resourceName, e));
+                                logger.ErrorException(e, "Exception on applying resource '{0}' nodes state", resourceName);
                                 throw;
                             }
                             finally

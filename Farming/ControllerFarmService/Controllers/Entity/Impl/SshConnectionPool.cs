@@ -12,7 +12,10 @@ namespace ControllerFarmService.Controllers.Entity
     {
         public static int DEFAULT_SSH_PORT = 22;
 
-        public SshConnectionPool() : base()
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        public SshConnectionPool()
+            : base()
         {
             //Console.WriteLine();
         }
@@ -25,7 +28,7 @@ namespace ControllerFarmService.Controllers.Entity
 
         public override SshClient GetNewInstance(ResourceNode node)
         {
-            Log.Info("SSH: Establishing connection to node " + node.ResourceName + "." + node.NodeName);
+            logger.Trace("SSH: Establishing connection to node {0}.{1}", node.ResourceName, node.NodeName);
 
             string url = node.Services.ExecutionUrl;
             int port = DEFAULT_SSH_PORT;
@@ -41,11 +44,11 @@ namespace ControllerFarmService.Controllers.Entity
             {
                 foreach (var prompt in e.Prompts)
                 {
-                    Log.Debug("Interactive request by resource node " + node.NodeName + ": '" + prompt.Request + "'");
+                    logger.Trace("Interactive request by resource node {0}.{1}", node.NodeName, prompt.Request);
 
                     if (prompt.Request.ToLowerInvariant().Contains("password"))
                     {
-                        Log.Debug("Responding by password");
+                        logger.Trace("Responding by password");
                         prompt.Response = node.Credentials.Password;
                     }
                 }

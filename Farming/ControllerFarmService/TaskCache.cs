@@ -19,6 +19,8 @@ namespace MITP
         [BsonIgnore] private static readonly TimeSpan UPDATE_DURATION_TO_WARN = TimeSpan.FromSeconds(0.3);
         [BsonIgnore] private static readonly TimeSpan UPDATE_INTERVAL = TimeSpan.FromMilliseconds(200);
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        
         [BsonIgnore] private static Dictionary<ulong, TaskCache> _dumpedTasks = new Dictionary<ulong,TaskCache>();
 
         [BsonIgnore] private static readonly Dictionary<ulong, TaskCache> _cache = new Dictionary<ulong, TaskCache>();
@@ -59,9 +61,9 @@ namespace MITP
             {
                 if (_stateInfo != null && _stateInfo.IsFinished())
                 {
-                    Log.Warn(String.Format("Tried to change state of finished task {0} to {1} ('{2}')",
+                    logger.Warn("Tried to change state of finished task {0} to {1} ('{2}')",
                         this.Context.TaskId, newStateInfo.State, newStateInfo.StateComment
-                    ));
+                    );
 
                     // ignoring changes for finished tasks
                 }
@@ -145,7 +147,7 @@ namespace MITP
         {
             lock (_globalLock)
             {
-                Log.Info("Dumping tasks states");
+                logger.Info("Dumping tasks states");
 
                 lock (_dumpedLock)
                 {
@@ -168,7 +170,7 @@ namespace MITP
         {
             lock (_globalLock)
             {
-                Log.Info("Restoring tasks for resources: " + String.Join(", ", resourceNames));
+                logger.Info("Restoring tasks for resources: " + String.Join(", ", resourceNames));
                 var tasks = LoadTasks(resourceNames);
 
                 foreach (var task in tasks)
@@ -193,9 +195,7 @@ namespace MITP
             }
             catch (Exception buildEx)
             {
-                Log.Warn(String.Format("Could not build controller for loaded task {0}: {1}",
-                    task.Context.TaskId, buildEx
-                ));
+                logger.WarnException(buildEx, "Could not build controller for loaded task {0}", task.Context.TaskId);
             }
 
             task.Context.Controller = null;
@@ -226,7 +226,7 @@ namespace MITP
                     }
                     else
                     {
-                        Log.Error("No saved state for task " + taskId.ToString());
+                        logger.Error("No saved state for task {0}", taskId);
                         throw new ArgumentException("Unknown task for this farm");
                     }
                 }
@@ -271,7 +271,7 @@ namespace MITP
 
                                 timer.Stop();
                                 if (timer.Elapsed > UPDATE_DURATION_TO_WARN)
-                                    Log.Warn(String.Format("Task {0} update took {1} seconds", this.Context.TaskId, timer.Elapsed.TotalSeconds)); // Context.TaskId is immutable
+                                    logger.Warn("Task's {0} update took {1} seconds", this.Context.TaskId, timer.Elapsed.TotalSeconds); // Context.TaskId is immutable
 
                                 SetState(newState);
                             }
@@ -280,7 +280,7 @@ namespace MITP
                         {
                             SetState(TaskState.Failed, e.Message); // todo : retries
 
-                            Log.Error(String.Format("Exception on update task {0}: {1}", this.Context.TaskId, e)); // Context.TaskId is immutable
+                            logger.ErrorException(e, "Exception on update task {0}", this.Context.TaskId); // Context.TaskId is immutable
                             throw;
                         }
                         finally
