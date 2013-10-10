@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Comment CommentText="Три функции-делегаты определяют формат описания математических функций в программе">
+    <Position X="6.625" Y="3.635" Height="0.979" Width="1.887" />
+  </Comment>
+  <Comment CommentText="две функции-делегаты определяют формат описания функции среднего и СКО">
+    <Position X="0.521" Y="3.812" Height="0.542" Width="2.794" />
+  </Comment>
+  <Class Name="ModelEstimation.MLEstimator">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <Members>
+      <Method Name="likelihood" Hidden="true" />
+      <Method Name="likelihoodD" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="ModelEstimation.MLEstimator.meanFunction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>MLEstimator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="ModelEstimation.MLEstimator.sigmaFunction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>MLEstimator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAACAAAAAAAAAAAAQAAIAQlgIQAAAAAAA=</HashCode>
+      <FileName>MLEstimator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ModelEstimation.tools.MathTool">
+    <Position X="3.75" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="ModelEstimation.tools.MathTool.functionNDto1D" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>tools\MathTool.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="ModelEstimation.tools.MathTool.functionNDtoMD" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>tools\MathTool.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="ModelEstimation.tools.MathTool.function1Dto1D" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>tools\MathTool.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QBAAAAAAAAAAABAAAAAIAAAAAAAAAAAAAAEAAEABAAA=</HashCode>
+      <FileName>tools\MathTool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ModelEstimation.tools.OptimTool">
+    <Position X="6.75" Y="0.5" Width="2.75" />
+    <Members>
+      <Method Name="view" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICwIAAAAAAAQ=</HashCode>
+      <FileName>tools\OptimTool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

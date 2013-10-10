@@ -1,4 +1,4 @@
-﻿extern alias ModelAdjust;
+﻿extern alias ModelOptim;
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using Easis.PackageBase.Definition;
 using Easis.PackageBase.Types;
 using ServiceProxies.ResourceBaseService;
 
-using estimationAdjuster = ModelAdjust.ModelEstimation.MLEstimator;
+using estimationAdjuster = ModelOptim.ModelEstimation.MLEstimator;
 
 namespace MITP
 {

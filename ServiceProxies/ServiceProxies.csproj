@@ -58,10 +58,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
-    <Reference Include="ModelEstimation">
-      <HintPath>..\..\Libs\ModelEstimation.dll</HintPath>
-      <Aliases>ModelAdjust</Aliases>
-    </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\..\Libs\MongoDB.Bson.dll</HintPath>
     </Reference>
@@ -450,6 +446,11 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{DFD08628-7337-48D3-819E-49F5626C5119}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dependencies\ModelEstimation\ModelEstimation.csproj">
+      <Project>{2B7BCE54-EE7A-462C-9404-95DD2CBDA1F0}</Project>
+      <Name>ModelEstimation</Name>
+      <Aliases>ModelOptim</Aliases>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
