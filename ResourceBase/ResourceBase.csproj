@@ -54,8 +54,8 @@
       <Project>{DFD08628-7337-48D3-819E-49F5626C5119}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mono.T4\TextTemplating\Mono.TextTemplating\Mono.TextTemplating.csproj">
-      <Project>{A2364D6A-00EF-417C-80A6-815726C70032}</Project>
+    <ProjectReference Include="..\Dependencies\Mono.T4\TextTemplating\Mono.TextTemplating\Mono.TextTemplating.csproj">
+      <Project>{277E02D8-8446-4C77-B862-D07B49759371}</Project>
       <Name>Mono.TextTemplating</Name>
     </ProjectReference>
   </ItemGroup>
