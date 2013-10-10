@@ -47,15 +47,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="ResourceNode.cs" />
+    <Compile Include="ScheduledDowntime.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Mono.T4\TextTemplating\Mono.TextTemplating\Mono.TextTemplating.csproj">
-      <Project>{A2364D6A-00EF-417C-80A6-815726C70032}</Project>
-      <Name>Mono.TextTemplating</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{DFD08628-7337-48D3-819E-49F5626C5119}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mono.T4\TextTemplating\Mono.TextTemplating\Mono.TextTemplating.csproj">
+      <Project>{A2364D6A-00EF-417C-80A6-815726C70032}</Project>
+      <Name>Mono.TextTemplating</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -18,7 +18,7 @@ namespace MITP
     }
 
     [DataContract]
-    public class Resource
+    public partial class Resource
     {
         public string Json { get; private set; }
 
@@ -32,6 +32,8 @@ namespace MITP
         
         //[DataMember] public string ProviderName { get; private set; } // todo: Resource.ProviderName -> ResourceType
         //[DataMember] public string ProviderUrl;
+
+        [DataMember] public string[][] ScheduledDowntime { get; private set; }
 
         [DataMember]
         public IDictionary<string, string> HardwareParams { get; private set; }
@@ -50,6 +52,9 @@ namespace MITP
 
             if (HardwareParams == null)
                 HardwareParams = new Dictionary<string, string>();
+
+            if (ScheduledDowntime == null)
+                ScheduledDowntime = new string[0][];
         }
 
         [OnDeserialized]
@@ -135,7 +140,8 @@ namespace MITP
                     //string json = File.ReadAllText(filePath);
                     var res = Resource.BuildFromDescription(json);
 
-                    resources.Add(res);
+                    if (!res.IsInScheduledDowntime())
+                        resources.Add(res);
                 }
                 catch (Exception e)
                 {
