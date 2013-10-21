@@ -16,7 +16,8 @@
       <xs:element name="Nodes" nillable="true" type="tns:ArrayOfResourceNode" />
       <xs:element minOccurs="0" name="ResourceDescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ResourceName" nillable="true" type="xs:string" />
-      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SupportedArchitectures" nillable="true" type="q2:ArrayOfstring" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ScheduledDowntime" nillable="true" type="q2:ArrayOfArrayOfstring" />
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SupportedArchitectures" nillable="true" type="q3:ArrayOfstring" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Resource" nillable="true" type="tns:Resource" />
@@ -33,15 +34,15 @@
       <xs:element minOccurs="0" name="CoresCount" type="xs:unsignedInt" />
       <xs:element minOccurs="0" name="Credentials" nillable="true" type="tns:NodeCredentials" />
       <xs:element minOccurs="0" name="DataFolders" nillable="true" type="tns:NodeDataFolders" />
-      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="HardwareParams" nillable="true" type="q3:ArrayOfKeyValueOfstringstring" />
-      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="OtherSoftware" nillable="true" type="q4:ArrayOfstring" />
+      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="HardwareParams" nillable="true" type="q4:ArrayOfKeyValueOfstringstring" />
+      <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="OtherSoftware" nillable="true" type="q5:ArrayOfstring" />
       <xs:element minOccurs="0" name="Packages" nillable="true" type="tns:ArrayOfPackageOnNode" />
       <xs:element minOccurs="0" name="ResourceName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Services" nillable="true" type="tns:NodeServices" />
       <xs:element minOccurs="0" name="TasksSubmissionLimit" type="xs:unsignedInt" />
       <xs:element minOccurs="0" name="NodeName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="NodeAddress" nillable="true" type="xs:string" />
-      <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SupportedArchitectures" nillable="true" type="q5:ArrayOfstring" />
+      <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SupportedArchitectures" nillable="true" type="q6:ArrayOfstring" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ResourceNode" nillable="true" type="tns:ResourceNode" />
@@ -70,11 +71,11 @@
   <xs:element name="ArrayOfPackageOnNode" nillable="true" type="tns:ArrayOfPackageOnNode" />
   <xs:complexType name="PackageOnNode">
     <xs:sequence>
-      <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Cleanup" nillable="true" type="q6:ArrayOfstring" />
-      <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="CleanupIgnore" nillable="true" type="q7:ArrayOfstring" />
-      <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="CopyOnStartup" nillable="true" type="q8:ArrayOfstring" />
-      <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="EnvVars" nillable="true" type="q9:ArrayOfKeyValueOfstringstring" />
-      <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Params" nillable="true" type="q10:ArrayOfKeyValueOfstringstring" />
+      <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Cleanup" nillable="true" type="q7:ArrayOfstring" />
+      <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="CleanupIgnore" nillable="true" type="q8:ArrayOfstring" />
+      <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="CopyOnStartup" nillable="true" type="q9:ArrayOfstring" />
+      <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="EnvVars" nillable="true" type="q10:ArrayOfKeyValueOfstringstring" />
+      <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Params" nillable="true" type="q11:ArrayOfKeyValueOfstringstring" />
       <xs:element name="Name" nillable="true" type="xs:string" />
       <xs:element name="Version" nillable="true" type="xs:string" />
       <xs:element name="AppPath" nillable="true" type="xs:string" />

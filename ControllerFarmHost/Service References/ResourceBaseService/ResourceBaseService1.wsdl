@@ -44,6 +44,18 @@
   <wsdl:message name="IResourceBaseService_GetResourcesForFarm_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetResourcesForFarmResponse" />
   </wsdl:message>
+  <wsdl:message name="IResourceBaseService_AddInstalledPackage_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddInstalledPackage" />
+  </wsdl:message>
+  <wsdl:message name="IResourceBaseService_AddInstalledPackage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddInstalledPackageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IResourceBaseService_RemoveInstalledPackage_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveInstalledPackage" />
+  </wsdl:message>
+  <wsdl:message name="IResourceBaseService_RemoveInstalledPackage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveInstalledPackageResponse" />
+  </wsdl:message>
   <wsdl:portType name="IResourceBaseService">
     <wsdl:operation name="GetAllResources">
       <wsdl:input wsaw:Action="http://tempuri.org/IResourceBaseService/GetAllResources" message="tns:IResourceBaseService_GetAllResources_InputMessage" />
@@ -68,6 +80,14 @@
     <wsdl:operation name="GetResourcesForFarm">
       <wsdl:input wsaw:Action="http://tempuri.org/IResourceBaseService/GetResourcesForFarm" message="tns:IResourceBaseService_GetResourcesForFarm_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IResourceBaseService/GetResourcesForFarmResponse" message="tns:IResourceBaseService_GetResourcesForFarm_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddInstalledPackage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IResourceBaseService/AddInstalledPackage" message="tns:IResourceBaseService_AddInstalledPackage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IResourceBaseService/AddInstalledPackageResponse" message="tns:IResourceBaseService_AddInstalledPackage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveInstalledPackage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IResourceBaseService/RemoveInstalledPackage" message="tns:IResourceBaseService_RemoveInstalledPackage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IResourceBaseService/RemoveInstalledPackageResponse" message="tns:IResourceBaseService_RemoveInstalledPackage_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IResourceBaseService" type="tns:IResourceBaseService">
@@ -119,6 +139,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetResourcesForFarm">
       <soap:operation soapAction="http://tempuri.org/IResourceBaseService/GetResourcesForFarm" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddInstalledPackage">
+      <soap:operation soapAction="http://tempuri.org/IResourceBaseService/AddInstalledPackage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveInstalledPackage">
+      <soap:operation soapAction="http://tempuri.org/IResourceBaseService/RemoveInstalledPackage" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

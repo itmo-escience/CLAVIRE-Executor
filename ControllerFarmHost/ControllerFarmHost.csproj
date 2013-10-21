@@ -121,6 +121,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ControllerFarmHost_TemporaryKey.pfx" />
+    <None Include="Properties\DataSources\ControllerFarmService.ResourceBaseService.Resource.datasource" />
+    <None Include="Properties\DataSources\ControllerFarmService.ResourceBaseService.ResourceNode.datasource" />
     <None Include="Properties\DataSources\MITP.NodeStateInfo.datasource" />
     <None Include="Properties\DataSources\MITP.TaskStateInfo.datasource" />
     <None Include="Service References\ControllerFarmService\ControllerFarmHost.ControllerFarmService.NodeStateInfo.datasource">

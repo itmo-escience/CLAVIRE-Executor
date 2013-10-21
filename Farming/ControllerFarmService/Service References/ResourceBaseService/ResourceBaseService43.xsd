@@ -84,4 +84,32 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="AddInstalledPackage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="resourceName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="nodeName" nillable="true" type="xs:string" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MITP" minOccurs="0" name="pack" nillable="true" type="q7:PackageOnNode" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddInstalledPackageResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveInstalledPackage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="resourceName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="nodeName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="packName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveInstalledPackageResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
