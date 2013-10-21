@@ -65,7 +65,7 @@ namespace Launcher
         readonly static string RESOURCE_NAME = FromConfig("Resource", "b4.b4-131");//"b4.b4-131");
 
         readonly static string PACK_NAME   = FromConfig("Package", "testp");//"dummy_model");//"hmgenerator"
-        readonly static int LAUNCHES_COUNT = FromConfig("LaunchesCount", 12); // zero or negative number => unlimited launches
+        readonly static int LAUNCHES_COUNT = FromConfig("LaunchesCount", 1); // zero or negative number => unlimited launches
 
         readonly static int[] TIME_BETWEEN_LAUNCHES = FromConfig("TimeBetweenLaunchesInMilliseconds", 35, 800); // in milliseconds
         //readonly static int[] TIME_BETWEEN_LAUNCHES = FromConfig("TimeBetweenLaunchesInMilliseconds", 15000, 25000); // in milliseconds

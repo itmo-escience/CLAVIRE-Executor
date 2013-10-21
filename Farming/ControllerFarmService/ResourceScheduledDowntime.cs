@@ -5,17 +5,18 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Runtime.Serialization;
+using ControllerFarmService.ResourceBaseService;
 
 namespace MITP
 {
-    public partial class Resource
+    public static class ResourceScheduledDowntimeExt
     {
-        private bool IsInScheduledDowntime()
+        public static bool IsInScheduledDowntime(this Resource resource)
         {
             DateTime now = DateTime.Now;
 
             bool isInScheduledMaintenance = false;
-            foreach (var datesInterval in this.ScheduledDowntime)
+            foreach (var datesInterval in resource.ScheduledDowntime)
             {
                 try
                 {
@@ -26,7 +27,7 @@ namespace MITP
                         Log.Warn(String.Format(
                             "ScheduledDowntime Finish is less then Start ({1} < {0}) for resource {2}",
                             downtimeStart, downtimeFinish,
-                            this.ResourceName
+                            resource.ResourceName
                         ));
                     else
                     {
@@ -38,7 +39,7 @@ namespace MITP
                                 "Resource {4} is in scheduled maintenance: '{0}' ({1}) -- '{2}' ({3})",
                                 datesInterval.First(), downtimeStart,
                                 datesInterval.Last(), downtimeFinish,
-                                this.ResourceName
+                                resource.ResourceName
                             ));
                         }
                     }
@@ -48,7 +49,7 @@ namespace MITP
                     Log.Error(String.Format(
                         "Exception while processing ScheduledDowntime ('{0}' -- '{1}') for resource {2}: {3}", 
                         datesInterval.FirstOrDefault() ?? "", datesInterval.LastOrDefault() ?? "",
-                        this.ResourceName,
+                        resource.ResourceName,
                         e
                     ));
                 }

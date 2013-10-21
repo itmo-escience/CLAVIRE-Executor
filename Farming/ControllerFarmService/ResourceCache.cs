@@ -220,8 +220,16 @@ namespace MITP
                         try
                         {
                             var timer = System.Diagnostics.Stopwatch.StartNew();
+
                             //Log.Info("Updating nodes state for resource " + resourceName);
-                            stateResponse = cache.Controller.GetNodesState(cache.Resource);
+                            if (!cache.Resource.IsInScheduledDowntime())
+                                stateResponse = cache.Controller.GetNodesState(cache.Resource);
+                            else
+                                stateResponse = cache.Resource.Nodes.Select(n =>
+                                    new NodeStateResponse(n.NodeName)
+                                    {
+                                        State = NodeState.Down
+                                    }).ToArray();
                             //Log.Info("Got response on update for resource " + resourceName);
 
                             timer.Stop();

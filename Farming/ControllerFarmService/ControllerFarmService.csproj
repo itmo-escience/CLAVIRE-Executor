@@ -110,6 +110,7 @@
     <Compile Include="NodeState.cs" />
     <Compile Include="ResourceCache.cs" />
     <Compile Include="ResourceNodeExt.cs" />
+    <Compile Include="ResourceScheduledDowntime.cs" />
     <Compile Include="Service References\ResourceBaseService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -269,6 +269,26 @@ namespace MITP
 
                                 var newState = this.Context.Controller.GetTaskStateInfo(this.Context);
 
+                                if (!newState.IsFinished() && this.Context.Resource.IsInScheduledDowntime())
+                                {
+                                    logger.Info("Resource '{0}' went down due to ScheduledDowntime: aborting it's task #{1}",
+                                        this.Context.Resource.ResourceName, this.Context.TaskId
+                                    );
+
+                                    try
+                                    {
+                                        this.Context.Controller.Abort(this.Context);
+                                    }
+                                    catch (Exception abortEx)
+                                    {
+                                        logger.WarnException(abortEx, "Abort failed on resource for task {0}", this.Context.TaskId);
+                                    }
+                                    finally
+                                    {
+                                        newState = new TaskStateInfo(TaskState.Aborted, "Aborted by system: resource went down due to ScheduledDowntime");
+                                    }
+                                }
+
                                 timer.Stop();
                                 if (timer.Elapsed > UPDATE_DURATION_TO_WARN)
                                     logger.Warn("Task's {0} update took {1} seconds", this.Context.TaskId, timer.Elapsed.TotalSeconds); // Context.TaskId is immutable

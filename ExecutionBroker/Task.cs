@@ -583,8 +583,6 @@ namespace MITP
                     if (state != this.State)
                         Log.Debug(String.Format("Task {0}: new state = {1}{2}", TaskId, state, String.IsNullOrEmpty(reason) ? "" : ", reason = " + reason));
 
-                    // todo : log new task state
-
                     if (state == TaskState.Completed)
                     {
                         try
@@ -605,7 +603,7 @@ namespace MITP
                         }
                     }
                     else
-                    if (state == TaskState.Failed)
+                    if (state == TaskState.Failed || state == TaskState.Aborted)
                     {
                         failReason = reason;
                     }

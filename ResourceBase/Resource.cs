@@ -18,7 +18,7 @@ namespace MITP
     }
 
     [DataContract]
-    public partial class Resource
+    public class Resource
     {
         public string Json { get; private set; }
 
@@ -140,8 +140,7 @@ namespace MITP
                     //string json = File.ReadAllText(filePath);
                     var res = Resource.BuildFromDescription(json);
 
-                    if (!res.IsInScheduledDowntime())
-                        resources.Add(res);
+                    resources.Add(res);
                 }
                 catch (Exception e)
                 {
