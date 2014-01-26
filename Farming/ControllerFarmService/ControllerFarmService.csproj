@@ -101,6 +101,7 @@
     <Compile Include="Controllers\Entity\Impl\TaskLock.cs" />
     <Compile Include="Controllers\Error\AErrorResolver.cs" />
     <Compile Include="Controllers\Error\PbsErrorResolver.cs" />
+    <Compile Include="Controllers\Impl\ExtendedWindowsController.cs" />
     <Compile Include="Controllers\Impl\NGridController.cs" />
     <Compile Include="Controllers\Impl\PbsController.cs" />
     <Compile Include="Controllers\Impl\SlurmController.cs" />
@@ -111,6 +112,16 @@
     <Compile Include="ResourceCache.cs" />
     <Compile Include="ResourceNodeExt.cs" />
     <Compile Include="ResourceScheduledDowntime.cs" />
+    <Compile Include="Service References\ExecuteServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\FileStreamServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\ResourceBaseService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -123,6 +134,18 @@
     </Compile>
     <Compile Include="TaskCache.cs" />
     <Compile Include="Controllers\Impl\UnixBaseController.cs" />
+    <None Include="Service References\FileStreamServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\FileStreamServiceClient\configuration.svcinfo" />
+    <None Include="Service References\FileStreamServiceClient\configuration91.svcinfo" />
+    <None Include="Service References\ExecuteServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ExecuteServiceClient\configuration.svcinfo" />
+    <None Include="Service References\ExecuteServiceClient\configuration91.svcinfo" />
     <None Include="bup.cs" />
     <Compile Include="Controllers\AbstractResourceController.cs" />
     <Compile Include="Controllers\IStatelessResourceController.cs" />
@@ -138,6 +161,26 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Service References\ExecuteServiceClient\Arrays.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ExecuteServiceClient\service.wsdl" />
+    <None Include="Service References\ExecuteServiceClient\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ExecuteServiceClient\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\FileStreamServiceClient\Message.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\FileStreamServiceClient\service.wsdl" />
+    <None Include="Service References\FileStreamServiceClient\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\FileStreamServiceClient\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\ResourceBaseService\ControllerFarmService.ResourceBaseService.Resource.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -176,6 +219,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ExecuteServiceClient\" />
+    <WCFMetadataStorage Include="Service References\FileStreamServiceClient\" />
     <WCFMetadataStorage Include="Service References\ResourceBaseService\" />
     <WCFMetadataStorage Include="Service References\RExService\" />
   </ItemGroup>

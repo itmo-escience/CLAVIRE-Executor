@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c8a8779f-74b9-4afd-9559-8db919bbcc0c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://54.217.22.106:8740/FileService/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="2605889f-090c-418c-ac39-366619f22f8c" SourceId="1" SourceUrl="http://54.217.22.106:8740/FileService/mex" />
+    <MetadataFile FileName="Message.xsd" MetadataType="Schema" ID="ceae407c-c6c8-4790-941b-266db80fac12" SourceId="1" SourceUrl="http://54.217.22.106:8740/FileService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="4b3365c3-219a-457e-b150-34c571d24402" SourceId="1" SourceUrl="http://54.217.22.106:8740/FileService/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="fe0605e3-75fb-4dd8-8c19-8c1723190f85" SourceId="1" SourceUrl="http://54.217.22.106:8740/FileService/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
