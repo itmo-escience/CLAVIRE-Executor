@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/MITP" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MITP" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:52444/VirtualProviderService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="VirtualPool">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AvgStartTime" type="ser:duration" />
+      <xs:element name="BaseImage" nillable="true" type="xs:string" />
+      <xs:element name="Credentials" nillable="true" type="tns:VirtualPoolProviderCredentials" />
+      <xs:element name="InstancesLimitMax" type="xs:int" />
+      <xs:element minOccurs="0" name="InstancesLimitMin" type="xs:int" />
+      <xs:element name="ProviderType" nillable="true" type="xs:string" />
+      <xs:element name="ProviderUrl" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VirtualPool" nillable="true" type="tns:VirtualPool" />
+  <xs:complexType name="VirtualPoolProviderCredentials">
+    <xs:sequence>
+      <xs:element name="Id" nillable="true" type="xs:string" />
+      <xs:element name="Password" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VirtualPoolProviderCredentials" nillable="true" type="tns:VirtualPoolProviderCredentials" />
+  <xs:complexType name="VirtualNodeStateInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ImageId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InstanceId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="State" type="tns:VirtualNodeState" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VirtualNodeStateInfo" nillable="true" type="tns:VirtualNodeStateInfo" />
+  <xs:simpleType name="VirtualNodeState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Starting" />
+      <xs:enumeration value="Started" />
+      <xs:enumeration value="Stopping" />
+      <xs:enumeration value="Stopped" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="VirtualNodeState" nillable="true" type="tns:VirtualNodeState" />
+</xs:schema>

@@ -62,7 +62,7 @@ namespace Launcher
         const string USER_ID = "00000000-0000-0000-0000-000000000000";
         const string WF_ID = "Launcher";
 
-        readonly static string RESOURCE_NAME = FromConfig("Resource", "b4.b4-131");//"b4.b4-131");
+        readonly static string RESOURCE_NAME = FromConfig("Resource", "");//"b4.b4-131");
 
         readonly static string PACK_NAME   = FromConfig("Package", "testp");//"dummy_model");//"hmgenerator"
         readonly static int LAUNCHES_COUNT = FromConfig("LaunchesCount", 1); // zero or negative number => unlimited launches
@@ -211,7 +211,7 @@ namespace Launcher
                 {
                     {"in0", GetNextRandom(1, 100).ToString()},
                     {"in1", GetNextRandom(1, 100).ToString()},
-                    {"timeToWait", "0"},
+                    {"timeToWait", "15"},
                 },
                 /**/
 

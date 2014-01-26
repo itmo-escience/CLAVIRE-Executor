@@ -11,6 +11,18 @@ namespace MITP
     {
         public bool MagicHappens()
         {
+            //StateProcessor.InitProcess();
+
+            return false;
+
+            var rb = Discovery.GetResourceBase();
+            var res = rb.GetResourceByName("Amazon");
+
+            Discovery.GetVirtualProviders().StartInstance(res.VirtualPool, res.Nodes.Single().NodeName);
+
+
+            return true;
+
             return false;
 
             string id = IOProxy.Storage.Upload(@"D:/Projects/_TestSuite/Molec/H2O.xyz", "/tests/execution/H2O.xyz");

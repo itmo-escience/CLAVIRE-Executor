@@ -36,6 +36,11 @@ namespace MITP
                 this.ExecutionUrl = otherServices.ExecutionUrl;
             }
         }
+
+        public NodeServices(string executionUrl)
+        {
+            this.ExecutionUrl = executionUrl;
+        }
     }
 
     [DataContract]
@@ -45,7 +50,7 @@ namespace MITP
         public string NodeName { get; private set; }
 
         [DataMember(Order=1)]  // , IsRequired=true
-        public string NodeAddress { get; private set; }  // may differ from provider’s        
+        public string NodeAddress { get; internal set; }  // may differ from provider’s        
 
         [DataMember(Order=2)]
         public IEnumerable<string> SupportedArchitectures { get; private set; }
@@ -54,9 +59,12 @@ namespace MITP
         public uint CoresCount { get; private set; }
 
         [DataMember]
-        public uint TasksSubmissionLimit  { get; private set; }
+        public uint TasksSubmissionLimit  { get; internal set; }
 
-        [DataMember] public NodeServices    Services    { get; private set; }
+        [DataMember]
+        public VirtualNodeState? VirtualState { get; internal set; }
+
+        [DataMember] public NodeServices    Services    { get; internal set; }
         [DataMember] public NodeDataFolders DataFolders { get; private set; }
         [DataMember] public NodeCredentials Credentials { get; private set; }
 

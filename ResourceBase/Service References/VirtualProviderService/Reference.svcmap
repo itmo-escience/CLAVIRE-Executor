@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d793f5d8-12d1-46f4-9763-2c90720341b5" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies>
+      <ReferencedAssembly AssemblyName="VirtualBase" />
+    </ReferencedAssemblies>
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:52444/VirtualProviderService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="VirtualProviderService.xsd" MetadataType="Schema" ID="451efe64-9ffc-4bb4-a519-9e259ce07d40" SourceId="1" SourceUrl="http://localhost:52444/VirtualProviderService.svc?xsd=xsd2" />
+    <MetadataFile FileName="VirtualProviderService1.xsd" MetadataType="Schema" ID="9980e03a-8db1-42c1-a564-09c998e14bbc" SourceId="1" SourceUrl="http://localhost:52444/VirtualProviderService.svc?xsd=xsd3" />
+    <MetadataFile FileName="VirtualProviderService2.xsd" MetadataType="Schema" ID="3e5248c3-5aea-45e8-926b-a9b2a6097ade" SourceId="1" SourceUrl="http://localhost:52444/VirtualProviderService.svc?xsd=xsd0" />
+    <MetadataFile FileName="VirtualProviderService3.xsd" MetadataType="Schema" ID="b284b448-20a6-48ce-b27d-b68d6e53940e" SourceId="1" SourceUrl="http://localhost:52444/VirtualProviderService.svc?xsd=xsd1" />
+    <MetadataFile FileName="VirtualProviderService.wsdl" MetadataType="Wsdl" ID="6d74258c-c6cf-4fc7-8232-f64f8b0718e0" SourceId="1" SourceUrl="http://localhost:52444/VirtualProviderService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="VirtualProviderService.disco" MetadataType="Disco" ID="46c2c513-7a24-4e60-ad58-3cfc15f1698f" SourceId="1" SourceUrl="http://localhost:52444/VirtualProviderService.svc?disco" />
+    <MetadataFile FileName="VirtualProviderService1.wsdl" MetadataType="Wsdl" ID="7a4f6408-dc2f-46c7-a481-e29fbb2dfb8e" SourceId="1" SourceUrl="http://localhost:52444/VirtualProviderService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

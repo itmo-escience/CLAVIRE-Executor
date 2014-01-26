@@ -48,6 +48,9 @@ namespace ServiceProxies.ResourceBaseService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string[] SupportedArchitecturesField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private MITP.VirtualPool VirtualPoolField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -175,6 +178,19 @@ namespace ServiceProxies.ResourceBaseService {
             }
         }
         
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public MITP.VirtualPool VirtualPool {
+            get {
+                return this.VirtualPoolField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.VirtualPoolField, value) != true)) {
+                    this.VirtualPoolField = value;
+                    this.RaisePropertyChanged("VirtualPool");
+                }
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -297,6 +313,9 @@ namespace ServiceProxies.ResourceBaseService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private uint TasksSubmissionLimitField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<MITP.VirtualNodeState> VirtualStateField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NodeNameField;
@@ -434,7 +453,20 @@ namespace ServiceProxies.ResourceBaseService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=9)]
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<MITP.VirtualNodeState> VirtualState {
+            get {
+                return this.VirtualStateField;
+            }
+            set {
+                if ((this.VirtualStateField.Equals(value) != true)) {
+                    this.VirtualStateField = value;
+                    this.RaisePropertyChanged("VirtualState");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=10)]
         public string NodeName {
             get {
                 return this.NodeNameField;
@@ -447,7 +479,7 @@ namespace ServiceProxies.ResourceBaseService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=10)]
+        [System.Runtime.Serialization.DataMemberAttribute(Order=11)]
         public string NodeAddress {
             get {
                 return this.NodeAddressField;
@@ -460,7 +492,7 @@ namespace ServiceProxies.ResourceBaseService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=11)]
+        [System.Runtime.Serialization.DataMemberAttribute(Order=12)]
         public string[] SupportedArchitectures {
             get {
                 return this.SupportedArchitecturesField;

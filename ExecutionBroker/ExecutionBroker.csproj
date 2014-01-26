@@ -108,6 +108,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="VirtualSchedule.cs" />
     <None Include="Adapters\AbstractAdapter.cs" />
     <None Include="Adapters\CommonPackageAdapter.cs" />
     <None Include="Adapters\CommonXyzPackageAdapter.cs" />
@@ -160,6 +161,10 @@
     <ProjectReference Include="..\ServiceProxies\ServiceProxies.csproj">
       <Project>{FFD85273-66B8-41C2-A2B6-CB37E4D6C080}</Project>
       <Name>ServiceProxies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VirtualBase\VirtualBase.csproj">
+      <Project>{E2E1A3A4-A1E1-4ADB-B6FC-E4315A083C40}</Project>
+      <Name>VirtualBase</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

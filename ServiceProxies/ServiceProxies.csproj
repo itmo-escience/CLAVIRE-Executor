@@ -158,6 +158,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\VirtualProviderService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="WFStateUpdateEvent.cs">
       <DependentUpon>WFStateUpdateEvent.xsd</DependentUpon>
     </Compile>
@@ -402,6 +407,23 @@
     <None Include="Service References\UserManagementService\UserManagementService4.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\VirtualProviderService\ServiceProxies.VirtualProviderService.VirtualNodeStateInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VirtualProviderService\VirtualProviderService.wsdl" />
+    <None Include="Service References\VirtualProviderService\VirtualProviderService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\VirtualProviderService\VirtualProviderService1.wsdl" />
+    <None Include="Service References\VirtualProviderService\VirtualProviderService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\VirtualProviderService\VirtualProviderService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\VirtualProviderService\VirtualProviderService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="WFStateUpdateEvent.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -417,6 +439,7 @@
     <WCFMetadataStorage Include="Service References\RightsService\" />
     <WCFMetadataStorage Include="Service References\SchedulerService\" />
     <WCFMetadataStorage Include="Service References\UserManagementService\" />
+    <WCFMetadataStorage Include="Service References\VirtualProviderService\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\IOService\configuration91.svcinfo" />
@@ -451,6 +474,10 @@
       <Project>{2B7BCE54-EE7A-462C-9404-95DD2CBDA1F0}</Project>
       <Name>ModelEstimation</Name>
       <Aliases>ModelOptim</Aliases>
+    </ProjectReference>
+    <ProjectReference Include="..\VirtualBase\VirtualBase.csproj">
+      <Project>{E2E1A3A4-A1E1-4ADB-B6FC-E4315A083C40}</Project>
+      <Name>VirtualBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -569,6 +596,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\SchedulerService\SchedulerService1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VirtualProviderService\VirtualProviderService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VirtualProviderService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VirtualProviderService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VirtualProviderService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

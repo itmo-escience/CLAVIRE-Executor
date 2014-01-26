@@ -7,6 +7,8 @@ using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
 using Config = System.Web.Configuration.WebConfigurationManager;
 
+using ResourceBase.VirtualProviderService;
+
 namespace MITP
 {
     [DataContract]
@@ -20,7 +22,7 @@ namespace MITP
     [DataContract]
     public class Resource
     {
-        public string Json { get; private set; }
+        public string Json { get; internal set; }
 
         [DataMember] public string ResourceName { get; private set; } 
         [DataMember] public string ResourceDescription { get; private set; }
@@ -37,6 +39,13 @@ namespace MITP
 
         [DataMember]
         public IDictionary<string, string> HardwareParams { get; private set; }
+
+
+        [DataMember(IsRequired = false)]
+        public VirtualPool VirtualPool { get; private set; }
+
+        public bool IsVirtual { get { return VirtualPool != null; } }
+
         
         [DataMember(Name="NodeDefaults")] 
         private ResourceNode _nodeDefaults; // Used for node initialization
@@ -101,18 +110,31 @@ namespace MITP
                 {
                     string template = File.ReadAllText(filePath);
 
-                    if (!template.TrimStart().StartsWith("<#@"))
+                    if (!template.TrimStart().StartsWith("<#@")) // todo : measure performance of this
                     {
                         string assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "");
                         string assemblyDir = Path.GetDirectoryName(assemblyLocation);
 
                         var used_assemblies_location = Directory.GetFiles(assemblyDir, "*.dll").Where(name => !name.ToLowerInvariant().Contains("mono.texttemplating"));
 
+                        var refAssemblies = System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies();
+                        var refAssembliesNames = refAssemblies
+                            .Where(a => a.Name.StartsWith("System"))
+                            .Select(a => System.Reflection.Assembly.Load(a.FullName).Location); // will not load it again
+                        
                         string new_template = @"<#@ template debug=""false"" hostspecific=""false"" language=""C#"" #>" + Environment.NewLine; // inherits=""MITP.Resource""
+
+                        foreach (string name in refAssembliesNames)
+                            new_template += String.Format(@"<#@ assembly name=""{0}"" #>{1}", name, Environment.NewLine);
+
                         foreach (string location in used_assemblies_location)
                             new_template += String.Format(@"<#@ assembly name=""{0}"" #>{1}", location, Environment.NewLine);
 
+                        new_template += @"<#@ import namespace=""System"" #>" + Environment.NewLine;
                         new_template += @"<#@ import namespace=""System.Collections.Generic"" #>" + Environment.NewLine;
+                        new_template += @"<#@ import namespace=""System.Linq"" #>" + Environment.NewLine;
+                        new_template += @"<#@ import namespace=""System.Text"" #>" + Environment.NewLine;
+                        new_template += @"<#@ import namespace=""System.IO"" #>" + Environment.NewLine;
                         new_template += @"<#@ import namespace=""MITP"" #>" + Environment.NewLine;
 
                         template = new_template + template;
@@ -140,6 +162,9 @@ namespace MITP
                     //string json = File.ReadAllText(filePath);
                     var res = Resource.BuildFromDescription(json);
 
+                    res.UpdateVirtualNodesState();
+                    res.InsertAddressValueInParams();
+
                     resources.Add(res);
                 }
                 catch (Exception e)
@@ -151,6 +176,109 @@ namespace MITP
             return resources;
         }
 
+        private void InsertAddressValueInParams()
+        {
+            foreach (var n in this.Nodes)
+            {
+                if (n.Services.ExecutionUrl.Contains("{address}") && !String.IsNullOrEmpty(n.Services.ExecutionUrl)) // todo: something wrong here
+                    n.Services = new NodeServices(n.Services.ExecutionUrl
+                        .Replace("{address}", n.NodeAddress)
+                        .Replace("{Address}", n.NodeAddress)
+                        .Replace("{nodeaddress}", n.NodeAddress)
+                        .Replace("{nodeAddress}", n.NodeAddress));
+            }
+        }
+
+        private void UpdateVirtualNodesState()
+        {
+            if (this.IsVirtual)
+            {
+                var service = new VirtualProviderServiceClient();
+
+                try
+                {
+                    var virtualNodesState = service.GetVirtualNodesState(this.VirtualPool);
+
+                    this.Json +=
+                        "<# /* " +
+                            String.Join("; ", virtualNodesState.Select(ns => 
+                                String.Format("{0}, {1} = {2}",
+                                    ns.Value.InstanceId,
+                                    ns.Value.Address,
+                                    ns.Value.State))) +
+                        " */ #>";
+
+
+                        
+                    /*    
+                        new ResourceBase.VirtualProviderService.Resource()
+                        {
+                            ResourceName = this.ResourceName,
+
+                            VirtualPool = new ResourceBase.VirtualProviderService.VirtualPool()
+                            {
+                                BaseImage = this.VirtualPool.BaseImage,
+
+                                Credentials = new ResourceBase.VirtualProviderService.VirtualPoolProviderCredentials()
+                                {
+                                    Id = this.VirtualPool.Credentials.Id,
+                                    Password = this.VirtualPool.Credentials.Password
+                                },
+
+                                InstancesLimitMax = this.VirtualPool.InstancesLimitMax,
+                                InstancesLimitMin = this.VirtualPool.InstancesLimitMax,
+
+                                ProviderType = this.VirtualPool.ProviderType,
+                                ProviderUrl  = this.VirtualPool.ProviderUrl,                                
+                            },
+
+                            Nodes = this.Nodes.Select(n => new ResourceBase.VirtualProviderService.ResourceNode()
+                            {
+                                ResourceName = n.ResourceName,
+                                NodeName = n.NodeName,
+                                NodeAddress = n.NodeAddress,                                
+                            }).ToArray(),                            
+                        }
+                    );   */
+
+                    foreach (var node in this.Nodes)
+                    {
+                        node.VirtualState = null;
+
+                        if (virtualNodesState.ContainsKey(node.NodeName))
+                        {
+                            node.NodeAddress  = virtualNodesState[node.NodeName].Address;
+                            node.VirtualState = virtualNodesState[node.NodeName].State;
+
+                            switch (virtualNodesState[node.NodeName].State)
+                            {                            
+                                case VirtualNodeState.Started: /* OK */
+                                    break;
+
+                                default:
+                                    node.TasksSubmissionLimit = 0;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            node.TasksSubmissionLimit = 0;
+                        }
+                    }
+
+                    service.Close();
+                }
+                catch (Exception e)
+                {
+                    service.Abort();
+
+                    Log.Error("Exception while updating virtual nodes state: " + e.ToString());
+                }
+            }
+        }
+
+
+
         public static string InstalledPackages(string resourceName, string nodeName)
         {
             return "";
@@ -159,6 +287,15 @@ namespace MITP
                 ""Version"": ""v1"",
                 ""AppPath"": ""D:\\CLAVIRE\\_testp\\testp.exe""
 			}";
+        }
+
+        public static Dictionary<string, string> GetInstalledPackagesForNode(string nodeName)
+        {
+            return new Dictionary<string, string>
+            {
+                { "testp", @"D:\\CLAVIRE\\_testp\\testp.exe" },
+                //{ "testp2", @"D:\\CLAVIRE\\_testp\\testp.exe" }
+            };
         }
 
 

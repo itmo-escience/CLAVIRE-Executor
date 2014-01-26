@@ -24,6 +24,13 @@ namespace MITP
             return service;
         }
 
+        public static ServiceProxies.VirtualProviderService.VirtualProviderServiceClient
+            GetVirtualProviders()
+        {
+            var service = new ServiceProxies.VirtualProviderService.VirtualProviderServiceClient();
+            return service;
+        }
+
         public static ServiceProxies.ControllerFarmService.ControllerFarmServiceClient
             GetControllerFarm(string url)
         {

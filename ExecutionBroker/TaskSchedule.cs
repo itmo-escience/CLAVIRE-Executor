@@ -351,6 +351,10 @@ namespace MITP
                 }
             }
 
+            VirtualSchedule.ReconfigureVirtualMachines(
+                tasks, resources, dependencies,
+                estimationsForTask, schedule);
+
             return schedule;
         }
 

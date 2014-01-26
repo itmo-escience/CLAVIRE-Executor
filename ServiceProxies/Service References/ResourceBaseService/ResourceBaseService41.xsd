@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/MITP" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MITP" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/MITP" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MITP" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:61095/ResourceBaseService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:61095/ResourceBaseService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="ArrayOfResource">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Resource" nillable="true" type="tns:Resource" />
@@ -18,6 +19,7 @@
       <xs:element minOccurs="0" name="ResourceName" nillable="true" type="xs:string" />
       <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ScheduledDowntime" nillable="true" type="q2:ArrayOfArrayOfstring" />
       <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SupportedArchitectures" nillable="true" type="q3:ArrayOfstring" />
+      <xs:element minOccurs="0" name="VirtualPool" nillable="true" type="tns:VirtualPool" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Resource" nillable="true" type="tns:Resource" />
@@ -40,6 +42,7 @@
       <xs:element minOccurs="0" name="ResourceName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Services" nillable="true" type="tns:NodeServices" />
       <xs:element minOccurs="0" name="TasksSubmissionLimit" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="VirtualState" nillable="true" type="tns:VirtualNodeState" />
       <xs:element minOccurs="0" name="NodeName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="NodeAddress" nillable="true" type="xs:string" />
       <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SupportedArchitectures" nillable="true" type="q6:ArrayOfstring" />
@@ -89,10 +92,38 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="NodeServices" nillable="true" type="tns:NodeServices" />
+  <xs:simpleType name="VirtualNodeState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Starting" />
+      <xs:enumeration value="Started" />
+      <xs:enumeration value="Stopping" />
+      <xs:enumeration value="Stopped" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="VirtualNodeState" nillable="true" type="tns:VirtualNodeState" />
   <xs:complexType name="ArrayOfResourceNode">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ResourceNode" nillable="true" type="tns:ResourceNode" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfResourceNode" nillable="true" type="tns:ArrayOfResourceNode" />
+  <xs:complexType name="VirtualPool">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AvgStartTime" type="ser:duration" />
+      <xs:element name="BaseImage" nillable="true" type="xs:string" />
+      <xs:element name="Credentials" nillable="true" type="tns:VirtualPoolProviderCredentials" />
+      <xs:element name="InstancesLimitMax" type="xs:int" />
+      <xs:element minOccurs="0" name="InstancesLimitMin" type="xs:int" />
+      <xs:element name="ProviderType" nillable="true" type="xs:string" />
+      <xs:element name="ProviderUrl" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VirtualPool" nillable="true" type="tns:VirtualPool" />
+  <xs:complexType name="VirtualPoolProviderCredentials">
+    <xs:sequence>
+      <xs:element name="Id" nillable="true" type="xs:string" />
+      <xs:element name="Password" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VirtualPoolProviderCredentials" nillable="true" type="tns:VirtualPoolProviderCredentials" />
 </xs:schema>

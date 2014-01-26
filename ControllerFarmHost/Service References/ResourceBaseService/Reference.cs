@@ -48,6 +48,9 @@ namespace ControllerFarmHost.ResourceBaseService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string[] SupportedArchitecturesField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ControllerFarmHost.ResourceBaseService.VirtualPool VirtualPoolField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -171,6 +174,19 @@ namespace ControllerFarmHost.ResourceBaseService {
                 if ((object.ReferenceEquals(this.SupportedArchitecturesField, value) != true)) {
                     this.SupportedArchitecturesField = value;
                     this.RaisePropertyChanged("SupportedArchitectures");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ControllerFarmHost.ResourceBaseService.VirtualPool VirtualPool {
+            get {
+                return this.VirtualPoolField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.VirtualPoolField, value) != true)) {
+                    this.VirtualPoolField = value;
+                    this.RaisePropertyChanged("VirtualPool");
                 }
             }
         }
@@ -469,6 +485,126 @@ namespace ControllerFarmHost.ResourceBaseService {
                 if ((object.ReferenceEquals(this.SupportedArchitecturesField, value) != true)) {
                     this.SupportedArchitecturesField = value;
                     this.RaisePropertyChanged("SupportedArchitectures");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="VirtualPool", Namespace="http://schemas.datacontract.org/2004/07/MITP")]
+    [System.SerializableAttribute()]
+    public partial class VirtualPool : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private string BaseImageField;
+        
+        private ControllerFarmHost.ResourceBaseService.VirtualPoolProviderCredentials CredentialsField;
+        
+        private int InstancesLimitMaxField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int InstancesLimitMinField;
+        
+        private string ProviderTypeField;
+        
+        private string ProviderUrlField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string BaseImage {
+            get {
+                return this.BaseImageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BaseImageField, value) != true)) {
+                    this.BaseImageField = value;
+                    this.RaisePropertyChanged("BaseImage");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public ControllerFarmHost.ResourceBaseService.VirtualPoolProviderCredentials Credentials {
+            get {
+                return this.CredentialsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CredentialsField, value) != true)) {
+                    this.CredentialsField = value;
+                    this.RaisePropertyChanged("Credentials");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public int InstancesLimitMax {
+            get {
+                return this.InstancesLimitMaxField;
+            }
+            set {
+                if ((this.InstancesLimitMaxField.Equals(value) != true)) {
+                    this.InstancesLimitMaxField = value;
+                    this.RaisePropertyChanged("InstancesLimitMax");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int InstancesLimitMin {
+            get {
+                return this.InstancesLimitMinField;
+            }
+            set {
+                if ((this.InstancesLimitMinField.Equals(value) != true)) {
+                    this.InstancesLimitMinField = value;
+                    this.RaisePropertyChanged("InstancesLimitMin");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string ProviderType {
+            get {
+                return this.ProviderTypeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProviderTypeField, value) != true)) {
+                    this.ProviderTypeField = value;
+                    this.RaisePropertyChanged("ProviderType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string ProviderUrl {
+            get {
+                return this.ProviderUrlField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProviderUrlField, value) != true)) {
+                    this.ProviderUrlField = value;
+                    this.RaisePropertyChanged("ProviderUrl");
                 }
             }
         }
@@ -851,6 +987,65 @@ namespace ControllerFarmHost.ResourceBaseService {
                 if ((object.ReferenceEquals(this.LocalDirField, value) != true)) {
                     this.LocalDirField = value;
                     this.RaisePropertyChanged("LocalDir");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="VirtualPoolProviderCredentials", Namespace="http://schemas.datacontract.org/2004/07/MITP")]
+    [System.SerializableAttribute()]
+    public partial class VirtualPoolProviderCredentials : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private string IdField;
+        
+        private string PasswordField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdField, value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string Password {
+            get {
+                return this.PasswordField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
+                    this.PasswordField = value;
+                    this.RaisePropertyChanged("Password");
                 }
             }
         }

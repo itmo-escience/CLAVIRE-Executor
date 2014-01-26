@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +48,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="ResourceNode.cs" />
+    <Compile Include="Service References\VirtualProviderService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
@@ -56,6 +62,10 @@
     <ProjectReference Include="..\Dependencies\Mono.T4\TextTemplating\Mono.TextTemplating\Mono.TextTemplating.csproj">
       <Project>{277E02D8-8446-4C77-B862-D07B49759371}</Project>
       <Name>Mono.TextTemplating</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VirtualBase\VirtualBase.csproj">
+      <Project>{E2E1A3A4-A1E1-4ADB-B6FC-E4315A083C40}</Project>
+      <Name>VirtualBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +85,40 @@
     <Content Include="Resources\WinPC.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Service References\VirtualProviderService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\VirtualProviderService\configuration.svcinfo" />
+    <None Include="Service References\VirtualProviderService\configuration91.svcinfo" />
+    <None Include="Service References\VirtualProviderService\ResourceBase.VirtualProviderService.VirtualNodeStateInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VirtualProviderService\VirtualProviderService.disco" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="ResourceClassDiagram.cd" />
+    <None Include="Service References\VirtualProviderService\VirtualProviderService.wsdl" />
+    <None Include="Service References\VirtualProviderService\VirtualProviderService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\VirtualProviderService\VirtualProviderService1.wsdl" />
+    <None Include="Service References\VirtualProviderService\VirtualProviderService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\VirtualProviderService\VirtualProviderService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\VirtualProviderService\VirtualProviderService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\VirtualProviderService\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
