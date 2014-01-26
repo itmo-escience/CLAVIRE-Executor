@@ -73,7 +73,7 @@ namespace ControllerFarmService.Controllers.Entity
                             catch (Exception closeEx)
                             {
                                 logger.ErrorException(closeEx,
-                                    "Could not close old connection to {0}.{1}: {2}",
+                                    "Could not close old connection to {0}.{1}",
                                     node.ResourceName, node.NodeName
                                 );
                             }

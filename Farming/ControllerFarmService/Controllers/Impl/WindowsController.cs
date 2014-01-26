@@ -52,7 +52,7 @@ namespace MITP
             catch (Exception e)
             {
                 rexService.Abort();
-                logger.WarnException(e, "Exception while getting task '{0}' state (local id = {1}): {2}", task.TaskId, task.LocalId);
+                logger.WarnException(e, "Exception while getting task '{0}' state (local id = {1})", task.TaskId, task.LocalId);
 
                 throw;
                 //return new TaskStateInfo(TaskState.Started, "");
