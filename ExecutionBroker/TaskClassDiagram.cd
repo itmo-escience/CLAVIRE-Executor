@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="MITP.BriefTaskInfo">
-    <Position X="10" Y="5.25" Width="3.75" />
+    <Position X="10" Y="6.75" Width="3.75" />
     <TypeIdentifier>
       <HashCode>AAgAEAAAAAAAAAAAAAAQAAgAAAgAAAAIAAAABAAAAAA=</HashCode>
       <FileName>BriefTaskInfo.cs</FileName>
@@ -14,8 +14,8 @@
       <Method Name="MagicHappens" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAQAAAAIAEAAADQEAgAAAAAAAAoEAEAAAAAEQAACBAA=</HashCode>
-      <FileName>ExecutionBrokerService.svc.cs</FileName>
+      <HashCode>AAQAAAAIAEAADDREAgAAEAAAAAoEAECAAAAEQAACBAA=</HashCode>
+      <FileName>ExecutionBrokerMagic.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -29,17 +29,21 @@
   <Class Name="MITP.NodeTotals">
     <Position X="14" Y="3.5" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAQAAAAAQAAAAE=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAQAAAgAQAAAAE=</HashCode>
       <FileName>ResourceTotals.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MITP.Task">
     <Position X="6.5" Y="0.5" Width="2.25" />
+    <Members>
+      <Method Name="IsFake" Hidden="true" />
+      <Method Name="WriteModelCoefs" Hidden="true" />
+    </Members>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAWEkIAAAAAIASIAACKAgIgIAEAAAABIBAAABgAAEQI=</HashCode>
+      <HashCode>CAUEkIAAAIIIASIAgCKAgIgJAEAAAABIBCAARgAAEQI=</HashCode>
       <FileName>Task.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -50,7 +54,7 @@
   <Class Name="MITP.TaskSchedule">
     <Position X="0.5" Y="2.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>ABigAAAAAAAAAAACgAAAAAAIBAwAgAAAEAAAAAAAAAQ=</HashCode>
+      <HashCode>AAigAAAAAAAAAAACgCAAAAAIBAwAgAAAACAAAAAAAAQ=</HashCode>
       <FileName>TaskSchedule.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -66,7 +70,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAgAAAAAAAQDAAQAgAQAAGBABCIAhAAACAAAAQAAAAA=</HashCode>
+      <HashCode>AAgAAAAAAAQDAAQAgAQAACBAACIAhAAgAAAAAQAAAAA=</HashCode>
       <FileName>TaskTimeMeasurement.cs</FileName>
     </TypeIdentifier>
   </Class>

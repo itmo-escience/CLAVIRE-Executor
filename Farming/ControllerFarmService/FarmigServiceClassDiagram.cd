@@ -3,7 +3,7 @@
   <Class Name="MITP.ControllerFarmService">
     <Position X="3.5" Y="0.75" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>EAAAggAAAAAAAKAABAAAAAACAAAAAAAABAAAAAAAAAI=</HashCode>
+      <HashCode>EAAAggAAAAAAAKACBAAAAAACAAAAAIAABAAAAAAAAAI=</HashCode>
       <FileName>ControllerFarmService.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
