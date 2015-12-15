@@ -65,7 +65,7 @@
       <HintPath>..\..\Libs\NetLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Libs\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.5\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PackageBase.Serializer">
       <HintPath>..\..\Libs\PackageBase.Serializer.dll</HintPath>

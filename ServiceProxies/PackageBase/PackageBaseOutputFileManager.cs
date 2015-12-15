@@ -117,6 +117,12 @@ namespace MITP
                 return res;
             }
 
+            public long OutputFileCopy(IOutFileDef fileDef, string filePath, DynamicContext ctx)
+            {
+                throw new NotImplementedException();
+            }
+
+
             public OpenFileResult OutputFileOpenWrite(IOutFileDef fileDef, DynamicContext ctx)
             {
                 string tmpFilePath = Path.GetTempFileName();

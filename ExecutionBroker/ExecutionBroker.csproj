@@ -137,6 +137,7 @@
     <Compile Include="BriefTaskInfo.cs" />
     <Compile Include="TaskSchedule.cs" />
     <Compile Include="TaskTimeMeasurement.cs" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="TaskClassDiagram.cd" />
     <None Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -175,9 +176,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>51835</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:61096/</IISUrl>
+          <IISUrl>http://localhost/executorBroker</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
